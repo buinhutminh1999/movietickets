@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { TOKEN } from '../../ulti/setting';
-import { Carousel } from 'antd';
+import { Carousel } from 'react-bootstrap';
+// import { Carousel } from 'antd';
+
 const contentStyle = {
     height: '100vh',
     width: '100%',
@@ -25,15 +26,26 @@ export default function CarouselD() {
     useEffect(() => {
         getBanner()
     }, [])
-    return (
-        <Carousel effect="fade" autoplay='true' className='container'>
-            {getImg.map((item) => {
-                return <div key={item.maPhim}>
-                    <img style={contentStyle} src={item.hinhAnh} alt="" />
-                </div>
-            })}
 
-        </Carousel >
+    return (
+        <Carousel variant="dark" fade='true'>
+            {
+                getImg.map((item) => {
+                    return <Carousel.Item>
+                        <img
+                            className="d-block w-100"
+                            src={item.hinhAnh}
+                            alt="First slide"
+                        />
+                        {/* <Carousel.Caption>
+                    <h5>First slide label</h5>
+                    <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                </Carousel.Caption> */}
+                    </Carousel.Item>
+                })
+            }
+        </Carousel>
+
 
     )
 }
