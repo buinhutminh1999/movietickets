@@ -1,11 +1,9 @@
 import axios from "axios"
-import { useDispatch } from "react-redux"
-import { useNavigate } from "react-router-dom"
+import { history } from "../../App";
 import { TOKEN, URL_API } from "../../ulti/setting"
 
-export const dangKyAction = (value) => {
-   
-    console.log('value', value)
+export const DangKyAction = (props,value) => {
+    
     return (dispatch2) => {
         let promise = axios({
             method: 'POST',
@@ -17,15 +15,14 @@ export const dangKyAction = (value) => {
         })
         promise
             .then(result => {
-                alert('dang ky thanhf cong')
+                history.push('/login')
+                
             })
             .catch(err => {
                 // dispatch2()
+                
                 console.log(err)
-                dispatch2({
-                    type: 'movieReducer/getError',
-                    data: err.response.data.content
-                })
+               
             })
     }
 }
@@ -43,21 +40,22 @@ export const dangNhapAction = (value) => {
         })
         promise
             .then(result => {
-                alert('đăng nhập thành công')
-                localStorage.setItem('USER', JSON.stringify(value))
+                history.push('/home')
+                console.log(result)
+                localStorage.setItem('userMovies', JSON.stringify(result.data.content))
                 dispatch2({
                     type: 'movieReducer/dangNhap',
-                    userLogin: value.taiKhoan,
+                    userLogin: result.data.content
                 })
+                console.log('login dang nhap', value)
             })
             .catch(err => {
-                // dispatch2()
-                console.log(err)
-                // console.log('dang nhap that bai')
-                // dispatch2({
-                //     type: 'movieReducer/getError',
-                //     data: err.response.data.content
-                // })
+               
+                dispatch2({
+                    type: 'movieReducer/LoginErr',
+                    loginErr: err.response.data.content
+                })
+                
             })
     }
 

@@ -1,15 +1,39 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { Button, Space } from 'antd';
 // import * as React from "react";
 import { NavLink } from "react-router-dom";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 export default function Header(props) {
-    let navigate = useNavigate();
+
     let activeStyle = 'nav-link text-danger'
     let nonActiveStyle = 'nav-link'
-   let {usLogin} = useSelector((state) => {return state.movieReducer })
-   console.log(usLogin)
+    let { usLogin } = useSelector((state) => { return state.movieReducer })
+    let dispatch = useDispatch()
+
+    let resetLocal = () => {
+        localStorage.setItem('userMovies', null)
+        dispatch({
+            type: 'movieReducer/Logout',
+            userLogout: null
+        })
+    }
+
+    let checkShowOrHideLogin = () => {
+        return usLogin == null ?
+            <Space wrap>
+                <button className='btn btn-info' onClick={() => {
+                    props.history.replace('/login')
+                }}>Đăng nhập</button>
+                <button className='btn btn-secondary' onClick={() => {
+                    props.history.push('/register')
+                }}>Đăng Ký</button>
+            </Space>
+            : <Space wrap>
+                <span className='alert alert-success'>{usLogin.taiKhoan}</span>
+                <button className='btn btn-danger' onClick={resetLocal}>Đăng xuất</button>
+            </Space>
+    }
     return (
         <>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -30,12 +54,17 @@ export default function Header(props) {
                             }>About</NavLink>
                         </li>
                     </ul>
+
                 </div>
-                {/* <Space wrap>
-                    {usLogin == '' ? '' : usLogin}
-                </Space> */}
+
+                {
+                    checkShowOrHideLogin()
+                }
+
 
             </nav>
         </>
     )
 }
+
+

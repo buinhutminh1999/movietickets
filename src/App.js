@@ -1,13 +1,29 @@
 import logo from './logo.svg';
 import './App.css';
-import AdminTemplate from './component/Header/Header';
-import {createBrowserRouter,RouterProvider,} from "react-router-dom";
-import { RouterPath } from './Routers/RouterPath';
+import { Switch, Router, BrowserRouter, Route } from "react-router-dom";
+// import { RouterPath } from './Routers/RouterPath';
+import { CustomerTemplate } from './Template/CustomerTemplate'
 import 'antd/dist/reset.css';
-const router = RouterPath()
+import { createBrowserHistory } from "history";
+
+import Login from './pages/Login/Login';
+
+import { SingleTemplate } from './Template/SingleTemplate';
+import Register from './pages/register/Register';
+import DetailMovies from './pages/DetailMovies/DetailMovies';
+export const history = createBrowserHistory();
+
 function App() {
   return (
-    <RouterProvider router={router} />
+    <Router history={history} >
+      <Switch>
+        <SingleTemplate path="/login" component={Login} />
+        <SingleTemplate path="/register" component={Register} />
+        <SingleTemplate path="/detail-movies" component={DetailMovies}  />
+        <CustomerTemplate path="/home"  />
+        <CustomerTemplate path="/"  />
+      </Switch>
+    </Router>
   );
 }
 

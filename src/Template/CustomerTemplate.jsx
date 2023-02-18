@@ -1,17 +1,24 @@
 
-import React from 'react'
-import Footer from '../component/Footer/Footer'
+// import Footer from '../component/Footer/Footer'
 import Header from '../component/Header/Header'
 import ListMovies from '../pages/ListMovies/ListMovies'
 import CarouselD from '../pages/carousel/Carousel'
 import MoviesShowTime from '../pages/MoviesShowTime/MoviesShowTime'
-export default function CustomerTemplate(props) {
-  return (
-    <>
-      <Header />
-      <CarouselD/>
-      <ListMovies />
-      <MoviesShowTime/>
+import { Route } from 'react-router-dom'
+import Footer from '../component/Footer/Footer'
+export const CustomerTemplate = (props) => {
+  return <Route exact path={props.path} render={(propsRoute) => {
+    return <>
+      <Header {...propsRoute}/>
+      <CarouselD />
+      <ListMovies {...propsRoute}/>
+      <MoviesShowTime />
       <Footer />
-      </>)
+     
+    </>
+  }} />
 }
+
+
+
+

@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { Rate } from 'antd';
 import { Card, Col, Row } from 'antd';
 import { TOKEN, URL_API } from '../../ulti/setting';
-export default function ListMovies() {
+import { useDispatch } from 'react-redux';
+export default function ListMovies(props) {
     let [listMovies, setListMovies] = useState([])
     let getListMovies = () => {
         let promise = axios({
@@ -19,6 +20,8 @@ export default function ListMovies() {
             .catch((err) => { console.log(err) })
     }
 
+    let dispatch = useDispatch()
+
 
     useEffect(() => {
         getListMovies()
@@ -33,7 +36,13 @@ export default function ListMovies() {
         <div className='container'>
             <Row>
                 {listMovies.map((item) => {
-                    return <Col span={8} className='p-3' key={item.maPhim}> 
+                    return <Col style={{cursor:'pointer'}} span={8} className='p-3' key={item.maPhim} onClick={() => { 
+                        dispatch({
+                            type: 'movieReducer/GetMovies',
+                            detail: item
+                        })
+                        props.history.push('/detail-movies')
+                     }}> 
                         <Card title={item.tenPhim} bordered={true}>
                             <div className='img__movies m-auto' style={{height:'260px', width:'185px'}}>
                                 <img src={item.hinhAnh} className="img-fluid" style={{height:'100%'}} />

@@ -1,23 +1,27 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button, Checkbox, Form, Input, Space } from 'antd';
-import { useNavigate } from 'react-router-dom';
 import { dangNhapAction } from '../../redux/action/movieAction';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 
-const Login = (value) => {
-   
-    let navigate = useNavigate()
+export default function Login(props, value) {
     let dispatch = useDispatch()
+    let { loginErr } = useSelector(state => state.movieReducer)
     const onFinish = (values) => {
-     let action = dangNhapAction({taiKhoan: values.taiKhoan, matKhau: values.matKhau})
-     dispatch(action)
+        let action = dangNhapAction({ taiKhoan: values.taiKhoan, matKhau: values.matKhau })
+        dispatch(action)
     };
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
+
+    // useEffect(() => {
+
+    // }, [value])
+    console.log(value)
     return (
         <div className="d-flex align-items-center justify-content-center" style={{ height: '100vh' }}>
+
             <Form
                 name="basic"
                 labelCol={{
@@ -36,6 +40,7 @@ const Login = (value) => {
                 onFinishFailed={onFinishFailed}
                 autoComplete="off"
             >
+                {loginErr !== null ? <p className='alert alert-danger'>{loginErr}</p> : null}
                 <Form.Item
                     label="Tài khoản"
                     name="taiKhoan"
@@ -84,7 +89,7 @@ const Login = (value) => {
                             Đăng nhập
                         </Button>
                         <Button type="primary" onClick={() => {
-                            navigate('/register')
+                            props.history.push('/register')
                         }}>Đăng ký</Button>
                     </Space>
 
@@ -93,4 +98,3 @@ const Login = (value) => {
         </div>
     )
 }
-export default Login;

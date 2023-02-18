@@ -1,13 +1,13 @@
 import { useFormik } from 'formik';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { dangKyAction, } from '../../redux/action/movieAction';
-
-const Register = () => {
+import { DangKyAction, } from '../../redux/action/movieAction';
+export default function Register() {
     let dispatch = useDispatch()
-    let {error} = useSelector((state) => { return state.movieReducer })
+    let [btn, setBtn] = useState('')
+    let { regisErr } = useSelector((state) => { return state.movieReducer })
     const formik = useFormik({
         initialValues: {
             taiKhoan: '',
@@ -22,22 +22,45 @@ const Register = () => {
         validationSchema: Yup.object().shape({
             taiKhoan: Yup.string().required('Tài khoản không được để trống'),
             matKhau: Yup.string().required('Mật khẩu không được để trống'),
-            repeatPass: Yup.string().oneOf([Yup.ref('matKhau'), null], 'Passwords must match'),
+            repeatPass: Yup.string().oneOf([Yup.ref('matKhau'), null], 'Mật khẩu không khớp'),
             email: Yup.string().email('Email không hợp lệ').required('Email không được để trống'),
             soDt: Yup.string().required('Số điện thoại không được để trống'),
             hoTen: Yup.string().required('Họ và tên không được để trống'),
         }),
         onSubmit: values => {
-           
-            let dangKy = dangKyAction(values)
+
+            let dangKy = DangKyAction(values)
             dispatch(dangKy)
 
         },
     });
+    const btnSucessorDisabled = () => {
+        let flag = true
+        for (const key in formik.values) {
+            if (formik.values[key] == '') {
+                flag = false
+            }
+        }
+        if (flag) {
+            setBtn(<button type="submit" className="btn btn-success">
+                Đăng ký ngay
+            </button>)
+        } else {
+            setBtn(<button type="submit" className="btn btn-danger disabled">
+                Đăng ký ngay
+            </button>)
+        }
+
+    }
+
+    useEffect(() => {
+        btnSucessorDisabled()
+    }, [formik.values])
+
+
     return (
 
         <section className="vh-100" style={{ backgroundColor: '#eee' }}>
-
             <div className="container h-100">
                 <div className="row d-flex justify-content-center align-items-center h-100">
                     <div className="col-lg-12 col-xl-11">
@@ -47,7 +70,7 @@ const Register = () => {
                                     <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
                                         <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Đăng ký</p>
                                         <form className="mx-1 mx-md-4" onSubmit={formik.handleSubmit}>
-                                        {error !== '' ? <div className='alert alert-danger'>{error}</div> : null}
+                                            {regisErr !== '' ? <div className='alert alert-danger'>{regisErr}</div> : null}
                                             <div className="d-flex flex-row align-items-center mb-4">
                                                 <i className="fas fa-user fa-lg me-3 fa-fw" />
                                                 <div className="form-outline flex-fill mb-0">
@@ -59,7 +82,7 @@ const Register = () => {
                                                     ) : null}
                                                 </div>
                                             </div>
-                                           
+
                                             <div className="d-flex flex-row align-items-center mb-4">
                                                 <i className="fas fa-envelope fa-lg me-3 fa-fw" />
                                                 <div className="form-outline flex-fill mb-0">
@@ -91,7 +114,7 @@ const Register = () => {
                                                     {formik.errors.email ? (
                                                         <div className='alert alert-danger'>{formik.errors.email}</div>
                                                     ) : null}
-                                                    
+
                                                 </div>
                                             </div>
                                             <div className="d-flex flex-row align-items-center mb-4">
@@ -118,9 +141,7 @@ const Register = () => {
                                             </div>
 
                                             <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                                <button type="submit" className="btn btn-primary" data-toggle="modal">
-                                                    Đăng ký ngay
-                                                </button>
+                                                {btn}
                                             </div>
                                         </form>
                                     </div>
@@ -136,4 +157,6 @@ const Register = () => {
         </section>
     )
 };
-export default Register;
+
+
+
