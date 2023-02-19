@@ -49,7 +49,7 @@ export default function MoviesShowTime() {
             return maRap.maHeThongRap == key
         })
         if (object == undefined) {//render 2 lần
-            console.log('render undifine')
+            console.log('render undefined')
             return
         } else {
             console.log('render arr')
