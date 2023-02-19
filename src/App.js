@@ -11,6 +11,7 @@ import Login from './pages/Login/Login';
 import { SingleTemplate } from './Template/SingleTemplate';
 import Register from './pages/register/Register';
 import DetailMovies from './pages/DetailMovies/DetailMovies';
+import { BodyTemplate } from './Template/BodyTemplate';
 export const history = createBrowserHistory();
 
 function App() {
@@ -19,7 +20,7 @@ function App() {
       <Switch>
         <SingleTemplate path="/login" component={Login} />
         <SingleTemplate path="/register" component={Register} />
-        <SingleTemplate path="/detail-movies" component={DetailMovies}  />
+        <BodyTemplate  path="/detail-movies" component={DetailMovies}/>
         <CustomerTemplate path="/home"  />
         <CustomerTemplate path="/"  />
       </Switch>

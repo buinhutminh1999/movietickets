@@ -28,7 +28,7 @@ export default function CarouselD() {
     }, [])
 
     return (
-        <Carousel variant="dark" fade='true'>
+        <Carousel variant="dark" fade='true' >
             {
                 getImg.map((item) => {
                     return <Carousel.Item>

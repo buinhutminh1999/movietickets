@@ -23,7 +23,7 @@ export default function Header(props) {
         return usLogin == null ?
             <Space wrap>
                 <button className='btn btn-info' onClick={() => {
-                    props.history.replace('/login')
+                    props.history.push('/login')
                 }}>Đăng nhập</button>
                 <button className='btn btn-secondary' onClick={() => {
                     props.history.push('/register')

@@ -50,7 +50,7 @@ export const dangNhapAction = (value) => {
                 console.log('login dang nhap', value)
             })
             .catch(err => {
-               
+               console.log('err',err)
                 dispatch2({
                     type: 'movieReducer/LoginErr',
                     loginErr: err.response.data.content

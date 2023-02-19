@@ -11,15 +11,15 @@ import { TOKEN, URL_API } from '../../ulti/setting';
 // 	+ b6: arr có data mới
 // 	+ b7: binding data lên UI
 
-
 export default function MoviesShowTime() {
     let [key, setKey] = useState('BHDStar')
     let [listCumRap, setCumRap] = useState([])
+    let [data, setData] = useState({})
     const onChange = (key) => {
-        setKey(key)
+        setKey(key)//luồng updating
     };
     let [listCinema, setListCinema] = useState([])
-    let getListCenima = (url,setValue) => {
+    let getListCenima = (url, setValue) => {
         let promise = axios({
             method: 'GET',
             url: `${URL_API}/${url}`,
@@ -33,38 +33,60 @@ export default function MoviesShowTime() {
             .catch((err) => { console.log(err) })
     }
 
-
     useEffect(() => {
-        console.log('didmount')
-        getListCenima('QuanLyRap/LayThongTinHeThongRap',setListCinema)
-    }, [])
-    useEffect(() => {
-        console.log('didmount api')
-        getListCenima('QuanLyRap/LayThongTinLichChieuHeThongRap?maNhom=GP01',setCumRap)
-    }, [])
-
-    let check = (key) => {
-
         let object = listCumRap.find((maRap) => {
             return maRap.maHeThongRap == key
         })
+        setData(object)
+    })
+
+
+    useEffect(() => {
+        console.log('didmount')
+        getListCenima('QuanLyRap/LayThongTinHeThongRap', setListCinema)
+    }, [])
+    useEffect(() => {
+        console.log('didmount api')
+        getListCenima('QuanLyRap/LayThongTinLichChieuHeThongRap?maNhom=GP01', setCumRap)
+    }, [])
+
+    let layCumRapDauTien = () => {
+        // return object.lstCumRap.map(item => {
+        //     let { tenCumRap, hinhAnh, diaChi, maCumRap } = item
+        //     return ''
+        // })
+    }
+
+    let check = (key) => {
+        let object = listCumRap.find((maRap) => {
+            return maRap.maHeThongRap == key
+        })
+        // setData(object)
         if (object == undefined) {//render 2 lần
-            console.log('render undefined')
+            // console.log('render undefined')
             return
         } else {
-            console.log('render arr')
+            // console.log('render arr')
             return object.lstCumRap.map(item => {
                 let { tenCumRap, hinhAnh, diaChi, maCumRap } = item
-                return item.danhSachPhim.map((item2) => {
-                    let { tenPhim, sapChieu, dangChieu, hinhAnh, hot, maPhim } = item2
-                    return item2.lstLichChieuTheoPhim.map((item3, index) => {
-                        return <div key={index}>
-                            <p>Tên phim: {tenPhim}</p>
-                            <p>{dangChieu ? 'Đang chiếu' : ''}</p>
-                        </div>
+                return <div className="row" key={maCumRap}>
+                    <span className='alert alert-success' onClick={() => {
+                        //hiện danh sách phim
+                    }}>{tenCumRap}</span>
+                </div>
 
-                    })
-                })
+                // return item.danhSachPhim.map((item2) => {
+                //     let { tenPhim, sapChieu, dangChieu, hinhAnh, hot, maPhim } = item2
+                //     return item2.lstLichChieuTheoPhim.map((item3, index) => {
+
+                //         // return <button className='btn btn'>{tenCumRap}</button>
+                //         // return <div key={index}>
+                //         //     {dangChieu ? <p className='alert alert-danger'>Tên phim: {tenPhim}</p> : ''}
+                //         //     <p>{dangChieu ? 'Đang chiếu' : ''}</p>
+                //         // </div>
+
+                //     })
+                // })
             })
 
         }
@@ -82,11 +104,11 @@ export default function MoviesShowTime() {
 
         }
     })
-
+    console.log('object', data)
     return (
-        <div className='container'>
+        <div className='container' style={{ margin: '100px 0' }}>
             <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
-           
+
         </div>
     )
 }
