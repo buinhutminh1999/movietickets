@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Tabs } from 'antd';
 import { TOKEN, URL_API } from '../../ulti/setting';
+
 // - Thứ tự thao tác trong 1 ứng dụng:
 // 	+ b1: load ứng dụng lên
 // 	+ b2: khởi tạo state, hàm
@@ -15,8 +16,11 @@ export default function MoviesShowTime() {
     let [key, setKey] = useState('BHDStar')
     let [listCumRap, setCumRap] = useState([])
     let [data, setData] = useState({})
+    let [dataRap, setDataRap] = useState([])
+    let [active, setActive] = useState(0)
     const onChange = (key) => {
         setKey(key)//luồng updating
+        setActive(0)
     };
     let [listCinema, setListCinema] = useState([])
     let getListCenima = (url, setValue) => {
@@ -40,56 +44,47 @@ export default function MoviesShowTime() {
         setData(object)
     })
 
-
     useEffect(() => {
-        console.log('didmount')
+        // console.log('didmount')
         getListCenima('QuanLyRap/LayThongTinHeThongRap', setListCinema)
-    }, [])
-    useEffect(() => {
-        console.log('didmount api')
         getListCenima('QuanLyRap/LayThongTinLichChieuHeThongRap?maNhom=GP01', setCumRap)
     }, [])
 
-    let layCumRapDauTien = () => {
-        // return object.lstCumRap.map(item => {
-        //     let { tenCumRap, hinhAnh, diaChi, maCumRap } = item
-        //     return ''
-        // })
+    let checkActive = (data, item, danhSachPhim, dataRap) => {
+
+
+        if (data.lstCumRap[active] == item) {//data khi load lên đầu tiên
+            return 'col- 12 alert alert-success'
+        }
+
+        if (danhSachPhim == dataRap) {
+            return 'col- 12 alert alert-success'
+        } else {
+            return 'col- 12 alert alert-danger'
+        }
+
     }
 
     let check = (key) => {
-        let object = listCumRap.find((maRap) => {
-            return maRap.maHeThongRap == key
-        })
-        // setData(object)
-        if (object == undefined) {//render 2 lần
-            // console.log('render undefined')
+        if (data == undefined) {
             return
-        } else {
-            // console.log('render arr')
-            return object.lstCumRap.map(item => {
-                let { tenCumRap, hinhAnh, diaChi, maCumRap } = item
-                return <div className="row" key={maCumRap}>
-                    <span className='alert alert-success' onClick={() => {
-                        //hiện danh sách phim
-                    }}>{tenCumRap}</span>
+        }
+        return data.lstCumRap.map(item => {
+            let { tenCumRap, hinhAnh, diaChi, maCumRap, danhSachPhim } = item
+            return <div className='row' key={maCumRap} >
+                <div style={{ cursor: 'pointer' }} className={checkActive(data, item, danhSachPhim, dataRap)}>
+                    <p onClick={() => {
+                        let vt = data.lstCumRap.findIndex((vt) => { return item == vt })//set array phim
+                        if (vt > -1) {
+                            setActive(vt)
+                        }
+                        setDataRap(danhSachPhim)
+                    }}>{tenCumRap}</p>
+
                 </div>
 
-                // return item.danhSachPhim.map((item2) => {
-                //     let { tenPhim, sapChieu, dangChieu, hinhAnh, hot, maPhim } = item2
-                //     return item2.lstLichChieuTheoPhim.map((item3, index) => {
-
-                //         // return <button className='btn btn'>{tenCumRap}</button>
-                //         // return <div key={index}>
-                //         //     {dangChieu ? <p className='alert alert-danger'>Tên phim: {tenPhim}</p> : ''}
-                //         //     <p>{dangChieu ? 'Đang chiếu' : ''}</p>
-                //         // </div>
-
-                //     })
-                // })
-            })
-
-        }
+            </div>
+        })
     }
     const items = listCinema.map((item) => {
 
@@ -104,11 +99,41 @@ export default function MoviesShowTime() {
 
         }
     })
-    console.log('object', data)
+
+    let test3 = () => {
+        if (data == undefined) {
+            return
+        } else {
+            if (data.lstCumRap == undefined) {
+                return
+            } else {
+                if (data.lstCumRap[active] == undefined) {
+                    return
+                } else {
+                    return data.lstCumRap[active].danhSachPhim.map((item) => {
+                        if (item.dangChieu) {
+                            return <p>{item.tenPhim}</p>
+                        }
+                    })
+                }
+            }
+
+        }
+
+
+    }
     return (
-        <div className='container' style={{ margin: '100px 0' }}>
-            <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
+        <div className='container d-flex' style={{ margin: '100px 0' }}>
+            <div className="col-6">
+                <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
+            </div>
+            <div className='col-6 bg-success'>
+                {
+                    test3()
+                }
+            </div>
 
         </div>
+
     )
 }
