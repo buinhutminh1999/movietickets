@@ -31,7 +31,7 @@ export default function CarouselD() {
         <Carousel variant="dark" fade='true' >
             {
                 getImg.map((item) => {
-                    return <Carousel.Item>
+                    return <Carousel.Item key={item.maBanner}>
                         <img
                             className="d-block w-100"
                             src={item.hinhAnh}

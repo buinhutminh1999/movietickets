@@ -13,15 +13,18 @@ import { TOKEN, URL_API } from '../../ulti/setting';
 // 	+ b7: binding data lên UI
 
 export default function MoviesShowTime() {
-    let [key, setKey] = useState('BHDStar')
     let [listCumRap, setCumRap] = useState([])
     let [data, setData] = useState({})
+    let [key, setKey] = useState(null)// tra ve gia tri dau tien
     let [dataRap, setDataRap] = useState([])
     let [active, setActive] = useState(0)
     const onChange = (key) => {
+
         setKey(key)//luồng updating
         setActive(0)
     };
+
+
     let [listCinema, setListCinema] = useState([])
     let getListCenima = (url, setValue) => {
         let promise = axios({
@@ -32,6 +35,9 @@ export default function MoviesShowTime() {
             }
         })
         promise.then((result) => {
+            if (setValue == setListCinema) {
+                setKey(result.data.content[0].maHeThongRap)
+            }
             setValue(result.data.content)
         })
             .catch((err) => { console.log(err) })
@@ -45,46 +51,49 @@ export default function MoviesShowTime() {
     })
 
     useEffect(() => {
+        if (data == undefined || data.lstCumRap == undefined) {
+            return
+        } else {
+            console.log('data.lstCumRap[active].danhSachPhim',data.lstCumRap[active].danhSachPhim)
+        }
+    }, [active])
+
+    useEffect(() => {
         // console.log('didmount')
         getListCenima('QuanLyRap/LayThongTinHeThongRap', setListCinema)
+
         getListCenima('QuanLyRap/LayThongTinLichChieuHeThongRap?maNhom=GP01', setCumRap)
     }, [])
 
-    let checkActive = (data, item, danhSachPhim, dataRap) => {
-
-
+    let checkActive = (item) => {
         if (data.lstCumRap[active] == item) {//data khi load lên đầu tiên
-            return 'col- 12 alert alert-success'
-        }
-
-        if (danhSachPhim == dataRap) {
             return 'col- 12 alert alert-success'
         } else {
             return 'col- 12 alert alert-danger'
         }
-
     }
 
-    let check = (key) => {
-        if (data == undefined) {
-            return
-        }
-        return data.lstCumRap.map(item => {
-            let { tenCumRap, hinhAnh, diaChi, maCumRap, danhSachPhim } = item
-            return <div className='row' key={maCumRap} >
-                <div style={{ cursor: 'pointer' }} className={checkActive(data, item, danhSachPhim, dataRap)}>
-                    <p onClick={() => {
-                        let vt = data.lstCumRap.findIndex((vt) => { return item == vt })//set array phim
-                        if (vt > -1) {
-                            setActive(vt)
-                        }
-                        setDataRap(danhSachPhim)
-                    }}>{tenCumRap}</p>
+    let check = () => {
+        return data == undefined
+            ? null
+            : data.lstCumRap.map(item => {
+                let { tenCumRap, hinhAnh, diaChi, maCumRap, danhSachPhim } = item
+                return <div className='row' key={maCumRap} >
+                    <div style={{ cursor: 'pointer' }} className={checkActive(item)}>
+                        <p onClick={() => {
+                            console.log('item', item)
+                            let vt = data.lstCumRap.findIndex(vt => item == vt)//set array phim
+                            if (vt > -1) {
+
+                                setActive(vt)
+                            }
+                            setDataRap(danhSachPhim)
+                        }}>{tenCumRap}</p>
+
+                    </div>
 
                 </div>
-
-            </div>
-        })
+            })
     }
     const items = listCinema.map((item) => {
 
@@ -101,27 +110,16 @@ export default function MoviesShowTime() {
     })
 
     let test3 = () => {
-        if (data == undefined) {
-            return
-        } else {
-            if (data.lstCumRap == undefined) {
-                return
-            } else {
-                if (data.lstCumRap[active] == undefined) {
-                    return
-                } else {
-                    return data.lstCumRap[active].danhSachPhim.map((item) => {
-                        if (item.dangChieu) {
-                            return <p>{item.tenPhim}</p>
-                        }
-                    })
+        return data == undefined || data.lstCumRap == undefined || data.lstCumRap[active] == undefined
+            ? null
+            : data.lstCumRap[active].danhSachPhim.map((item) => {
+                if (item.dangChieu) {
+
+                    return <p key={item.maPhim}>{item.tenPhim}</p>
                 }
-            }
-
-        }
-
-
+            })
     }
+    console.log('key', key)
     return (
         <div className='container d-flex' style={{ margin: '100px 0' }}>
             <div className="col-6">
@@ -132,6 +130,7 @@ export default function MoviesShowTime() {
                     test3()
                 }
             </div>
+
 
         </div>
 
