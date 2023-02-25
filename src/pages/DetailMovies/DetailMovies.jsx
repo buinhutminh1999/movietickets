@@ -45,9 +45,6 @@ export default function DetailMovies(props) {
               </iframe>
 
             </Modal>
-
-
-            {/* <img src={detailMovies.hinhAnh} className='img-fluid' alt="" /> */}
           </div>
           <div className="col-6">
             <h1>{detailMovies.tenPhim}</h1>
