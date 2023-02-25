@@ -4,6 +4,7 @@ import { Button, Space } from 'antd';
 // import * as React from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
+import { Logout } from '../../redux/reducers/movieReducer';
 export default function Header(props) {
 
     let activeStyle = 'nav-link text-danger'
@@ -13,10 +14,7 @@ export default function Header(props) {
 
     let resetLocal = () => {
         localStorage.setItem('userMovies', null)
-        dispatch({
-            type: 'movieReducer/Logout',
-            userLogout: null
-        })
+        dispatch(Logout(null))
     }
 
     let checkShowOrHideLogin = () => {

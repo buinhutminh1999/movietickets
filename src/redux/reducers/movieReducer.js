@@ -11,7 +11,7 @@ const initialState = {
   regisErr: '',
   loginErr: null,
   usLogin: userName,
-  detailMovies: null,
+  detailMovies: {},
 }
 
 
@@ -22,24 +22,26 @@ const movieReducer = createSlice({
   reducers: {
     getError: (state, actions) => {
       state.regisErr = actions.data
-
     },
     dangNhap: (state, actions) => {
-      state.loginErr = null;
-      state.usLogin = actions.userLogin
+
+      state.usLogin = actions.payload
     },
     Logout: (state, actions) => {
-      state.usLogin = actions.userLogout
+      state.usLogin = actions.payload
     },
     GetMovies: (state, actions) => {
-      state.detailMovies = actions.detail
+      state.detailMovies = actions.payload
     },
     LoginErr: (state, actions) => {
-      state.loginErr = actions.loginErr
+      state.loginErr = actions.payload
+    },
+    GetDetailMovies: (state, actions) => {
+      state.detailMovies = actions.payload
     }
   }
 })
 
-export const { } = movieReducer.actions
+export const { dangNhap, Logout,LoginErr,GetMovies, GetDetailMovies} = movieReducer.actions
 
 export default movieReducer.reducer

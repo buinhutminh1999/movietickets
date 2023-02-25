@@ -11,6 +11,8 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import { GetMovies } from '../../redux/reducers/movieReducer';
+import { history } from '../../App';
 
 export default function ListMovies(props) {
     let [listMovies, setListMovies] = useState([])
@@ -55,13 +57,9 @@ export default function ListMovies(props) {
         >
             {listMovies.map((item) => {
                 return <SwiperSlide style={{ cursor: 'pointer' }} span={8} className='p-3' key={item.maPhim} onClick={() => {
-                    dispatch({
-                        type: 'movieReducer/GetMovies',
-                        detail: item
-                    })
-                    props.history.push('/detail-movies')
+                    dispatch(GetMovies(item))
                 }}>
-                    <Card title={item.tenPhim} bordered={true}>
+                    <Card title={item.tenPhim} bordered={true} className='text-center'>
                         <div className='img__movies m-auto' style={{ height: '260px', width: '185px' }}>
                             <img src={item.hinhAnh} className="img-fluid" style={{ height: '100%' }} />
                         </div>
@@ -69,7 +67,11 @@ export default function ListMovies(props) {
                             <p className="card-text m-0">{getGetYears(item.ngayKhoiChieu)}</p>
                             <Rate value={item.danhGia / 2} disabled />
                         </div>
+                        <a className='btn btn-success' onClick={() => {
+                            history.push(`/detail/${item.maPhim}`)
+                        }}>Đặt vé</a>
                     </Card>
+
                 </SwiperSlide>
 
             })}

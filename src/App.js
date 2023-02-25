@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import { Switch, Router, BrowserRouter, Route } from "react-router-dom";
 // import { RouterPath } from './Routers/RouterPath';
@@ -20,7 +19,7 @@ function App() {
       <Switch>
         <SingleTemplate path="/login" component={Login} />
         <SingleTemplate path="/register" component={Register} />
-        <BodyTemplate  path="/detail-movies" component={DetailMovies}/>
+        <BodyTemplate  path="/detail/:id" component={DetailMovies}/>
         <CustomerTemplate path="/home"  />
         <CustomerTemplate path="/"  />
       </Switch>
