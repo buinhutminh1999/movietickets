@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { CustomCard, Button } from '@tsamantanis/react-glassmorphism'
+import { CustomCard } from '@tsamantanis/react-glassmorphism'
 import '@tsamantanis/react-glassmorphism/dist/index.css'
 import { Space, Tabs, Modal } from 'antd';
 import { useState } from 'react';
