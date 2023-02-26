@@ -41,7 +41,7 @@ export const dangNhapAction = (value) => {
         })
         promise
             .then(result => {
-                history.push('/home')
+                history.goBack()
                 console.log(result)
                 localStorage.setItem('userMovies', JSON.stringify(result.data.content))
                 const action = dangNhap(result.data.content)

@@ -56,23 +56,27 @@ export default function ListMovies(props) {
             className='mt-3'
         >
             {listMovies.map((item) => {
-                return <SwiperSlide style={{ cursor: 'pointer' }} span={8} className='p-3' key={item.maPhim} onClick={() => {
-                    dispatch(GetMovies(item))
-                }}>
-                    <Card title={item.tenPhim} bordered={true} className='text-center'>
-                        <div className='img__movies m-auto' style={{ height: '260px', width: '185px' }}>
-                            <img src={item.hinhAnh} className="img-fluid" style={{ height: '100%' }} />
-                        </div>
-                        <div className='d-flex justify-content-between align'>
-                            <p className="card-text m-0">{getGetYears(item.ngayKhoiChieu)}</p>
-                            <Rate value={item.danhGia / 2} disabled />
-                        </div>
-                        <a className='btn btn-success' onClick={() => {
-                            history.push(`/detail/${item.maPhim}`)
-                        }}>Đặt vé</a>
-                    </Card>
+                console.log('listMovies', item)
+                if (item.dangChieu) {
+                    return <SwiperSlide style={{ cursor: 'pointer' }} span={8} className='p-3' key={item.maPhim} onClick={() => {
+                        dispatch(GetMovies(item))
+                    }}>
+                        <Card title={item.tenPhim} bordered={true} className='text-center'>
+                            <div className='img__movies m-auto' style={{ height: '260px', width: '185px' }}>
+                                <img src={item.hinhAnh} className="img-fluid" style={{ height: '100%' }} />
+                            </div>
+                            <div className='d-flex justify-content-between align'>
+                                <p className="card-text m-0">{getGetYears(item.ngayKhoiChieu)}</p>
+                                <Rate value={item.danhGia / 2} disabled />
+                            </div>
+                            <a className='btn btn-success' onClick={() => {
+                                history.push(`/detail/${item.maPhim}`)
+                            }}>Đặt vé</a>
+                        </Card>
 
-                </SwiperSlide>
+                    </SwiperSlide>
+                }
+
 
             })}
         </Swiper>

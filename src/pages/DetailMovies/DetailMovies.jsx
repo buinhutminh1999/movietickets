@@ -1,25 +1,26 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { CustomCard } from '@tsamantanis/react-glassmorphism'
 import '@tsamantanis/react-glassmorphism/dist/index.css'
-import { Space, Tabs, Modal } from 'antd';
+import { Space, Tabs, Modal, Card, Button, Rate } from 'antd';
+
 import { useState } from 'react';
 import { LayThongTinLichChieuPhim } from '../../redux/action/movieAction';
 import moment from 'moment';
-
-
+const { Meta } = Card;
 export default function DetailMovies(props) {
   let { detailMovies } = useSelector(state => state.movieReducer)
   let dispatch = useDispatch()
   const [open, setOpen] = useState(false);
-  const [text, setText] = useState()
   useEffect(() => {
     let { id } = props.match.params
     let action = LayThongTinLichChieuPhim(id)
     dispatch(action)
 
   }, [])
+
   const [tabPosition, setTabPosition] = useState('left');
+  // console.log('detailMovies', detailMovies)
 
   return (
     <div className='container-fluid'>
@@ -30,7 +31,10 @@ export default function DetailMovies(props) {
         borderRadius={0} // default border radius value is 10px
       >
         <div className="row">
-          <div className="col-6">
+          <div className="col-3">
+            {/* <svg height="100" width="100">
+  <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" />
+</svg> */}
             <img
               className='img-fluid' alt="" src={detailMovies.hinhAnh} onClick={() => setOpen(true)} />
             <Modal
@@ -46,7 +50,7 @@ export default function DetailMovies(props) {
 
             </Modal>
           </div>
-          <div className="col-6">
+          <div className="col-9">
             <h1>{detailMovies.tenPhim}</h1>
             <p>Nội dung</p>
             <span>{detailMovies.moTa}</span>
@@ -55,27 +59,57 @@ export default function DetailMovies(props) {
           </div>
         </div>
       </CustomCard>
-      <>
-        <Space
-          style={{
-            marginBottom: 24,
-          }}
-        >
-        </Space>
-        <Tabs
-          tabPosition={tabPosition}
-          items={detailMovies.heThongRapChieu?.map((item) => {
-            return {
-              label: `${item.maHeThongRap}`,
-              key: item.maHeThongRap,
-              children: item.cumRapChieu.map((cumRap) => {
-                
-                return cumRap.tenCumRap
-              }),
-            }
-          })}
-        />
-      </>
+      <div className='row mt-5'>
+        <div className='col-9'>
+          <>
+            <Space
+              style={{
+                marginBottom: 24,
+              }}
+            >
+            </Space>
+            <Tabs
+              tabPosition={tabPosition}
+              items={detailMovies.heThongRapChieu?.map((item) => {
+                return {
+                  label: <div className='logo'>
+                    <div className='logo__item'>
+                      <img width={50} src={item.logo} alt="" />
+                    </div>
+                    <div className='logo__content'>
+                      <p>{item.maHeThongRap}</p>
+                    </div>
+                  </div>,
+                  key: item.maHeThongRap,
+                  children: item.cumRapChieu.map((cumRap) => {
+                    console.log('cumRap', cumRap)
+                    // console.log('cumRap.hinhAnh', cumRap.hinhAnh)
+                    return <div key={cumRap.maCumRap}>
+                      <p>{cumRap.tenCumRap}</p>
+                      <img width={50} src={cumRap.hinhAnh} />
+                      <p>{cumRap.diaChi}</p>
+                    </div>
+                  }),
+                }
+              })}
+            />
+          </>
+        </div>
+        <div className="col-3 text-center">
+          <Card
+            hoverable
+            style={{
+              width: 240,
+            }}
+            cover={<div>
+              <p className='m-0' style={{ fontSize: '35px' }}>🥳</p>
+              <p style={{ fontSize: '25px' }}>Đáng xem</p>
+            </div>}
+          >
+            <Rate allowHalf value={detailMovies.danhGia / 2} disabled />
+          </Card>
+        </div>
+      </div>
     </div>
   )
 }
