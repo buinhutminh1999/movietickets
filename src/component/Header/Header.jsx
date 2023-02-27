@@ -33,7 +33,7 @@ export default function Header(props) {
             </Space>
     }
     return (
-        <>
+        <header className='header'>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
                 <a className="navbar-brand">Navbar</a>
                 <button className="navbar-toggler" type="button">
@@ -46,11 +46,7 @@ export default function Header(props) {
                                 isActive ? activeStyle : nonActiveStyle
                             }>Home</NavLink>
                         </li>
-                        <li className="nav-item">
-                            <NavLink to='/about' className={({ isActive }) =>
-                                isActive ? activeStyle : nonActiveStyle
-                            }>About</NavLink>
-                        </li>
+                       
                     </ul>
 
                 </div>
@@ -61,7 +57,7 @@ export default function Header(props) {
 
 
             </nav>
-        </>
+        </header>
     )
 }
 

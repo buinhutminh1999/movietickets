@@ -56,7 +56,6 @@ export default function ListMovies(props) {
             className='mt-3'
         >
             {listMovies.map((item) => {
-                console.log('listMovies', item)
                 if (item.dangChieu) {
                     return <SwiperSlide style={{ cursor: 'pointer' }} span={8} className='p-3' key={item.maPhim} onClick={() => {
                         dispatch(GetMovies(item))

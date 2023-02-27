@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { CustomCard } from '@tsamantanis/react-glassmorphism'
 import '@tsamantanis/react-glassmorphism/dist/index.css'
-import { Space, Tabs, Modal, Card, Button, Rate } from 'antd';
+import { Space, Tabs, Modal, Card, Button, Rate,Radio  } from 'antd';
 
 import { useState } from 'react';
 import { LayThongTinLichChieuPhim } from '../../redux/action/movieAction';
@@ -83,11 +83,21 @@ export default function DetailMovies(props) {
                   key: item.maHeThongRap,
                   children: item.cumRapChieu.map((cumRap) => {
                     console.log('cumRap', cumRap)
-                    // console.log('cumRap.hinhAnh', cumRap.hinhAnh)
                     return <div key={cumRap.maCumRap}>
                       <p>{cumRap.tenCumRap}</p>
                       <img width={50} src={cumRap.hinhAnh} />
                       <p>{cumRap.diaChi}</p>
+                      <div className='row'>
+                        {cumRap.lichChieuPhim?.map((rap) => {
+                          return <Space wrap className='mr-2'>
+                            <Button type="primary" ghost onClick={() => { 
+
+                             }}>
+                              {rap.tenRap} - {moment(rap.ngayChieuGioChieu).format('hh:mm A')}
+                            </Button>
+                          </Space>
+                        })}
+                      </div>
                     </div>
                   }),
                 }

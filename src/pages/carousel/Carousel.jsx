@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Carousel } from 'react-bootstrap';
-
-const contentStyle = {
-    height: '100vh',
-    width: '100%',
-    objectFit: 'cover',
-};
+import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
+// const contentStyle = {
+//     height: '100vh',
+//     width: '100%',
+//     objectFit: 'cover',
+// };
 
 
 export default function CarouselD() {
@@ -27,24 +32,28 @@ export default function CarouselD() {
     }, [])
 
     return (
-        <Carousel variant="dark" fade='true' >
-            {
-                getImg.map((item) => {
-                    return <Carousel.Item key={item.maBanner}>
-                        <img
+        <section className='carousel'>
+            <Swiper
+                // install Swiper modules
+                modules={[Navigation, Pagination, A11y,]}
+                spaceBetween={50}
+                slidesPerView={1}
+                navigation
+                pagination={{ clickable: true }}
+                onSwiper={(swiper) => console.log(swiper)}
+                onSlideChange={() => console.log('slide change')}
+                className='mt-3'
+            >
+                {getImg?.map((item) => {
+                    return <SwiperSlide key={item.maBanner}>
+                        <img style={{height:'100vh'}}
                             className="d-block w-100"
                             src={item.hinhAnh}
                             alt="First slide"
                         />
-                        {/* <Carousel.Caption>
-                    <h5>First slide label</h5>
-                    <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                </Carousel.Caption> */}
-                    </Carousel.Item>
-                })
-            }
-        </Carousel>
-
-
+                    </SwiperSlide>
+                })}
+            </Swiper >
+        </section>
     )
 }

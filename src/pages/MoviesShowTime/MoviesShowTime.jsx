@@ -1,9 +1,11 @@
 import axios from 'axios'
-import React, { useEffect, useState, memo } from 'react'
-import { Tabs } from 'antd';
+import React, { useEffect, useState, memo, useMemo } from 'react'
+import { Radio, Space, Tabs, Button, Card, Col, Row } from 'antd';
 import { TOKEN, URL_API } from '../../ulti/setting';
 import moment from 'moment/moment';
 import { NavLink } from 'react-router-dom';
+
+const { Meta } = Card;
 
 // - Thứ tự thao tác trong 1 ứng dụng:
 // 	+ b1: load ứng dụng lên
@@ -13,20 +15,21 @@ import { NavLink } from 'react-router-dom';
 // 	+ b5: setState trong hàm call api => render lại ui (lặp lại b2 => nhưng ko khởi tạo các hook, nếu ko có useEffect sẽ lặp vô tận)
 // 	+ b6: arr có data mới
 // 	+ b7: binding data lên UI
-const ContainerHeight = 400;
+
+
 function MoviesShowTime() {
-    let [listCumRap, setCumRap] = useState([])
-    let [data, setData] = useState({})
-    let [key, setKey] = useState(null)// tra ve gia tri dau tien
-    let [active, setActive] = useState(0)
-    let [test , setTest] = useState()
-    const onChange = (key) => {
-        setKey(key)//luồng updating
-        setActive(0)
+
+    const [tabPosition, setTabPosition] = useState('left');
+    const changeTabPosition = (e) => {
+
+        setTabPosition(e.target.value);
     };
+    const [heThongRap, setHeThongRap] = useState([])
+    const [lichChieuTheoRap, setLichChieuTheoRap] = useState([])
+    const [rap, setRap] = useState('')
+    const [cumRap, setCumRap] = useState('')
 
 
-    let [listCinema, setListCinema] = useState([])
     let getListCenima = (url, setValue) => {
         let promise = axios({
             method: 'GET',
@@ -36,118 +39,103 @@ function MoviesShowTime() {
             }
         })
         promise.then((result) => {
-            if (setValue == setListCinema) {
-                setKey(result.data.content[0].maHeThongRap)
+            if (setValue == setHeThongRap) {
+                setRap(result.data.content[0].maHeThongRap)
+            } else {
+                setCumRap(result.data.content[5].lstCumRap[0])
             }
+
             setValue(result.data.content)
         })
             .catch((err) => { console.log(err) })
     }
 
-
     useEffect(() => {
-        if (data == undefined || data.lstCumRap == undefined) {
-            return
-        } else {
-            console.log('data.lstCumRap[active].danhSachPhim', data.lstCumRap[active].danhSachPhim)
-        }
-    }, [active])
-
-    useEffect(() => {
-        console.log('didmount')
-        getListCenima('QuanLyRap/LayThongTinHeThongRap', setListCinema)
-
-        getListCenima('QuanLyRap/LayThongTinLichChieuHeThongRap?maNhom=GP01', setCumRap)
+        getListCenima('QuanLyRap/LayThongTinHeThongRap', setHeThongRap)
+        getListCenima('QuanLyRap/LayThongTinLichChieuHeThongRap?maNhom=GP01', setLichChieuTheoRap)
     }, [])
 
     useEffect(() => {
-
-        let object = listCumRap.find((maRap) => {
-            return maRap.maHeThongRap == key
+        let object = lichChieuTheoRap.find((item) => {
+            return item.maHeThongRap == rap
         })
-        console.log('object', object)
-        setData(object)
-    })
+        setCumRap(object?.lstCumRap[0])
+    }, [rap])
 
-    let checkActive = (item) => {
-        if (data.lstCumRap[active] == item) {//data khi load lên đầu tiên
-            return 'col- 12 alert alert-success'
-        } else {
-            return 'col- 12 alert alert-danger'
-        }
+
+    let checkTheoRap = () => {
+        return lichChieuTheoRap.map((lichChieu, index) => {
+            if (lichChieu.maHeThongRap == rap) {
+                return lichChieu.lstCumRap.map((item) => {
+                    return <Button type={item.tenCumRap == cumRap.tenCumRap ? 'primary' : 'dashed'} key={item.maCumRap} onClick={() => {
+                        setCumRap(item)
+                    }}>
+                        {/* <img src={item.hinhAnh} alt="" height={30} /> */}
+                        <p>{item.tenCumRap}</p>
+                    </Button>
+
+
+                })
+
+            }
+
+        })
+
     }
-
-    let danhSachCumRap = () => {
-        return data == undefined
-            ? null
-            : data.lstCumRap.map(item => {
-                let { tenCumRap, hinhAnh, diaChi, maCumRap, danhSachPhim } = item
-                return <div className='row' key={maCumRap} >
-                    <div style={{ cursor: 'pointer' }} className={checkActive(item)}>
-                        <p onClick={() => {
-                            let vt = data.lstCumRap.findIndex(vt => item == vt)//set array phim
-                            if (vt > -1) {
-                                setActive(vt)
-                            }
-                        }}>{tenCumRap}</p>
-                    </div>
-
-                </div>
-
-            })
-    }
-    const items = listCinema.map((item) => {
-
-        return {
-            key: `${item.maHeThongRap}`,
-            label: <div className='row p-3'>
-                <div style={{ width: '50px' }}>
-                    <img className='img-fluid' src={item.logo} />
-                </div>
-            </div>,
-            children: item.maHeThongRap == key ? danhSachCumRap() : '',
-
-        }
-    })
-
-    let listPhimTheoCumRap = () => {
-        return data == undefined || data.lstCumRap == undefined || data.lstCumRap[active] == undefined
-            ? null
-            : data.lstCumRap[active].danhSachPhim.map((item) => {
-           
-                if (item.dangChieu) {
-                    return <div className='' key={item.maPhim}>
-                        <div className='d-flex'>
-                            <img width={50} height={50} className='img-fluid' src={item.hinhAnh} alt="" />
-                            <span key={item.maPhim}>{item.tenPhim}</span>
-                        </div>
-                        <div className='d-flex row'>
-                            {item.lstLichChieuTheoPhim.map((lst) => {
-                                return <NavLink to={''} className='col' key={lst.maLichChieu}>
-                                    {moment(lst.ngayChieuGioChieu).format('hh:mm A')}
-                                </NavLink>
-                            })}
-
-                        </div>
-                        <hr />
-                    </div>
-
-                }
-            })
-    }
-
+    // console.log('lichChieuTheoRap', lichChieuTheoRap)
+    console.log('cumRap', cumRap)
     return (
         <div className='container d-flex' style={{ margin: '100px 0' }}>
             <div className="col-6">
-                <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
+                <>
+                    <Space
+                        style={{
+                            marginBottom: 24,
+                        }}
+                    >
+                    </Space>
+                    <Tabs
+                        tabPosition={tabPosition}
+                        items={heThongRap?.map((item) => {
+                            return {
+                                label: <div className='logo '>
+                                    <div className='logo__item'>
+                                        <img width={30} src={item.logo} alt="" />
+                                    </div>
+                                    <div className='logo__content'>
+                                        <p>{item.maHeThongRap}</p>
+                                    </div>
+                                </div>,
+                                key: item.maHeThongRap,
+                                children: <Space className="site-button-ghost-wrapper" wrap>{checkTheoRap()}</Space>
+                            };
+                        })}
+                        onChange={(e) => {
+                            setRap(e)
+                        }}
+                    />
+                </>
             </div>
             <div className='col-6'>
-                {
-                    listPhimTheoCumRap()
+                <Row gutter={[16, 16]}>
+                    {cumRap?.danhSachPhim?.map((item) => {
+                        if (item.dangChieu) {
+                            return <Col span={12} key={item.tenCumRap}>
+                                <Card hoverable title={item.tenPhim} bordered={true}>
+                                    <Space className="site-button-ghost-wrapper" wrap>
+                                        {item.lstLichChieuTheoPhim.map((lst) => {
+                                            return <Button type="primary" ghost to={''} className='col' key={lst.maLichChieu}>
+                                                {moment(lst.ngayChieuGioChieu).format('hh:mm A')}
+                                            </Button>
+                                        })}
+                                    </Space>
+                                </Card>
+                            </Col>
+                        }
+                    })}
+                </Row>
 
-                }
-               
-            
+
             </div>
 
 

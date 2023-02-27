@@ -1,6 +1,5 @@
 import axios from "axios"
 import { history } from "../../App";
-import DetailMovies from "../../pages/DetailMovies/DetailMovies";
 import { TOKEN, URL_API } from "../../ulti/setting"
 import { dangNhap, LoginErr, GetDetailMovies } from "../reducers/movieReducer";
 
