@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useEffect, useState, memo, useMemo } from 'react'
+import React, { useEffect, useState, memo, useMemo, useCallback } from 'react'
 import { Radio, Space, Tabs, Button, Card, Col, Row } from 'antd';
 import { TOKEN, URL_API } from '../../ulti/setting';
 import moment from 'moment/moment';
@@ -20,15 +20,10 @@ const { Meta } = Card;
 function MoviesShowTime() {
 
     const [tabPosition, setTabPosition] = useState('left');
-    const changeTabPosition = (e) => {
-
-        setTabPosition(e.target.value);
-    };
     const [heThongRap, setHeThongRap] = useState([])
     const [lichChieuTheoRap, setLichChieuTheoRap] = useState([])
     const [rap, setRap] = useState('')
     const [cumRap, setCumRap] = useState('')
-
 
     let getListCenima = (url, setValue) => {
         let promise = axios({
@@ -70,20 +65,15 @@ function MoviesShowTime() {
                     return <Button type={item.tenCumRap == cumRap.tenCumRap ? 'primary' : 'dashed'} key={item.maCumRap} onClick={() => {
                         setCumRap(item)
                     }}>
-                        {/* <img src={item.hinhAnh} alt="" height={30} /> */}
                         <p>{item.tenCumRap}</p>
                     </Button>
-
-
                 })
-
             }
-
         })
-
     }
     // console.log('lichChieuTheoRap', lichChieuTheoRap)
-    console.log('cumRap', cumRap)
+    // console.log('cumRap', cumRap)
+
     return (
         <div className='container d-flex' style={{ margin: '100px 0' }}>
             <div className="col-6">
@@ -120,7 +110,7 @@ function MoviesShowTime() {
                 <Row gutter={[16, 16]}>
                     {cumRap?.danhSachPhim?.map((item) => {
                         if (item.dangChieu) {
-                            return <Col span={12} key={item.tenCumRap}>
+                            return <Col span={12} key={item.maPhim}>
                                 <Card hoverable title={item.tenPhim} bordered={true}>
                                     <Space className="site-button-ghost-wrapper" wrap>
                                         {item.lstLichChieuTheoPhim.map((lst) => {

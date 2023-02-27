@@ -19,9 +19,9 @@ function App() {
       <Switch>
         <SingleTemplate path="/login" component={Login} />
         <SingleTemplate path="/register" component={Register} />
-        <BodyTemplate  path="/detail/:id" component={DetailMovies}/>
-        <CustomerTemplate path="/home"  />
-        <CustomerTemplate path="/"  />
+        <BodyTemplate path="/detail/:id" component={DetailMovies} />
+        <CustomerTemplate path="/home" />
+        <CustomerTemplate path="/" />
       </Switch>
     </Router>
   );
