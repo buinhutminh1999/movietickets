@@ -82,14 +82,13 @@ export default function DetailMovies(props) {
                   </div>,
                   key: item.maHeThongRap,
                   children: item.cumRapChieu.map((cumRap) => {
-                    console.log('cumRap', cumRap)
                     return <div key={cumRap.maCumRap}>
                       <p>{cumRap.tenCumRap}</p>
                       <img width={50} src={cumRap.hinhAnh} />
                       <p>{cumRap.diaChi}</p>
                       <div className='row'>
                         {cumRap.lichChieuPhim?.map((rap) => {
-                          return <Space wrap className='mr-2'>
+                          return <Space wrap className='mr-2' key={rap.maLichChieu}>
                             <Button type="primary" ghost onClick={() => {
 
                             }}>

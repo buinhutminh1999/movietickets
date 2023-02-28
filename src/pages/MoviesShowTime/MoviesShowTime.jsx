@@ -51,10 +51,12 @@ function MoviesShowTime() {
     }, [])
 
     useEffect(() => {
-        let object = lichChieuTheoRap.find((item) => {
-            return item.maHeThongRap == rap
+        setCumRap(() => {
+            let object = lichChieuTheoRap.find((item) => {
+                return item.maHeThongRap == rap
+            })
+            return object?.lstCumRap[0]
         })
-        setCumRap(object?.lstCumRap[0])
     }, [rap])
 
 
@@ -73,10 +75,10 @@ function MoviesShowTime() {
     }
     // console.log('lichChieuTheoRap', lichChieuTheoRap)
     // console.log('cumRap', cumRap)
-
+    console.log('render')
     return (
         <div className='container d-flex' style={{ margin: '100px 0' }}>
-            <div className="col-6">
+            <Col span={12}>
                 <>
                     <Space
                         style={{
@@ -97,7 +99,7 @@ function MoviesShowTime() {
                                     </div>
                                 </div>,
                                 key: item.maHeThongRap,
-                                children: <Space className="site-button-ghost-wrapper" wrap>{checkTheoRap()}</Space>
+                                children: <Space  wrap>{checkTheoRap()}</Space>
                             };
                         })}
                         onChange={(e) => {
@@ -105,28 +107,32 @@ function MoviesShowTime() {
                         }}
                     />
                 </>
-            </div>
-            <div className='col-6'>
-                <Row gutter={[16, 16]}>
-                    {cumRap?.danhSachPhim?.map((item) => {
-                        if (item.dangChieu) {
-                            return <Col span={12} key={item.maPhim}>
-                                <Card hoverable title={item.tenPhim} bordered={true}>
-                                    <Space className="site-button-ghost-wrapper" wrap>
-                                        {item.lstLichChieuTheoPhim.map((lst) => {
-                                            return <Button type="primary" ghost to={''} className='col' key={lst.maLichChieu}>
-                                                {moment(lst.ngayChieuGioChieu).format('hh:mm A')}
-                                            </Button>
-                                        })}
-                                    </Space>
-                                </Card>
-                            </Col>
-                        }
-                    })}
-                </Row>
+            </Col>
+            <Col span={12}  style={{
+                flex: '1',
+                backGround: '#aaa',
+                overflowY: 'scroll',
+                height: '100vh'}}>
+            <Row gutter={[16, 16]}>
+                {cumRap?.danhSachPhim?.map((item) => {
+                    if (item.dangChieu) {
+                        return <Col  key={item.maPhim}>
+                            <Card hoverable title={item.tenPhim} bordered={true}>
+                                <Space  wrap>
+                                    {item.lstLichChieuTheoPhim.map((lst) => {
+                                        return <Button type="primary" ghost to={''} className='col' key={lst.maLichChieu}>
+                                            {moment(lst.ngayChieuGioChieu).format('hh:mm A')}
+                                        </Button>
+                                    })}
+                                </Space>
+                            </Card>
+                        </Col>
+                    }
+                })}
+            </Row>
 
 
-            </div>
+        </Col>
 
 
         </div >
