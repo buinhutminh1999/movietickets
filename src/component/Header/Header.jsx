@@ -36,8 +36,8 @@ export default function Header(props) {
     }
     return (
         <>
-            <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-                <a className="navbar-brand">Navbar</a>
+            <nav className="navbar navbar-expand-lg navbar-dark bg-dark pdlr-100">
+                <a className="navbar-brand">Movie Tickets</a>
                 <button className="navbar-toggler" type="button">
                     <span className="navbar-toggler-icon" />
                 </button>
