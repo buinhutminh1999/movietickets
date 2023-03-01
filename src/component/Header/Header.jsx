@@ -13,7 +13,8 @@ export default function Header(props) {
     let dispatch = useDispatch()
 
     let resetLocal = () => {
-        localStorage.setItem('userMovies', null)
+        localStorage.removeItem('userMovies')
+        localStorage.removeItem('accessToken')
         dispatch(Logout(null))
     }
 
@@ -32,6 +33,7 @@ export default function Header(props) {
                 <button className='btn btn-danger' onClick={resetLocal}>Đăng xuất</button>
             </Space>
     }
+    console.log('usLogin',usLogin)
     return (
         <header className='header'>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">

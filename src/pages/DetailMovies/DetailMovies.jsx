@@ -3,11 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { CustomCard } from '@tsamantanis/react-glassmorphism'
 import '@tsamantanis/react-glassmorphism/dist/index.css'
 import { Space, Tabs, Modal, Card, Button, Rate, Radio } from 'antd';
-
 import { useState } from 'react';
 import { LayThongTinLichChieuPhim } from '../../redux/action/movieAction';
 import moment from 'moment';
-const { Meta } = Card;
 export default function DetailMovies(props) {
   let { detailMovies } = useSelector(state => state.movieReducer)
   let dispatch = useDispatch()
@@ -20,7 +18,7 @@ export default function DetailMovies(props) {
   }, [])
 
   const [tabPosition, setTabPosition] = useState('left');
-  // console.log('detailMovies', detailMovies)
+
 
   return (
     <div className='container-fluid'>
@@ -88,9 +86,11 @@ export default function DetailMovies(props) {
                       <p>{cumRap.diaChi}</p>
                       <div className='row'>
                         {cumRap.lichChieuPhim?.map((rap) => {
+                          
                           return <Space wrap className='mr-2' key={rap.maLichChieu}>
                             <Button type="primary" ghost onClick={() => {
-
+                              localStorage.setItem('DetailFlim', JSON.stringify(detailMovies))
+                              props.history.push(`/checkout/${rap.maLichChieu}`)
                             }}>
                               {rap.tenRap} - {moment(rap.ngayChieuGioChieu).format('hh:mm A')}
                             </Button>

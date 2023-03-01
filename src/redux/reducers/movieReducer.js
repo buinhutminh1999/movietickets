@@ -1,10 +1,15 @@
 // rxs
 import { createSlice } from '@reduxjs/toolkit'
+import { isObject } from 'formik';
+
 let userName = null;
-if (localStorage.getItem('userMovies')) {
+let accessToken = null;
+// userName = JSON.parse(localStorage.getItem('userMovies'))
+if (localStorage.getItem('userMovies') && localStorage.getItem('accessToken')) {
   userName = JSON.parse(localStorage.getItem('userMovies'))
-  console.log('userName', userName)
-}
+
+
+} 
 
 
 const initialState = {
@@ -12,6 +17,7 @@ const initialState = {
   loginErr: null,
   usLogin: userName,
   detailMovies: {},
+  accessToken: accessToken
 }
 
 
@@ -24,8 +30,8 @@ const movieReducer = createSlice({
       state.regisErr = actions.data
     },
     dangNhap: (state, actions) => {
-
       state.usLogin = actions.payload
+      localStorage.setItem('accessToken', state.usLogin.accessToken)
     },
     Logout: (state, actions) => {
       state.usLogin = actions.payload
@@ -42,6 +48,6 @@ const movieReducer = createSlice({
   }
 })
 
-export const { dangNhap, Logout,LoginErr,GetMovies, GetDetailMovies} = movieReducer.actions
+export const { dangNhap, Logout, LoginErr, GetMovies, GetDetailMovies } = movieReducer.actions
 
 export default movieReducer.reducer
