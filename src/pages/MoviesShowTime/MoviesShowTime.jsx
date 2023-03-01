@@ -1,7 +1,11 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import { Tabs } from 'antd';
+import React, { useEffect, useState, memo, useMemo, useCallback } from 'react'
+import { Radio, Space, Tabs, Button, Card, Col, Row } from 'antd';
 import { TOKEN, URL_API } from '../../ulti/setting';
+import moment from 'moment/moment';
+import { NavLink } from 'react-router-dom';
+
+const { Meta } = Card;
 
 // - Thứ tự thao tác trong 1 ứng dụng:
 // 	+ b1: load ứng dụng lên
@@ -12,20 +16,15 @@ import { TOKEN, URL_API } from '../../ulti/setting';
 // 	+ b6: arr có data mới
 // 	+ b7: binding data lên UI
 
-export default function MoviesShowTime() {
-    let [listCumRap, setCumRap] = useState([])
-    let [data, setData] = useState({})
-    let [key, setKey] = useState(null)// tra ve gia tri dau tien
-    let [dataRap, setDataRap] = useState([])
-    let [active, setActive] = useState(0)
-    const onChange = (key) => {
 
-        setKey(key)//luồng updating
-        setActive(0)
-    };
+function MoviesShowTime() {
 
+    const [tabPosition, setTabPosition] = useState('left');
+    const [heThongRap, setHeThongRap] = useState([])
+    const [lichChieuTheoRap, setLichChieuTheoRap] = useState([])
+    const [rap, setRap] = useState('')
+    const [cumRap, setCumRap] = useState('')
 
-    let [listCinema, setListCinema] = useState([])
     let getListCenima = (url, setValue) => {
         let promise = axios({
             method: 'GET',
@@ -35,104 +34,109 @@ export default function MoviesShowTime() {
             }
         })
         promise.then((result) => {
-            if (setValue == setListCinema) {
-                setKey(result.data.content[0].maHeThongRap)
+            if (setValue == setHeThongRap) {
+                setRap(result.data.content[0].maHeThongRap)
+            } else {
+                setCumRap(result.data.content[5].lstCumRap[0])
             }
+
             setValue(result.data.content)
         })
             .catch((err) => { console.log(err) })
     }
 
     useEffect(() => {
-        let object = listCumRap.find((maRap) => {
-            return maRap.maHeThongRap == key
-        })
-        setData(object)
-    })
-
-    useEffect(() => {
-        if (data == undefined || data.lstCumRap == undefined) {
-            return
-        } else {
-            console.log('data.lstCumRap[active].danhSachPhim',data.lstCumRap[active].danhSachPhim)
-        }
-    }, [active])
-
-    useEffect(() => {
-        // console.log('didmount')
-        getListCenima('QuanLyRap/LayThongTinHeThongRap', setListCinema)
-
-        getListCenima('QuanLyRap/LayThongTinLichChieuHeThongRap?maNhom=GP01', setCumRap)
+        getListCenima('QuanLyRap/LayThongTinHeThongRap', setHeThongRap)
+        getListCenima('QuanLyRap/LayThongTinLichChieuHeThongRap?maNhom=GP01', setLichChieuTheoRap)
     }, [])
 
-    let checkActive = (item) => {
-        if (data.lstCumRap[active] == item) {//data khi load lên đầu tiên
-            return 'col- 12 alert alert-success'
-        } else {
-            return 'col- 12 alert alert-danger'
-        }
-    }
-
-    let check = () => {
-        return data == undefined
-            ? null
-            : data.lstCumRap.map(item => {
-                let { tenCumRap, hinhAnh, diaChi, maCumRap, danhSachPhim } = item
-                return <div className='row' key={maCumRap} >
-                    <div style={{ cursor: 'pointer' }} className={checkActive(item)}>
-                        <p onClick={() => {
-                            console.log('item', item)
-                            let vt = data.lstCumRap.findIndex(vt => item == vt)//set array phim
-                            if (vt > -1) {
-
-                                setActive(vt)
-                            }
-                            setDataRap(danhSachPhim)
-                        }}>{tenCumRap}</p>
-
-                    </div>
-
-                </div>
+    useEffect(() => {
+        setCumRap(() => {
+            let object = lichChieuTheoRap.find((item) => {
+                return item.maHeThongRap == rap
             })
+            return object?.lstCumRap[0]
+        })
+    }, [rap])
+
+
+    let checkTheoRap = () => {
+        return lichChieuTheoRap.map((lichChieu, index) => {
+            if (lichChieu.maHeThongRap == rap) {
+                return lichChieu.lstCumRap.map((item) => {
+                    return <Button type={item.tenCumRap == cumRap.tenCumRap ? 'primary' : 'dashed'} key={item.maCumRap} onClick={() => {
+                        setCumRap(item)
+                    }}>
+                        <p>{item.tenCumRap}</p>
+                    </Button>
+                })
+            }
+        })
     }
-    const items = listCinema.map((item) => {
-
-        return {
-            key: `${item.maHeThongRap}`,
-            label: <div className='row p-3'>
-                <div style={{ width: '50px' }}>
-                    <img className='img-fluid' src={item.logo} />
-                </div>
-            </div>,
-            children: item.maHeThongRap == key ? check(key) : '',
-
-        }
-    })
-
-    let test3 = () => {
-        return data == undefined || data.lstCumRap == undefined || data.lstCumRap[active] == undefined
-            ? null
-            : data.lstCumRap[active].danhSachPhim.map((item) => {
-                if (item.dangChieu) {
-
-                    return <p key={item.maPhim}>{item.tenPhim}</p>
-                }
-            })
-    }
-    console.log('key', key)
+    // console.log('lichChieuTheoRap', lichChieuTheoRap)
+    // console.log('cumRap', cumRap)
+    console.log('render')
     return (
         <div className='container d-flex' style={{ margin: '100px 0' }}>
-            <div className="col-6">
-                <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
-            </div>
-            <div className='col-6 bg-success'>
-                {
-                    test3()
-                }
-            </div>
+            <Col span={12}>
+                <>
+                    <Space
+                        style={{
+                            marginBottom: 24,
+                        }}
+                    >
+                    </Space>
+                    <Tabs
+                        tabPosition={tabPosition}
+                        items={heThongRap?.map((item) => {
+                            return {
+                                label: <div className='logo '>
+                                    <div className='logo__item'>
+                                        <img width={30} src={item.logo} alt="" />
+                                    </div>
+                                    <div className='logo__content'>
+                                        <p>{item.maHeThongRap}</p>
+                                    </div>
+                                </div>,
+                                key: item.maHeThongRap,
+                                children: <Space  wrap>{checkTheoRap()}</Space>
+                            };
+                        })}
+                        onChange={(e) => {
+                            setRap(e)
+                        }}
+                    />
+                </>
+            </Col>
+            <Col span={12}  style={{
+                flex: '1',
+                backGround: '#aaa',
+                overflowY: 'scroll',
+                height: '100vh'}}>
+            <Row gutter={[16, 16]}>
+                {cumRap?.danhSachPhim?.map((item) => {
+                    if (item.dangChieu) {
+                        return <Col  key={item.maPhim}>
+                            <Card hoverable title={item.tenPhim} bordered={true}>
+                                <Space  wrap>
+                                    {item.lstLichChieuTheoPhim.map((lst) => {
+                                        return <Button type="primary" ghost to={''} className='col' key={lst.maLichChieu}>
+                                            {moment(lst.ngayChieuGioChieu).format('hh:mm A')}
+                                        </Button>
+                                    })}
+                                </Space>
+                            </Card>
+                        </Col>
+                    }
+                })}
+            </Row>
 
 
-        </div>
+        </Col>
+
+
+        </div >
 
     )
 }
+export default memo(MoviesShowTime)

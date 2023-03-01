@@ -1,17 +1,23 @@
 // rxs
 import { createSlice } from '@reduxjs/toolkit'
+import { isObject } from 'formik';
+
 let userName = null;
-if (localStorage.getItem('userMovies')) {
+let accessToken = null;
+// userName = JSON.parse(localStorage.getItem('userMovies'))
+if (localStorage.getItem('userMovies') && localStorage.getItem('accessToken')) {
   userName = JSON.parse(localStorage.getItem('userMovies'))
-  console.log('userName', userName)
-}
+
+
+} 
 
 
 const initialState = {
   regisErr: '',
   loginErr: null,
   usLogin: userName,
-  detailMovies: null,
+  detailMovies: {},
+  accessToken: accessToken
 }
 
 
@@ -22,24 +28,26 @@ const movieReducer = createSlice({
   reducers: {
     getError: (state, actions) => {
       state.regisErr = actions.data
-
     },
     dangNhap: (state, actions) => {
-      state.loginErr = null;
-      state.usLogin = actions.userLogin
+      state.usLogin = actions.payload
+      localStorage.setItem('accessToken', state.usLogin.accessToken)
     },
     Logout: (state, actions) => {
-      state.usLogin = actions.userLogout
+      state.usLogin = actions.payload
     },
     GetMovies: (state, actions) => {
-      state.detailMovies = actions.detail
+      state.detailMovies = actions.payload
     },
     LoginErr: (state, actions) => {
-      state.loginErr = actions.loginErr
+      state.loginErr = actions.payload
+    },
+    GetDetailMovies: (state, actions) => {
+      state.detailMovies = actions.payload
     }
   }
 })
 
-export const { } = movieReducer.actions
+export const { dangNhap, Logout, LoginErr, GetMovies, GetDetailMovies } = movieReducer.actions
 
 export default movieReducer.reducer

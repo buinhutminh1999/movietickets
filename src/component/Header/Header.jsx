@@ -4,6 +4,7 @@ import { Button, Space } from 'antd';
 // import * as React from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
+import { Logout } from '../../redux/reducers/movieReducer';
 export default function Header(props) {
 
     let activeStyle = 'nav-link text-danger'
@@ -12,11 +13,9 @@ export default function Header(props) {
     let dispatch = useDispatch()
 
     let resetLocal = () => {
-        localStorage.setItem('userMovies', null)
-        dispatch({
-            type: 'movieReducer/Logout',
-            userLogout: null
-        })
+        localStorage.removeItem('userMovies')
+        localStorage.removeItem('accessToken')
+        dispatch(Logout(null))
     }
 
     let checkShowOrHideLogin = () => {
@@ -34,8 +33,9 @@ export default function Header(props) {
                 <button className='btn btn-danger' onClick={resetLocal}>Đăng xuất</button>
             </Space>
     }
+    console.log('usLogin', usLogin)
     return (
-        <>
+        <header className='header'>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark pdlr-100">
                 <a className="navbar-brand">Movie Tickets</a>
                 <button className="navbar-toggler" type="button">
@@ -56,14 +56,11 @@ export default function Header(props) {
                     </ul>
 
                 </div>
-
                 {
                     checkShowOrHideLogin()
                 }
-
-
             </nav>
-        </>
+        </header>
     )
 }
 
