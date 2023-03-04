@@ -60,11 +60,11 @@ export default function Register() {
 
     return (
         <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-            <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Đăng ký</p>
+            <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4" style={{fontWeight:'bold', fontSize:'50px'}}>Đăng ký</p>
             <form className="mx-1 mx-md-4" onSubmit={formik.handleSubmit}>
                 {regisErr !== '' ? <div className='alert alert-danger'>{regisErr}</div> : null}
-                <div className="d-flex flex-row align-items-center mb-4">
-                    <i className="fas fa-user fa-lg me-3 fa-fw" />
+                <div className="d-flex flex-row align-items-center mb-4 ">
+                    <i className="fas fa-user fa-lg me-3 fa-fw pdtr " />
                     <div className="form-outline flex-fill mb-0">
                         <label className="form-label" htmlFor="taiKhoan">Tài khoản</label>
                         <input type="text" name="taiKhoan" className="form-control" onChange={formik.handleChange}
@@ -76,7 +76,7 @@ export default function Register() {
                 </div>
 
                 <div className="d-flex flex-row align-items-center mb-4">
-                    <i className="fas fa-envelope fa-lg me-3 fa-fw" />
+                    <i className="fas fa-lock fa-lg me-3 fa-fw pdtr" />
                     <div className="form-outline flex-fill mb-0">
                         <label className="form-label" htmlFor="matKhau">Mật khẩu</label>
                         <input type="password" name="matKhau" className="form-control" onChange={formik.handleChange}
@@ -87,7 +87,7 @@ export default function Register() {
                     </div>
                 </div>
                 <div className="d-flex flex-row align-items-center mb-4">
-                    <i className="fas fa-lock fa-lg me-3 fa-fw" />
+                    <i className="fas fa-lock fa-lg me-3 fa-fw pdtr" />
                     <div className="form-outline flex-fill mb-0">
                         <label className="form-label" htmlFor="form3Example4c">Nhập lại mật khẩu</label>
                         <input type="password" name="repeatPass" className="form-control" onChange={formik.handleChange}
@@ -98,7 +98,7 @@ export default function Register() {
                     </div>
                 </div>
                 <div className="d-flex flex-row align-items-center mb-4">
-                    <i className="fas fa-key fa-lg me-3 fa-fw" />
+                    <i className="fas fa-envelope fa-lg me-3 fa-fw pdtr" />
                     <div className="form-outline flex-fill mb-0">
                         <label className="form-label" htmlFor="email">Email</label>
                         <input type="text" name="email" className="form-control" onChange={formik.handleChange}
@@ -110,7 +110,7 @@ export default function Register() {
                     </div>
                 </div>
                 <div className="d-flex flex-row align-items-center mb-4">
-                    <i className="fas fa-key fa-lg me-3 fa-fw" />
+                    <i className="fas fa-solid fa-phone fa-lg me-3 fa-fw pdtr" />
                     <div className="form-outline flex-fill mb-0">
                         <label className="form-label" htmlFor="soDt">Số điện thoại</label>
                         <input type="text" name="soDt" className="form-control" onChange={formik.handleChange}
@@ -121,7 +121,7 @@ export default function Register() {
                     </div>
                 </div>
                 <div className="d-flex flex-row align-items-center mb-4">
-                    <i className="fas fa-key fa-lg me-3 fa-fw" />
+                    <i className="fas fa-solid fa-file-signature fa-lg me-3 fa-fw pdtr" />
                     <div className="form-outline flex-fill mb-0">
                         <label className="form-label" htmlFor="hoTen">Họ và tên</label>
                         <input type="text" name="hoTen" className="form-control" onChange={formik.handleChange}

@@ -9,11 +9,11 @@ export const SingleTemplate = (props) => {
                     <div className="row d-flex justify-content-center align-items-center h-100">
                         <div className="col-lg-12 col-xl-11">
                             <div className="card text-black" style={{ borderRadius: 25 }}>
-                                <div className="card-body p-md-5">
+                                <div className="card-body p-md-5" style={{marginTop:'-10px'}}>
                                     <div className="row justify-content-center">
                                         <props.component {...propsRoute} />
                                         <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-                                            <img src="https://storage.googleapis.com/afs-prod/media/e53811360eed4b8ba26b5f635d703a7c/3000.jpeg" style={{ width: '450px' }} alt="Sample image" />
+                                            <img src="https://storage.googleapis.com/afs-prod/media/e53811360eed4b8ba26b5f635d703a7c/3000.jpeg" style={{ width: '450px', paddingTop:'100px' }} alt="Sample image" />
 
                                         </div>
                                     </div>

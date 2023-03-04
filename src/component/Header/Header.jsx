@@ -37,7 +37,7 @@ export default function Header(props) {
     return (
         <header className='header'>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark pdlr-100">
-                <a className="navbar-brand">Movie Tickets</a>
+                <a className="navbar-brand" style={{fontWeight:'bold'}}>NMB Cinema</a>
                 <button className="navbar-toggler" type="button">
                     <span className="navbar-toggler-icon" />
                 </button>

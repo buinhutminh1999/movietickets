@@ -9,6 +9,10 @@
   pointer-events: none;
 }
 
+.mgr-5{
+  margin-right: 5px;
+}
+
 .pdt-25{
   padding-top: 25px;
 }
@@ -17,9 +21,16 @@
   padding-right: 30px;
 }
 
+.pdtr{
+  padding: 25px 7px 0 0;
+}
 
 .pdlr-100 {
   padding: 12px 100px;
+}
+
+.cl-black{
+  color: black;
 }
 
 @media (prefers-reduced-motion: no-preference) {

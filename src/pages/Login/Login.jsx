@@ -16,7 +16,7 @@ export default function Login(props, value) {
     };
 
     return (
-        <Form
+        <Form 
             name="basic"
             labelCol={{
                 span: 8,
@@ -26,6 +26,8 @@ export default function Login(props, value) {
             }}
             style={{
                 maxWidth: 600,
+                paddingTop: '90px',
+                marginRight:'40px'
             }}
             initialValues={{
                 remember: true,
@@ -35,6 +37,7 @@ export default function Login(props, value) {
             autoComplete="off"
         >
             {loginErr !== null ? <p className='alert alert-danger'>{loginErr}</p> : null}
+            <h1 style={{paddingLeft:'50px', fontWeight:'bold'}}>Đăng Nhập</h1>
             <Form.Item
                 label="Tài khoản"
                 name="taiKhoan"
@@ -47,7 +50,7 @@ export default function Login(props, value) {
             >
                 <Input />
             </Form.Item>
-
+            
             <Form.Item
                 label="Mật khẩu"
                 name="matKhau"
@@ -72,7 +75,7 @@ export default function Login(props, value) {
                 <Checkbox>Remember me</Checkbox>
             </Form.Item>
 
-            <Form.Item
+            <Form.Item 
                 wrapperCol={{
                     offset: 8,
                     span: 16,
