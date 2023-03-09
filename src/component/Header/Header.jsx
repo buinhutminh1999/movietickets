@@ -1,7 +1,5 @@
 import React from 'react'
-// import { useNavigate } from 'react-router-dom';
-import { Button, Space } from 'antd';
-// import * as React from "react";
+import { Space } from 'antd';
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { Logout } from '../../redux/reducers/movieReducer';

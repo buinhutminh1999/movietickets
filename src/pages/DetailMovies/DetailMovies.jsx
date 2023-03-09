@@ -1,8 +1,8 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { CustomCard } from '@tsamantanis/react-glassmorphism'
 import '@tsamantanis/react-glassmorphism/dist/index.css'
-import { Space, Tabs, Modal, Card, Button, Rate, Radio } from 'antd';
+import { Space, Tabs, Modal, Card, Button, Rate } from 'antd';
 import { useState } from 'react';
 import { LayThongTinLichChieuPhim } from '../../redux/action/movieAction';
 import moment from 'moment';
@@ -14,7 +14,6 @@ export default function DetailMovies(props) {
     let { id } = props.match.params
     let action = LayThongTinLichChieuPhim(id)
     dispatch(action)
-
   }, [])
 
   const [tabPosition, setTabPosition] = useState('left');
@@ -86,7 +85,7 @@ export default function DetailMovies(props) {
                       <p>{cumRap.diaChi}</p>
                       <div className='row'>
                         {cumRap.lichChieuPhim?.map((rap) => {
-                          
+
                           return <Space wrap className='mr-2' key={rap.maLichChieu}>
                             <Button type="primary" ghost onClick={() => {
                               localStorage.setItem('DetailFlim', JSON.stringify(detailMovies))

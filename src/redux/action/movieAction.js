@@ -1,7 +1,7 @@
 import axios from "axios"
 import { history } from "../../App";
 import { TOKEN, URL_API } from "../../ulti/setting"
-import { dangNhap, LoginErr, GetDetailMovies } from "../reducers/movieReducer";
+import { dangNhap, LoginErr, GetDetailMovies, GetRoomTicket } from "../reducers/movieReducer";
 
 export const DangKyAction = (props, value) => {
 
@@ -75,4 +75,24 @@ export const LayThongTinLichChieuPhim = (id) => {
     }
 
 }
+
+export const LayDanhSachPhongVe = (id) => { 
+    return (dispatch) => { 
+       let promise =  axios({
+            method: 'GET',
+            url: `${URL_API}/QuanLyDatVe/LayDanhSachPhongVe?MaLichChieu=${id}`,
+            headers: {
+                TokenCybersoft: TOKEN
+            }
+        })
+
+        promise
+        .then((result) => { 
+            dispatch(GetRoomTicket(result.data.content))
+         })
+         .catch((err) => { 
+            console.log('err',err)
+          })
+    }
+ }
 

@@ -14,7 +14,6 @@ export const SingleTemplate = (props) => {
                                         <props.component {...propsRoute} />
                                         <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
                                             <img src="https://storage.googleapis.com/afs-prod/media/e53811360eed4b8ba26b5f635d703a7c/3000.jpeg" style={{ width: '450px' }} alt="Sample image" />
-
                                         </div>
                                     </div>
                                 </div>

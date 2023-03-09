@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Button, Checkbox, Form, Input, Space } from 'antd';
 import { dangNhapAction } from '../../redux/action/movieAction';
 import { useDispatch, useSelector } from 'react-redux';

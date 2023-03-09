@@ -1,11 +1,8 @@
 import axios from 'axios'
 import React, { useEffect, useState, memo, useMemo, useCallback } from 'react'
-import { Radio, Space, Tabs, Button, Card, Col, Row } from 'antd';
+import { Space, Tabs, Button, Card, Col, Row } from 'antd';
 import { TOKEN, URL_API } from '../../ulti/setting';
 import moment from 'moment/moment';
-import { NavLink } from 'react-router-dom';
-
-const { Meta } = Card;
 
 // - Thứ tự thao tác trong 1 ứng dụng:
 // 	+ b1: load ứng dụng lên
@@ -18,7 +15,6 @@ const { Meta } = Card;
 
 
 function MoviesShowTime() {
-
     const [tabPosition, setTabPosition] = useState('left');
     const [heThongRap, setHeThongRap] = useState([])
     const [lichChieuTheoRap, setLichChieuTheoRap] = useState([])
@@ -50,14 +46,7 @@ function MoviesShowTime() {
         getListCenima('QuanLyRap/LayThongTinLichChieuHeThongRap?maNhom=GP01', setLichChieuTheoRap)
     }, [])
 
-    useEffect(() => {
-        setCumRap(() => {
-            let object = lichChieuTheoRap.find((item) => {
-                return item.maHeThongRap == rap
-            })
-            return object?.lstCumRap[0]
-        })
-    }, [rap])
+
 
 
     let checkTheoRap = () => {
@@ -73,8 +62,7 @@ function MoviesShowTime() {
             }
         })
     }
-    // console.log('lichChieuTheoRap', lichChieuTheoRap)
-    // console.log('cumRap', cumRap)
+
     console.log('render')
     return (
         <div className='container d-flex' style={{ margin: '100px 0' }}>
@@ -99,40 +87,47 @@ function MoviesShowTime() {
                                     </div>
                                 </div>,
                                 key: item.maHeThongRap,
-                                children: <Space  wrap>{checkTheoRap()}</Space>
+                                children: <Space wrap>{checkTheoRap()}</Space>
                             };
                         })}
                         onChange={(e) => {
                             setRap(e)
+                            setCumRap(() => {
+                                let object = lichChieuTheoRap.find((item) => {
+                                    return item.maHeThongRap == rap
+                                })
+                                return object?.lstCumRap[0]
+                            })
                         }}
                     />
                 </>
             </Col>
-            <Col span={12}  style={{
+            <Col span={12} style={{
                 flex: '1',
                 backGround: '#aaa',
                 overflowY: 'scroll',
-                height: '100vh'}}>
-            <Row gutter={[16, 16]}>
-                {cumRap?.danhSachPhim?.map((item) => {
-                    if (item.dangChieu) {
-                        return <Col  key={item.maPhim}>
-                            <Card hoverable title={item.tenPhim} bordered={true}>
-                                <Space  wrap>
-                                    {item.lstLichChieuTheoPhim.map((lst) => {
-                                        return <Button type="primary" ghost to={''} className='col' key={lst.maLichChieu}>
-                                            {moment(lst.ngayChieuGioChieu).format('hh:mm A')}
-                                        </Button>
-                                    })}
-                                </Space>
-                            </Card>
-                        </Col>
-                    }
-                })}
-            </Row>
+                height: '100vh'
+            }}>
+                <Row gutter={[16, 16]}>
+                    {cumRap?.danhSachPhim?.map((item) => {
+                        if (item.dangChieu) {
+                            return <Col key={item.maPhim}>
+                                <Card hoverable title={item.tenPhim} bordered={true}>
+                                    <Space wrap>
+                                        {item.lstLichChieuTheoPhim.map((lst) => {
+                                            return <Button type="primary" ghost to={''} className='col' key={lst.maLichChieu}>
+                                                {moment(lst.ngayChieuGioChieu).format('hh:mm A')}
+                                            </Button>
+                                        })}
+                                    </Space>
+                                </Card>
+                            </Col>
+                        }
+                    })}
+                </Row>
 
 
-        </Col>
+            </Col>
 
 
         </div >

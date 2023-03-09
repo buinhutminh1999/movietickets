@@ -37,7 +37,7 @@ export default function Register() {
     const btnSucessorDisabled = () => {
         let flag = true
         for (const key in formik.values) {
-            if (formik.values[key] == '') {
+            if (formik.values[key] == '' || formik.errors[key] !== '') {
                 flag = false
             }
         }
