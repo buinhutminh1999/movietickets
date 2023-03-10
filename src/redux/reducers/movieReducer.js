@@ -1,6 +1,5 @@
 // rxs
 import { createSlice } from '@reduxjs/toolkit'
-import { isObject } from 'formik';
 
 let userName = null;
 let accessToken = null;
@@ -16,8 +15,6 @@ const initialState = {
   accessToken: accessToken,
   roomTicket: ''
 }
-
-
 
 const movieReducer = createSlice({
   name: 'movieReducer',

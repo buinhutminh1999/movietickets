@@ -17,8 +17,7 @@ export default function DetailMovies(props) {
   }, [])
 
   const [tabPosition, setTabPosition] = useState('left');
-
-
+  console.log('detailMovies',detailMovies)
   return (
     <div className='container-fluid'>
       <CustomCard style={{ backgroundImage: `url(${detailMovies.hinhAnh}) `, minHeight: '480px', backgroundRepeat: 'no-repeat', backgroundSize: '100%' }}
@@ -68,6 +67,7 @@ export default function DetailMovies(props) {
             <Tabs
               tabPosition={tabPosition}
               items={detailMovies.heThongRapChieu?.map((item) => {
+                
                 return {
                   label: <div className='logo'>
                     <div className='logo__item'>
@@ -85,7 +85,6 @@ export default function DetailMovies(props) {
                       <p>{cumRap.diaChi}</p>
                       <div className='row'>
                         {cumRap.lichChieuPhim?.map((rap) => {
-
                           return <Space wrap className='mr-2' key={rap.maLichChieu}>
                             <Button type="primary" ghost onClick={() => {
                               localStorage.setItem('DetailFlim', JSON.stringify(detailMovies))

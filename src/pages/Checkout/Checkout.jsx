@@ -2,10 +2,11 @@ import { Col, Row, Button, Space } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { LayDanhSachPhongVe } from '../../redux/action/movieAction'
+import { style } from './checkout.css'
 export default function Checkout(props) {
   let { usLogin, detailMovies, roomTicket } = useSelector((state) => { return state.movieReducer })
   let [laySoGhe, setLaySoGhe] = useState()
-  let [change, setChange] = useState([])
+  let [tongTienVe, setTongTienVe] = useState()
   let [mangGheDaChon, setMangGheDaChon] = useState([])
   const dispatch = useDispatch()
   useEffect(() => {
@@ -15,57 +16,67 @@ export default function Checkout(props) {
 
   let checkLoaiGhe = (item) => {
     let { loaiGhe, daDat } = item
-    if (daDat) {
-      return 'btn-secondary'
-    } else {
-      switch (loaiGhe) {
-        case 'Vip':
-          for (const value of mangGheDaChon) {
-            if (value.maGhe == item.maGhe && value.daDat) {
-              return 'btn-success'
-            }
-            if (value.maGhe == item.maGhe && !value.daDat) {
-              return 'btn-danger'
-            }
 
-          }
-          return 'btn-danger'
-        default:
-          if (loaiGhe === 'Thuong') {
-            for (const value of mangGheDaChon) {
-              if (value.maGhe == item.maGhe && value.daDat) {
-                return 'btn-success'
-              }
-              if (value.maGhe == item.maGhe && !value.daDat) {
-                return 'btn-info'
-              }
-            }
-            return 'btn-info'
-          }
-      }
-    }
+
+    // if (daDat) {
+    //   return 'btn-secondary ghe'
+    // } else {
+    //   switch (loaiGhe) {
+    //     case 'Vip':
+    //       for (const value of mangGheDaChon) {
+    //         if (value.maGhe == item.maGhe && value.daDat) {
+    //           return 'btn-success'
+    //         }
+    //       }
+    //       return 'btn-danger ghe'
+    //     default:
+    //       if (loaiGhe === 'Thuong') {
+    //         for (const value of mangGheDaChon) {
+    //           if (value.maGhe == item.maGhe && value.daDat) {
+    //             return 'btn-success'
+    //           }
+    //         }
+    //         return 'btn-info ghe'
+    //       }
+    //   }
+    // }
   }
-
   let checkDisabled = (item) => {
     let { daDat } = item
     if (daDat) {
       return 'disabled'
     }
   }
+  const renderDsGhe = () => {
+    return roomTicket.danhSachGhe?.map((item, index) => {
+      let daDat = item.daDat ? 'daDat' : ''
+      let gheVip = item.loaiGhe == 'Vip' ? 'gheVip' : ''
+      let gheThuong = item.loaiGhe == 'Thuong' ? 'gheThuong' : ''
+      let daChon = ''
+      for (const value of mangGheDaChon) {
+          if(value.maGhe == item.maGhe && value.daDat){
+            daChon = 'daChon'
+          }
+      }
+      return <>
+        <button key={item.tenGhe} className={`ghe ${gheVip} ${gheThuong} ${daChon} ${daDat}`} disabled={item.daDat} onClick={() => {
+          setLaySoGhe({ ...item })//de useeffect update nhan biet co thay doi
+
+        }}>{item.tenGhe}</button>
+        {/* {(index + 1) % 16 == 0?  <br/> : ''} */}
+
+      </>
+    })
+  }
+
   useEffect(() => {
     if (laySoGhe) {
-      let arrGhe = [...mangGheDaChon]
-      let obj = arrGhe.find((item) => {
+      let obj = mangGheDaChon.find((item) => {
         return item.maGhe == laySoGhe.maGhe
       })
-      if (obj && obj.daDat) {// ghe sau khi duoc them
-        obj.daDat = false
-        setMangGheDaChon(arrGhe)
-        setChange(arrGhe)
-      } else if (obj && !obj.daDat) {
-        obj.daDat = true
-        setMangGheDaChon(arrGhe)
-        setChange(arrGhe)
+      if (obj) {// ghe sau khi duoc them, khi da ton tai loai ma ghe da chon ra khoi mang
+        let arrNew = mangGheDaChon.filter(item2 => item2.maGhe !== laySoGhe.maGhe)// giong xoa ghe ra khoi mang
+        setMangGheDaChon(arrNew)
       } else {// ghe moi duoc them
         setMangGheDaChon([...mangGheDaChon, { ...laySoGhe, daDat: true }])
       }
@@ -73,31 +84,18 @@ export default function Checkout(props) {
   }, [laySoGhe])
 
   useEffect(() => {
-    if (change) {
-      let newArr = change.filter((item) => {
-        return item.daDat !== false
-      })
-      setMangGheDaChon(newArr)
-    }
-
-  }, [change])
-
+    let total = mangGheDaChon.reduce((total, item) => {
+      return total + item.giaVe
+    }, 0)
+    setTongTienVe(total)
+  }, [mangGheDaChon])
   console.log('mangGheDaChon', mangGheDaChon)
   return (
-    <div className='container'>
+    <div className='container-fluid'>
       <Row>
 
         <Col span={12}>
-          <Space wrap >
-            {roomTicket.danhSachGhe?.map((item) => {
-              return <Button key={item.tenGhe} className={checkLoaiGhe(item)} disabled={checkDisabled(item)} onClick={() => {
-                setLaySoGhe({ ...item })
-                //khi click vào đây 
-
-              }}>{item.tenGhe}</Button>
-            })}
-          </Space>
-
+          {renderDsGhe()}
         </Col>
         <Col span={12}>
           <div className='movies__name'>
@@ -114,7 +112,9 @@ export default function Checkout(props) {
               <p>Chỗ ngồi</p>
             </Col>
             <Col span={12}>
-              <p>0</p>
+              {mangGheDaChon.map((item) => {
+                return <p key={item.maGhe}>{item.maGhe}</p>
+              })}
             </Col>
           </Row>
           <div className='movies__date'>
@@ -126,7 +126,7 @@ export default function Checkout(props) {
               <p>Tạm tính</p>
             </Col>
             <Col span={12}>
-              <p>0</p>
+              {tongTienVe}
             </Col>
           </Row>
           <div className='movies__info'>
