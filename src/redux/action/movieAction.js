@@ -1,8 +1,8 @@
 import axios from "axios"
 import { history } from "../../App";
 import { TOKEN, URL_API } from "../../ulti/setting"
-import { dangNhap, LoginErr, GetDetailMovies, GetRoomTicket } from "../reducers/movieReducer";
-
+import { dangNhap, LoginErr, GetDetailMovies, GetRoomTicket, PostTickets, thongTinDatVeReducer, ThongTinDatVeReducer } from "../reducers/movieReducer";
+const getAccessToken =  localStorage.getItem('accessToken')
 export const DangKyAction = (props, value) => {
 
     return (dispatch2) => {
@@ -55,13 +55,13 @@ export const dangNhapAction = (value) => {
 }
 
 export const LayThongTinLichChieuPhim = (id) => {
-
     return (dispatch2) => {
         let promise = axios({
             method: 'GET',
             url: `${URL_API}/QuanLyRap/LayThongTinLichChieuPhim?MaPhim=${id}`,
             headers: {
-                TokenCybersoft: TOKEN
+                TokenCybersoft: TOKEN,
+
             }
         })
         promise
@@ -76,9 +76,9 @@ export const LayThongTinLichChieuPhim = (id) => {
 
 }
 
-export const LayDanhSachPhongVe = (id) => { 
-    return (dispatch) => { 
-       let promise =  axios({
+export const LayDanhSachPhongVe = (id) => {
+    return (dispatch) => {
+        let promise = axios({
             method: 'GET',
             url: `${URL_API}/QuanLyDatVe/LayDanhSachPhongVe?MaLichChieu=${id}`,
             headers: {
@@ -87,12 +87,57 @@ export const LayDanhSachPhongVe = (id) => {
         })
 
         promise
-        .then((result) => { 
-            dispatch(GetRoomTicket(result.data.content))
-         })
-         .catch((err) => { 
-            console.log('err',err)
-          })
+            .then((result) => {
+                dispatch(GetRoomTicket(result.data.content))
+            })
+            .catch((err) => {
+                console.log('err', err)
+            })
     }
+}
+
+export const datVe = (thongTinDatVe) => {
+   
+    return (dispatch) => {
+        let promise = axios({
+            method: 'POST',
+            url: `${URL_API}/QuanLyDatVe/DatVe`,
+            data: thongTinDatVe,
+            headers: {
+                TokenCybersoft: TOKEN,
+                Authorization: "Bearer " + getAccessToken
+            }
+        })
+
+        promise
+            .then((result) => {
+                console.log('result.data.content', result.data.content)
+                dispatch(PostTickets(result.data.content))
+            })
+            .catch((err) => {
+                console.log('err', err)
+            })
+    }
+}
+
+export const thongTinDatVe = () => { 
+    return (dispatch) => {
+        let promise = axios({
+            method: 'POST',
+            url : `${URL_API}/QuanLyNguoiDung/ThongTinTaiKhoan`,
+            headers: {
+                TokenCybersoft: TOKEN,
+                Authorization: 'Bearer ' + getAccessToken
+            }
+        })
+
+        promise.then((result) => { 
+            dispatch(ThongTinDatVeReducer(result.data.content))
+         })
+         .catch((err) => {
+            console.log(err)
+          })
+      }
  }
+
 

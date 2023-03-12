@@ -1,99 +1,77 @@
-import { Col, Row, Button, Space } from 'antd'
-import React, { useEffect, useState } from 'react'
+import { Col, Row, Button, Alert, Space } from 'antd'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { LayDanhSachPhongVe } from '../../redux/action/movieAction'
+import { datVe, LayDanhSachPhongVe } from '../../redux/action/movieAction'
 import { style } from './checkout.css'
-export default function Checkout(props) {
-  let { usLogin, detailMovies, roomTicket } = useSelector((state) => { return state.movieReducer })
-  let [laySoGhe, setLaySoGhe] = useState()
+import { useReducer } from 'react';
+import _ from 'lodash';
+
+export default function Checkout({ id ,handleSetKey}) {
+  let { usLogin, detailMovies, roomTicket, postTickets } = useSelector((state) => { return state.movieReducer })
   let [tongTienVe, setTongTienVe] = useState()
   let [mangGheDaChon, setMangGheDaChon] = useState([])
   const dispatch = useDispatch()
   useEffect(() => {
-    let action = LayDanhSachPhongVe(props.match.params.id)
+    let action = LayDanhSachPhongVe(id)
     dispatch(action)
   }, [])
 
-  let checkLoaiGhe = (item) => {
-    let { loaiGhe, daDat } = item
 
+  const chonGhe = (item) => {
+    setMangGheDaChon((preState) => {
+      let obj = preState.find((item2) => {
+        return item.maGhe == item2.maGhe
+      })
+      if (obj) {// ghe sau khi duoc them, khi da ton tai loai ma ghe da chon ra khoi mang
+        return preState.filter(item2 => item2.maGhe !== item.maGhe)// giong xoa ghe ra khoi mang\
+      } else {// ghe moi duoc them
+        return [...preState, { maGhe: item.maGhe, giaVe: item.giaVe }]
+      }
+    })
 
-    // if (daDat) {
-    //   return 'btn-secondary ghe'
-    // } else {
-    //   switch (loaiGhe) {
-    //     case 'Vip':
-    //       for (const value of mangGheDaChon) {
-    //         if (value.maGhe == item.maGhe && value.daDat) {
-    //           return 'btn-success'
-    //         }
-    //       }
-    //       return 'btn-danger ghe'
-    //     default:
-    //       if (loaiGhe === 'Thuong') {
-    //         for (const value of mangGheDaChon) {
-    //           if (value.maGhe == item.maGhe && value.daDat) {
-    //             return 'btn-success'
-    //           }
-    //         }
-    //         return 'btn-info ghe'
-    //       }
-    //   }
-    // }
-  }
-  let checkDisabled = (item) => {
-    let { daDat } = item
-    if (daDat) {
-      return 'disabled'
-    }
   }
   const renderDsGhe = () => {
     return roomTicket.danhSachGhe?.map((item, index) => {
       let daDat = item.daDat ? 'daDat' : ''
       let gheVip = item.loaiGhe == 'Vip' ? 'gheVip' : ''
       let gheThuong = item.loaiGhe == 'Thuong' ? 'gheThuong' : ''
+      let banDaDat = usLogin.taiKhoan == item.taiKhoanNguoiDat ? 'taiKhoanBanDaDat' : ''
       let daChon = ''
       for (const value of mangGheDaChon) {
-          if(value.maGhe == item.maGhe && value.daDat){
-            daChon = 'daChon'
-          }
+        if (value.maGhe == item.maGhe) {
+          daChon = 'daChon'
+        }
       }
-      return <>
-        <button key={item.tenGhe} className={`ghe ${gheVip} ${gheThuong} ${daChon} ${daDat}`} disabled={item.daDat} onClick={() => {
-          setLaySoGhe({ ...item })//de useeffect update nhan biet co thay doi
-
-        }}>{item.tenGhe}</button>
-        {/* {(index + 1) % 16 == 0?  <br/> : ''} */}
-
-      </>
+      return <button key={item.tenGhe} className={`ghe ${gheVip} ${gheThuong} ${daChon} ${daDat} ${banDaDat}`} disabled={item.daDat} onClick={() => {
+        chonGhe(item)
+      }}>{item.tenGhe}</button>
+      //  {(index + 1) % 16 == 0?  <br/> : ''}
     })
   }
 
-  useEffect(() => {
-    if (laySoGhe) {
-      let obj = mangGheDaChon.find((item) => {
-        return item.maGhe == laySoGhe.maGhe
-      })
-      if (obj) {// ghe sau khi duoc them, khi da ton tai loai ma ghe da chon ra khoi mang
-        let arrNew = mangGheDaChon.filter(item2 => item2.maGhe !== laySoGhe.maGhe)// giong xoa ghe ra khoi mang
-        setMangGheDaChon(arrNew)
-      } else {// ghe moi duoc them
-        setMangGheDaChon([...mangGheDaChon, { ...laySoGhe, daDat: true }])
+  const danhSachGheDaDat = () => {
+    return roomTicket.danhSachGhe?.map((item, index) => {
+      if (!item.daDat) {
+        return <p key={item.stt}>{item.stt}</p>
       }
-    }
-  }, [laySoGhe])
+      // {index % 2 == 0 ? <br/> : null}
+    })
+  }
 
-  useEffect(() => {
-    let total = mangGheDaChon.reduce((total, item) => {
+  let total = useMemo(() => {
+    console.log('useMemo')
+    return mangGheDaChon.reduce((total, item) => {
       return total + item.giaVe
-    }, 0)
-    setTongTienVe(total)
+    }, 0).toLocaleString()
+
   }, [mangGheDaChon])
-  console.log('mangGheDaChon', mangGheDaChon)
+
+
+  // console.log('postTickets',postTickets)
   return (
     <div className='container-fluid'>
-      <Row>
 
+      <Row>
         <Col span={12}>
           {renderDsGhe()}
         </Col>
@@ -111,9 +89,10 @@ export default function Checkout(props) {
             <Col span={12}>
               <p>Chỗ ngồi</p>
             </Col>
+
             <Col span={12}>
-              {mangGheDaChon.map((item) => {
-                return <p key={item.maGhe}>{item.maGhe}</p>
+              {_.sortBy(mangGheDaChon, ['maGhe']).map((item) => {
+                return <span key={item.maGhe}>{item.maGhe} </span>
               })}
             </Col>
           </Row>
@@ -126,16 +105,48 @@ export default function Checkout(props) {
               <p>Tạm tính</p>
             </Col>
             <Col span={12}>
-              {tongTienVe}
+              {total}
             </Col>
           </Row>
           <div className='movies__info'>
             <p>{usLogin?.email}</p>
             <p>{usLogin?.soDT}</p>
           </div>
-          <Button className='primary' >Mua vé</Button>
+          <button className='primary btn__muave' disabled={mangGheDaChon.length == 0 ? true : false} onClick={() => {
+            let maLichChieu = id
+            let danhSachVe = mangGheDaChon
+            let action = datVe({ maLichChieu, danhSachVe })
+            dispatch(action)
+            handleSetKey()
+            
+          }}>Mua vé</button>
+          <Space
+            direction="vertical"
+            style={{
+              width: '100%',
+            }}
+          >
+            {/* {postTickets == '' ? null : <Alert message={postTickets !== ? 'Mua vé thành công' : ''} type="success" /> } */}
+          </Space>
         </Col>
+        <Col span={24}>
+          <table className='table'>
+            <thead>
+              <tr>
+                <th>Ghế chưa đặt</th>
+                <th>Ghế đang đặt</th>
+                <th>Ghế Vip</th>
+                <th>Ghế đã được đặt</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{danhSachGheDaDat()}</td>
 
+              </tr>
+            </tbody>
+          </table>
+        </Col>
       </Row >
 
     </div >

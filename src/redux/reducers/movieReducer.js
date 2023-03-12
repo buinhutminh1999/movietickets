@@ -1,19 +1,20 @@
 // rxs
 import { createSlice } from '@reduxjs/toolkit'
-
 let userName = null;
 let accessToken = null;
 // userName = JSON.parse(localStorage.getItem('userMovies'))
 if (localStorage.getItem('userMovies') && localStorage.getItem('accessToken')) {
   userName = JSON.parse(localStorage.getItem('userMovies'))
-} 
+}
 const initialState = {
   regisErr: '',
   loginErr: null,
   usLogin: userName,
   detailMovies: {},
   accessToken: accessToken,
-  roomTicket: ''
+  roomTicket: '',
+  postTickets: '',
+  thongTinVe: {},
 }
 
 const movieReducer = createSlice({
@@ -39,12 +40,18 @@ const movieReducer = createSlice({
     GetDetailMovies: (state, actions) => {
       state.detailMovies = actions.payload
     },
-    GetRoomTicket: (state,action) => { 
+    GetRoomTicket: (state, action) => {
       state.roomTicket = action.payload
-     }
+    },
+    PostTickets: (state, action) => {
+      state.postTickets = action.payload
+    },
+    ThongTinDatVeReducer: (state, action) => {
+      state.thongTinVe = action.payload
+    }
   }
 })
 
-export const { dangNhap, Logout, LoginErr, GetMovies, GetDetailMovies, GetRoomTicket } = movieReducer.actions
+export const { dangNhap, Logout, LoginErr, GetMovies, GetDetailMovies, GetRoomTicket, PostTickets, ThongTinDatVeReducer } = movieReducer.actions
 
 export default movieReducer.reducer

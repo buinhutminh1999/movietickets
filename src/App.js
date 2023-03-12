@@ -11,6 +11,7 @@ import DetailMovies from './pages/DetailMovies/DetailMovies';
 import { BodyTemplate } from './Template/BodyTemplate';
 import { CheckoutTemplate } from './Template/CheckoutTemplate/CheckoutTemplate';
 import Checkout from './pages/Checkout/Checkout';
+import MenuCheckOut from './pages/Checkout/MenuCheckOut';
 // import { Suspense, lazy } from 'react';
 export const history = createBrowserHistory();
 // const CheckoutTemplateLazy = lazy(() => import('./Template/CheckoutTemplate/CheckoutTemplate'));
@@ -21,7 +22,7 @@ function App() {
         <SingleTemplate path="/login" component={Login} />
         <SingleTemplate path="/register" component={Register} />
         <BodyTemplate path="/detail/:id" component={DetailMovies} />
-        <CheckoutTemplate path="/checkout/:id" component={Checkout} />
+        <CheckoutTemplate path="/checkout/:id" component={MenuCheckOut} />
         {/* <Suspense fallback={<div>h1 loading.....</div>}>
           <CheckoutTemplateLazy path="/checkout/:id" component={Checkout} />
         </Suspense> */}
