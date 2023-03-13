@@ -5,6 +5,7 @@
     border-radius: 5px;
     cursor: pointer;
     margin: 15px;
+    color: white;
 }
 
 
@@ -17,11 +18,11 @@
 }
 
 .daChon {
-    background: green;
+    background: rgb(216 45 139/1)
 }
 
 .daDat{
-    background: rgba(0, 0, 0, 0.1);
+    background: rgb(64 64 64/1);
     cursor: no-drop;
 }
 
@@ -50,4 +51,8 @@
 .btn__muave:hover{
     opacity: 1;
     background-color: rgb(235 47 150/1);
+}
+
+.khachDangDat{
+    background: rgb(255,127,80)
 }

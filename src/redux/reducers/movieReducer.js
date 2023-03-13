@@ -15,6 +15,7 @@ const initialState = {
   roomTicket: '',
   postTickets: '',
   thongTinVe: {},
+  isLoading: false
 }
 
 const movieReducer = createSlice({
@@ -48,10 +49,13 @@ const movieReducer = createSlice({
     },
     ThongTinDatVeReducer: (state, action) => {
       state.thongTinVe = action.payload
+    },
+    LoadingReducer: (state, action) => {
+      state.isLoading = action.payload
     }
   }
 })
 
-export const { dangNhap, Logout, LoginErr, GetMovies, GetDetailMovies, GetRoomTicket, PostTickets, ThongTinDatVeReducer } = movieReducer.actions
+export const { dangNhap, Logout, LoginErr, GetMovies, GetDetailMovies, GetRoomTicket, PostTickets, ThongTinDatVeReducer, LoadingReducer } = movieReducer.actions
 
 export default movieReducer.reducer

@@ -1,7 +1,7 @@
 import axios from "axios"
 import { history } from "../../App";
 import { TOKEN, URL_API } from "../../ulti/setting"
-import { dangNhap, LoginErr, GetDetailMovies, GetRoomTicket, PostTickets, thongTinDatVeReducer, ThongTinDatVeReducer } from "../reducers/movieReducer";
+import { dangNhap, LoginErr, GetDetailMovies, GetRoomTicket, PostTickets, thongTinDatVeReducer, ThongTinDatVeReducer, LoadingReducer } from "../reducers/movieReducer";
 const getAccessToken =  localStorage.getItem('accessToken')
 export const DangKyAction = (props, value) => {
 
@@ -78,6 +78,7 @@ export const LayThongTinLichChieuPhim = (id) => {
 
 export const LayDanhSachPhongVe = (id) => {
     return (dispatch) => {
+        dispatch(LoadingReducer(true))
         let promise = axios({
             method: 'GET',
             url: `${URL_API}/QuanLyDatVe/LayDanhSachPhongVe?MaLichChieu=${id}`,
@@ -88,10 +89,12 @@ export const LayDanhSachPhongVe = (id) => {
 
         promise
             .then((result) => {
-                dispatch(GetRoomTicket(result.data.content))
+                dispatch(GetRoomTicket((result.data.content)))
+                dispatch(LoadingReducer(false))
             })
             .catch((err) => {
-                console.log('err', err)
+                dispatch(LoadingReducer(false))
+
             })
     }
 }
@@ -99,6 +102,7 @@ export const LayDanhSachPhongVe = (id) => {
 export const datVe = (thongTinDatVe) => {
    
     return (dispatch) => {
+        dispatch(LoadingReducer(true))
         let promise = axios({
             method: 'POST',
             url: `${URL_API}/QuanLyDatVe/DatVe`,
@@ -113,9 +117,12 @@ export const datVe = (thongTinDatVe) => {
             .then((result) => {
                 console.log('result.data.content', result.data.content)
                 dispatch(PostTickets(result.data.content))
+                 dispatch(LayDanhSachPhongVe(thongTinDatVe.maLichChieu))//load lại chi tiết phòng vé
+                dispatch(LoadingReducer(false))
             })
             .catch((err) => {
-                console.log('err', err)
+                dispatch(LoadingReducer(false))
+                
             })
     }
 }

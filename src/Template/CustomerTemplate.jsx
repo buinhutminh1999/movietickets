@@ -12,7 +12,7 @@ export const CustomerTemplate = (props) => {
       <Header {...propsRoute}/>
       <CarouselD />
       <ListMovies {...propsRoute}/>
-      <MoviesShowTime />
+      <MoviesShowTime {...propsRoute}/>
       <Footer />
      
     </>

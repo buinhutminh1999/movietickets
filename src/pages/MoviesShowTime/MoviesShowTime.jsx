@@ -14,7 +14,7 @@ import moment from 'moment/moment';
 // 	+ b7: binding data lên UI
 
 
-function MoviesShowTime() {
+function MoviesShowTime(props) {
     const [tabPosition, setTabPosition] = useState('left');
     const [heThongRap, setHeThongRap] = useState([])
     const [lichChieuTheoRap, setLichChieuTheoRap] = useState([])
@@ -115,8 +115,11 @@ function MoviesShowTime() {
                                 <Card hoverable title={item.tenPhim} bordered={true}>
                                     <Space wrap>
                                         {item.lstLichChieuTheoPhim.map((lst) => {
-                                            return <Button type="primary" ghost to={''} className='col' key={lst.maLichChieu}>
+                                            return <Button type="primary" ghost className='col' key={lst.maLichChieu} onClick={() => {
+                                                props.history.push(`/checkout/${lst.maLichChieu}`)
+                                            }}>
                                                 {moment(lst.ngayChieuGioChieu).format('hh:mm A')}
+
                                             </Button>
                                         })}
                                     </Space>

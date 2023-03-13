@@ -12,12 +12,14 @@ import { BodyTemplate } from './Template/BodyTemplate';
 import { CheckoutTemplate } from './Template/CheckoutTemplate/CheckoutTemplate';
 import Checkout from './pages/Checkout/Checkout';
 import MenuCheckOut from './pages/Checkout/MenuCheckOut';
+import Loading from './component/Loading/Loading';
 // import { Suspense, lazy } from 'react';
 export const history = createBrowserHistory();
 // const CheckoutTemplateLazy = lazy(() => import('./Template/CheckoutTemplate/CheckoutTemplate'));
 function App() {
   return (
     <Router history={history} >
+      <Loading/>
       <Switch>
         <SingleTemplate path="/login" component={Login} />
         <SingleTemplate path="/register" component={Register} />

@@ -5,8 +5,9 @@ import { datVe, LayDanhSachPhongVe } from '../../redux/action/movieAction'
 import { style } from './checkout.css'
 import { useReducer } from 'react';
 import _ from 'lodash';
+import { UserOutlined } from '@ant-design/icons';
 
-export default function Checkout({ id ,handleSetKey}) {
+export default function Checkout({ id, handleSetKey }) {
   let { usLogin, detailMovies, roomTicket, postTickets } = useSelector((state) => { return state.movieReducer })
   let [tongTienVe, setTongTienVe] = useState()
   let [mangGheDaChon, setMangGheDaChon] = useState([])
@@ -32,31 +33,25 @@ export default function Checkout({ id ,handleSetKey}) {
   }
   const renderDsGhe = () => {
     return roomTicket.danhSachGhe?.map((item, index) => {
+      let banDaDat = usLogin.taiKhoan == item.taiKhoanNguoiDat ? 'taiKhoanBanDaDat' : ''
+
       let daDat = item.daDat ? 'daDat' : ''
       let gheVip = item.loaiGhe == 'Vip' ? 'gheVip' : ''
       let gheThuong = item.loaiGhe == 'Thuong' ? 'gheThuong' : ''
-      let banDaDat = usLogin.taiKhoan == item.taiKhoanNguoiDat ? 'taiKhoanBanDaDat' : ''
       let daChon = ''
       for (const value of mangGheDaChon) {
         if (value.maGhe == item.maGhe) {
           daChon = 'daChon'
         }
       }
-      return <button key={item.tenGhe} className={`ghe ${gheVip} ${gheThuong} ${daChon} ${daDat} ${banDaDat}`} disabled={item.daDat} onClick={() => {
+      return <button key={item.tenGhe} className={`ghe  ${banDaDat} ${gheVip} ${gheThuong} ${daChon} ${daDat}`} disabled={item.daDat} onClick={() => {
         chonGhe(item)
-      }}>{item.tenGhe}</button>
+      }}>{usLogin.taiKhoan == item.taiKhoanNguoiDat ? <UserOutlined /> : item.tenGhe}</button>
       //  {(index + 1) % 16 == 0?  <br/> : ''}
     })
   }
 
-  const danhSachGheDaDat = () => {
-    return roomTicket.danhSachGhe?.map((item, index) => {
-      if (!item.daDat) {
-        return <p key={item.stt}>{item.stt}</p>
-      }
-      // {index % 2 == 0 ? <br/> : null}
-    })
-  }
+
 
   let total = useMemo(() => {
     console.log('useMemo')
@@ -67,7 +62,15 @@ export default function Checkout({ id ,handleSetKey}) {
   }, [mangGheDaChon])
 
 
+  useEffect(() => {// khi api trả về dữ liệu thay đỏi thì set lại state
+    if (mangGheDaChon.length > 0) {
+      setMangGheDaChon([])
+      handleSetKey()
+    }
+  }, [roomTicket])
+
   // console.log('postTickets',postTickets)
+
   return (
     <div className='container-fluid'>
 
@@ -117,8 +120,7 @@ export default function Checkout({ id ,handleSetKey}) {
             let danhSachVe = mangGheDaChon
             let action = datVe({ maLichChieu, danhSachVe })
             dispatch(action)
-            handleSetKey()
-            
+
           }}>Mua vé</button>
           <Space
             direction="vertical"
@@ -133,16 +135,22 @@ export default function Checkout({ id ,handleSetKey}) {
           <table className='table'>
             <thead>
               <tr>
-                <th>Ghế chưa đặt</th>
-                <th>Ghế đang đặt</th>
+                <th>Ghế thường</th>
+                <th>Ghế bạn chọn</th>
                 <th>Ghế Vip</th>
-                <th>Ghế đã được đặt</th>
+                <th>Ghế khách đã đặt</th>
+                <th>Ghế bạn đã đặt</th>
+                <th>Ghế khách đang đặt</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>{danhSachGheDaDat()}</td>
-
+                <td><button className={`ghe gheThuong`}></button></td>
+                <td><button className={`ghe daChon`}></button></td>
+                <td><button className={`ghe gheVip`}></button></td>
+                <td><button className={`ghe daDat`}></button></td>
+                <td><button className={`ghe taiKhoanBanDaDat`}><UserOutlined /></button></td>
+                <td><button className={`ghe khachDangDat`}></button></td>
               </tr>
             </tbody>
           </table>
