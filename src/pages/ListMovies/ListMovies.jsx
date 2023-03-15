@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Rate } from 'antd';
 import { Card } from 'antd';
 import { TOKEN, URL_API } from '../../ulti/setting';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -13,28 +13,17 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import { GetMovies } from '../../redux/reducers/movieReducer';
 import { history } from '../../App';
+import { LayDanhSachPhim } from '../../redux/action/movieAction';
 
 export default function ListMovies(props) {
-    let [listMovies, setListMovies] = useState([])
-    let getListMovies = () => {
-        let promise = axios({
-            method: 'GET',
-            url: `${URL_API}/QuanLyPhim/LayDanhSachPhim?maNhom=GP01`,
-            headers: {
-                TokenCybersoft: TOKEN
-            }
-        })
-        promise.then((result) => {
-            setListMovies(result.data.content)
-        })
-            .catch((err) => { console.log(err) })
-    }
-
+    let {listMovies} = useSelector(state => state.movieReducer)
+    
     let dispatch = useDispatch()
-
+    
 
     useEffect(() => {
-        getListMovies()
+       let action = LayDanhSachPhim()
+       dispatch(action)
     }, [])
 
     const getGetYears = (date) => {
@@ -55,7 +44,7 @@ export default function ListMovies(props) {
             onSlideChange={() => console.log('slide change')}
             className='mt-3'
         >
-            {listMovies.map((item) => {
+            {listMovies?.map((item) => {
                 // console.log('item',item)
                 if (item.dangChieu) {
                     return <SwiperSlide style={{ cursor: 'pointer' }} span={8} className='p-3' key={item.maPhim} onClick={() => {

@@ -15,7 +15,8 @@ const initialState = {
   roomTicket: '',
   postTickets: '',
   thongTinVe: {},
-  isLoading: false
+  isLoading: false,
+  listMovies:[]
 }
 
 const movieReducer = createSlice({
@@ -33,7 +34,7 @@ const movieReducer = createSlice({
       state.usLogin = actions.payload
     },
     GetMovies: (state, actions) => {
-      state.detailMovies = actions.payload
+      state.listMovies = actions.payload
     },
     LoginErr: (state, actions) => {
       state.loginErr = actions.payload

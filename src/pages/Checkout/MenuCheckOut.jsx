@@ -4,9 +4,10 @@ import Checkout from './Checkout';
 import KetQuaDatVe from './KetQuaDatVe';
 import { HomeOutlined, UserOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
-
-
-
+const OperationsSlot = {
+    left: <Button className="tabs-extra-demo-button">Left Extra Action</Button>,
+    right: <Button>Right Extra Action</Button>,
+  };
 export default function MenuCheckOut(props) {
     const [key, setKey] = useState(1)
     const { usLogin } = useSelector(state => state.movieReducer)
