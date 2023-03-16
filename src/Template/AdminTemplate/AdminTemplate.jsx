@@ -50,7 +50,7 @@ export const AdminTemplate = ({
                                 {
                                     key: '3',
                                     icon: '<UploadOutlined />',
-                                    label: 'nav 3',
+                                    label: <NavLink to={'/admin/flim'}>Flim</NavLink>,
                                 },
                             ]}
                         />

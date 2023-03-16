@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   Button,
   Cascader,
@@ -14,9 +14,10 @@ import {
 import { useState } from 'react';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import { useDispatch } from 'react-redux';
-import { themPhimUploadHinh } from '../../../redux/action/movieAction';
-export default function AddFlim() {
+import { useDispatch, useSelector } from 'react-redux';
+import { layThongTinFlim, themPhimUploadHinh } from '../../../redux/action/movieAction';
+export default function AddFlim(props) {
+  
   const [imgSrc, setImgSrc] = useState('')
   const [componentSize, setComponentSize] = useState('default');
   const dispatch = useDispatch()
@@ -41,6 +42,8 @@ export default function AddFlim() {
     reader.onload = e => { setImgSrc(e.target.result) }
     formik.setFieldValue('hinhAnh', file)
   }
+
+  
   const formik = useFormik({
     initialValues: {
       tenPhim: '',

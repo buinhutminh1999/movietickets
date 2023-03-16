@@ -52,6 +52,8 @@ export default function Flim(props) {
       dispatch(action)
     }
   }, [])
+
+  console.log('renflim')
   return (
     <div >
       <h3>Quản lý flim</h3>
@@ -78,6 +80,11 @@ export default function Flim(props) {
             e.target.src = `/https://picsum.photos/id/${index}/50/50`
           }} />,
           moTa: item.moTa.length > 50 ? item.moTa.substr(0, 50) + '...' : item.moTa,// giới hạn mô tả
+          hanhDong: <>
+            <button className='btn btn-success' onClick={() => {
+              props.history.push(`/admin/flim/edit/${item.maPhim}`)
+            }}>Edit</button>
+          </>
         }
       })} onChange={onChange} />;
     </div>

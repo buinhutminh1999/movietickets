@@ -1,7 +1,7 @@
 import axios from "axios"
 import { history } from "../../App";
 import { TOKEN, URL_API } from "../../ulti/setting"
-import { dangNhap, LoginErr, GetDetailMovies, GetRoomTicket, PostTickets, thongTinDatVeReducer, ThongTinDatVeReducer, LoadingReducer, GetMovies } from "../reducers/movieReducer";
+import { dangNhap, LoginErr, GetDetailMovies, GetRoomTicket, PostTickets, thongTinDatVeReducer, ThongTinDatVeReducer, LoadingReducer, GetMovies, GetInfoFlim } from "../reducers/movieReducer";
 const getAccessToken = localStorage.getItem('accessToken')
 export const DangKyAction = (props, value) => {
 
@@ -85,6 +85,7 @@ export const LayThongTinLichChieuPhim = (id) => {
         promise
             .then(result => {
                 dispatch2(GetDetailMovies(result.data.content))
+
             })
             .catch(err => {
 
@@ -173,7 +174,6 @@ export const themPhimUploadHinh = (formData) => {
             data: formData,
             headers: {
                 TokenCybersoft: TOKEN,
-
             }
         })
 
@@ -186,4 +186,49 @@ export const themPhimUploadHinh = (formData) => {
     }
 }
 
+export const layThongTinFlim = (id) => {
+    return (dispatch) => {
+        dispatch(LoadingReducer(true))
+        let promise = axios({
+            method: 'GET',
+            url: `${URL_API}/QuanLyPhim/LayThongTinPhim?MaPhim=${id}`,
+            headers: {
+                TokenCybersoft: TOKEN,
+            }
+        })
+
+        promise.then((result) => {
+            dispatch(GetInfoFlim(result.data.content))
+            dispatch(LoadingReducer(false))
+        })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+}
+
+export const capNhatPhimUpload = (formData) => {
+    return (dispatch) => {
+        dispatch(LoadingReducer(true))
+        let promise = axios({
+            method: 'POST',
+            url: `${URL_API}/QuanLyPhim/CapNhatPhimUpload`,
+            data: formData,
+            headers: {
+                TokenCybersoft: TOKEN,
+                Authorization: 'Bearer ' + getAccessToken,
+            }
+        })
+
+        promise.then((result) => {
+            dispatch(LoadingReducer(false))
+            history.push('/admin/flim')
+            dispatch(LayDanhSachPhim())
+        })
+            .catch((err) => {
+                dispatch(LoadingReducer(false))
+                console.log(err)
+            })
+    }
+}
 
