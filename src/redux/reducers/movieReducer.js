@@ -2,7 +2,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 let userName = null;
 let accessToken = null;
-// userName = JSON.parse(localStorage.getItem('userMovies'))
 if (localStorage.getItem('userMovies') && localStorage.getItem('accessToken')) {
   userName = JSON.parse(localStorage.getItem('userMovies'))
 }
@@ -16,8 +15,10 @@ const initialState = {
   postTickets: '',
   thongTinVe: {},
   isLoading: false,
-  listMovies:[],
-  thongTinFlim: {}
+  listMovies: [],
+  thongTinFlim: {},
+  heThongRap: [],
+  cumRapTheoHeThongRap: []
 }
 
 const movieReducer = createSlice({
@@ -55,12 +56,18 @@ const movieReducer = createSlice({
     LoadingReducer: (state, action) => {
       state.isLoading = action.payload
     },
-    GetInfoFlim: (state, action) => { 
+    GetInfoFlim: (state, action) => {
       state.thongTinFlim = action.payload
+    },
+    GetHeThongRap: (state, action) => {
+      state.heThongRap = action.payload
+    },
+    GetCumRapTheoHeThongRap: (state,action) => { 
+      state.cumRapTheoHeThongRap = action.payload
      }
   }
 })
 
-export const { dangNhap, Logout, LoginErr, GetMovies, GetDetailMovies, GetRoomTicket, PostTickets, ThongTinDatVeReducer, LoadingReducer, GetInfoFlim } = movieReducer.actions
+export const { dangNhap, Logout, LoginErr, GetMovies, GetDetailMovies, GetRoomTicket, PostTickets, ThongTinDatVeReducer, LoadingReducer, GetInfoFlim, GetHeThongRap, GetCumRapTheoHeThongRap } = movieReducer.actions
 
 export default movieReducer.reducer

@@ -2,9 +2,9 @@ import React, { useEffect } from 'react'
 import { Button, Table } from 'antd';
 import { Input, Space } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { LayDanhSachPhim } from '../../../redux/action/movieAction';
+import { LayDanhSachPhim, xoaPhim } from '../../../redux/action/movieAction';
 const { Search } = Input;
-const onSearch = (value) => console.log(value);
+
 
 const columns = [
   {
@@ -36,7 +36,6 @@ const columns = [
   {
     title: 'Hành động',
     dataIndex: 'hanhDong',
-
   },
 ];
 
@@ -52,14 +51,15 @@ export default function Flim(props) {
       dispatch(action)
     }
   }, [])
-
-  console.log('renflim')
+  const onSearch = (value) => { dispatch(LayDanhSachPhim(value)) };
+  console.log('listMovies', listMovies)
   return (
     <div >
       <h3>Quản lý flim</h3>
 
       <Space direction="vertical">
         <Button onClick={() => {
+          props.handleActive(1)
           props.history.push('/admin/flim/addnew')
         }}>Thêm phim</Button>
         <Search
@@ -80,11 +80,18 @@ export default function Flim(props) {
             e.target.src = `/https://picsum.photos/id/${index}/50/50`
           }} />,
           moTa: item.moTa.length > 50 ? item.moTa.substr(0, 50) + '...' : item.moTa,// giới hạn mô tả
-          hanhDong: <>
-            <button className='btn btn-success' onClick={() => {
+          hanhDong: <Space >
+            <Button className='btn-success mr-2' onClick={() => {
               props.history.push(`/admin/flim/edit/${item.maPhim}`)
-            }}>Edit</button>
-          </>
+            }}>Edit</Button>
+            <Button className='btn-danger' onClick={() => {
+              dispatch(xoaPhim(item.maPhim))
+            }}>Delete</Button>
+            <Button className='btn-danger' onClick={() => {
+              localStorage.setItem('Flim',JSON.stringify(item))
+              props.history.push(`/admin/flim/showtime/${item.maPhim}/${item.tenPhim}`)
+            }}>Tạo lịch chiếu</Button>
+          </Space>
         }
       })} onChange={onChange} />;
     </div>

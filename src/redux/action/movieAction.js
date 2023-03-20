@@ -1,7 +1,7 @@
 import axios from "axios"
 import { history } from "../../App";
 import { TOKEN, URL_API } from "../../ulti/setting"
-import { dangNhap, LoginErr, GetDetailMovies, GetRoomTicket, PostTickets, thongTinDatVeReducer, ThongTinDatVeReducer, LoadingReducer, GetMovies, GetInfoFlim } from "../reducers/movieReducer";
+import { GetHeThongRap, dangNhap, LoginErr, GetDetailMovies, GetRoomTicket, PostTickets, thongTinDatVeReducer, ThongTinDatVeReducer, LoadingReducer, GetMovies, GetInfoFlim, GetCumRapTheoHeThongRap } from "../reducers/movieReducer";
 const getAccessToken = localStorage.getItem('accessToken')
 export const DangKyAction = (props, value) => {
 
@@ -17,7 +17,6 @@ export const DangKyAction = (props, value) => {
         promise
             .then(result => {
                 history.push('/login')
-
             })
             .catch(err => {
                 // dispatch2()
@@ -41,7 +40,6 @@ export const dangNhapAction = (value) => {
         promise
             .then(result => {
                 history.goBack()
-                console.log(result)
                 localStorage.setItem('userMovies', JSON.stringify(result.data.content))
                 const action = dangNhap(result.data.content)
                 dispatch2(action)
@@ -53,19 +51,57 @@ export const dangNhapAction = (value) => {
     }
 
 }
-export const LayDanhSachPhim = () => {
-
+export const LayDanhSachPhim = (tenPhim = '') => {
     return (dispatch) => {
         dispatch(LoadingReducer(true))
         let promise = axios({
             method: 'GET',
-            url: `${URL_API}/QuanLyPhim/LayDanhSachPhim?maNhom=GP01`,
+            url: tenPhim.trim() !== ''
+                ? `${URL_API}/QuanLyPhim/LayDanhSachPhim?maNhom=GP01&tenPhim=${tenPhim}`
+                : `${URL_API}/QuanLyPhim/LayDanhSachPhim?maNhom=GP01`,
             headers: {
                 TokenCybersoft: TOKEN
             }
         })
         promise.then((result) => {
+
             dispatch(GetMovies(result.data.content))
+            dispatch(LoadingReducer(false))
+        })
+            .catch((err) => { console.log(err) })
+    }
+}
+
+export const layThongTinHeThongRap = () => {
+    return (dispatch) => {
+        dispatch(LoadingReducer(true))
+        let promise = axios({
+            method: 'GET',
+            url: `${URL_API}/QuanLyRap/LayThongTinHeThongRap`,
+            headers: {
+                TokenCybersoft: TOKEN
+            }
+        })
+        promise.then((result) => {
+            dispatch(GetHeThongRap(result.data.content))
+            dispatch(LoadingReducer(false))
+        })
+            .catch((err) => { console.log(err) })
+    }
+}
+
+export const layThongTinCumRapTheoHeThong = (maRap) => {
+    return (dispatch) => {
+        dispatch(LoadingReducer(true))
+        let promise = axios({
+            method: 'GET',
+            url: `${URL_API}/QuanLyRap/LayThongTinCumRapTheoHeThong?maHeThongRap=${maRap}`,
+            headers: {
+                TokenCybersoft: TOKEN
+            }
+        })
+        promise.then((result) => {
+            dispatch(GetCumRapTheoHeThongRap(result.data.content))
             dispatch(LoadingReducer(false))
         })
             .catch((err) => { console.log(err) })
@@ -224,6 +260,54 @@ export const capNhatPhimUpload = (formData) => {
             dispatch(LoadingReducer(false))
             history.push('/admin/flim')
             dispatch(LayDanhSachPhim())
+        })
+            .catch((err) => {
+                dispatch(LoadingReducer(false))
+                console.log(err)
+            })
+    }
+}
+
+export const xoaPhim = (id) => {
+    return (dispatch) => {
+        dispatch(LoadingReducer(true))
+        let promise = axios({
+            method: 'DELETE',
+            url: `${URL_API}/QuanLyPhim/XoaPhim?MaPhim=${id}`,
+            headers: {
+                TokenCybersoft: TOKEN,
+                Authorization: 'Bearer ' + getAccessToken,
+            }
+        })
+
+        promise.then((result) => {
+            dispatch(LoadingReducer(false))
+            dispatch(LayDanhSachPhim())
+            console.log(result)
+        })
+            .catch((err) => {
+                dispatch(LoadingReducer(false))
+                console.log(err)
+            })
+    }
+}
+
+export const taoLichChieu = (lichChieu) => {
+    return (dispatch) => {
+        dispatch(LoadingReducer(true))
+        let promise = axios({
+            method: 'POST',
+            url: `${URL_API}/QuanLyDatVe/TaoLichChieu`,
+            data: lichChieu,
+            headers: {
+                TokenCybersoft: TOKEN,
+                Authorization: 'Bearer ' + getAccessToken,
+            }
+        })
+
+        promise.then((result) => {
+            dispatch(LoadingReducer(false))
+            console.log(result)
         })
             .catch((err) => {
                 dispatch(LoadingReducer(false))

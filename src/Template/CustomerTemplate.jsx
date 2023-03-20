@@ -10,7 +10,7 @@ export const CustomerTemplate = (props) => {
   return <Route exact path={props.path} render={(propsRoute) => {
     return <>
       <Header {...propsRoute}/>
-      <CarouselD />
+      <CarouselD {...propsRoute}/>
       <ListMovies {...propsRoute}/>
       <MoviesShowTime {...propsRoute}/>
       <Footer />

@@ -118,6 +118,7 @@ export default function Checkout({ id, handleSetKey }) {
           <button className='primary btn__muave' disabled={mangGheDaChon.length == 0 ? true : false} onClick={() => {
             let maLichChieu = id
             let danhSachVe = mangGheDaChon
+            //khi bấm đặt vé load lại ghế trên api, for qua danhSachGhe.soGhe == api.soGhe && soGhe == taiKhoan : daDatThanhCong : da có ng đặt
             let action = datVe({ maLichChieu, danhSachVe })
             dispatch(action)
 

@@ -3,14 +3,17 @@ import { Route } from "react-router-dom"
 import Footer from "../component/Footer/Footer"
 import Header from "../component/Header/Header"
 
-export const BodyTemplate = (props) => {
+export const BodyTemplate = ({
+  comp: Component, // use comp prop
+  ...rest
+}) => {
   useEffect(() => {
     window.scrollTo(0, 0);// giúp scroll lên đầu trang
   })
-  return <Route exact path={props.path} render={(propsRoute) => {
+  return <Route {...rest} exact path={rest.path} render={(propsRoute) => {
     return <>
       <Header {...propsRoute} />
-      <props.component {...propsRoute} />
+      <Component {...propsRoute} />
       <Footer />
     </>
   }} />

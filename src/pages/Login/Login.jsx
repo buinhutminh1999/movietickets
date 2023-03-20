@@ -14,7 +14,6 @@ export default function Login(props, value) {
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
-
     return (
         <Form
             name="basic"

@@ -15,7 +15,7 @@ import _ from 'lodash';
 import dayjs from 'dayjs';
 
 export default function Edit(props) {
-    const { thongTinFlim } = useSelector(state => state.movieReducer)
+    const { thongTinFlim, listMovies } = useSelector(state => state.movieReducer)
     const [imgSrc, setImgSrc] = useState('')
     const [componentSize, setComponentSize] = useState('default');
     const dispatch = useDispatch()
@@ -37,6 +37,10 @@ export default function Edit(props) {
         dispatch(layThongTinFlim(props.match.params.id))
     }, [])
 
+    useEffect(() => {
+        props.handleActive(0)
+    }, [listMovies])
+
     const handleChangeFile = async (e) => {
         let file = e.target.files[0]
         //tạo đối tượng để đọc file
@@ -44,7 +48,7 @@ export default function Edit(props) {
         const reader = new FileReader()
         reader.readAsDataURL(file)
         reader.onload = e => { setImgSrc(e.target.result) }
-        
+
     }
     const formik = useFormik({
         enableReinitialize: true,// bật khi edit dữ liệu
@@ -66,20 +70,13 @@ export default function Edit(props) {
                 if (key !== 'hinhAnh') {
                     formData.append(key, values[key])
                 } else {
-
                     if (values[key] !== null) {
                         formData.append('File', values.hinhAnh, values.hinhAnh.name)
                     }
-
                 }
             }
             dispatch(capNhatPhimUpload(formData))
         }
-
-        // else if (key == 'ngayKhoiChieu') {
-        //     formData.append(key, dayjs(values[key]).format('DD/MM/YYYY hh:mm:ss'))
-        // } 
-
     })
 
     return (

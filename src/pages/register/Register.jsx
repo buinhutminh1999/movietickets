@@ -28,7 +28,7 @@ export default function Register() {
             hoTen: Yup.string().required('Họ và tên không được để trống'),
         }),
         onSubmit: values => {
-
+            console.log('values',values)
             let dangKy = DangKyAction(values)
             dispatch(dangKy)
 
@@ -37,7 +37,7 @@ export default function Register() {
     const btnSucessorDisabled = () => {
         let flag = true
         for (const key in formik.values) {
-            if (formik.values[key] == '' || formik.errors[key] !== '') {
+            if (formik.values[key] == '' ) {
                 flag = false
             }
         }

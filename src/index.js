@@ -2,10 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-
 import { Provider } from 'react-redux'
 import { store } from './redux/configStore';
-import { URL_API } from './ulti/setting';
 import i18n from './i18n.js';
 //websocket
 // const signalR = require("@aspnet/signalr");

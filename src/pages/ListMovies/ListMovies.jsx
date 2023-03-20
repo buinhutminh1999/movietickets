@@ -14,23 +14,23 @@ import 'swiper/css/scrollbar';
 import { GetMovies } from '../../redux/reducers/movieReducer';
 import { history } from '../../App';
 import { LayDanhSachPhim } from '../../redux/action/movieAction';
+import _ from 'lodash';
+
 
 export default function ListMovies(props) {
-    let {listMovies} = useSelector(state => state.movieReducer)
-    
+    let { listMovies } = useSelector(state => state.movieReducer)
     let dispatch = useDispatch()
-    
-
     useEffect(() => {
-       let action = LayDanhSachPhim()
-       dispatch(action)
+        console.log('render diddmount')
+        let action = LayDanhSachPhim()
+        dispatch(action)
     }, [])
 
     const getGetYears = (date) => {
         let createMovies = new Date(date)
         return createMovies.getFullYear()
     }
-
+    console.log('listMovies', listMovies)
     return (
         <Swiper
             // install Swiper modules
@@ -44,8 +44,7 @@ export default function ListMovies(props) {
             onSlideChange={() => console.log('slide change')}
             className='mt-3'
         >
-            {listMovies?.map((item) => {
-                // console.log('item',item)
+            {_.isArray(listMovies) ? listMovies.map((item) => {
                 if (item.dangChieu) {
                     return <SwiperSlide style={{ cursor: 'pointer' }} span={8} className='p-3' key={item.maPhim} onClick={() => {
                         dispatch(GetMovies(item))
@@ -67,7 +66,8 @@ export default function ListMovies(props) {
                 }
 
 
-            })}
+            }) : ''}
+
         </Swiper>
     )
 }
