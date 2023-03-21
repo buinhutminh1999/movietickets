@@ -81,7 +81,7 @@ export default function ThongTinCaNhan() {
                     <Input value={info.soDt} name='soDt' onChange={handleChange} />
                 </Form.Item>
                 <Form.Item label="Tài khoản">
-                    <Input value={info.taiKhoan} name='taiKhoan' onChange={handleChange} />
+                    <Input value={info.taiKhoan} disabled={componentDisabled ? true : true} name='taiKhoan' onChange={handleChange} />
                 </Form.Item>
                 <Form.Item label="Mật khẩu">
                     <Input value={info.matKhau} name='matKhau' onChange={handleChange} />
