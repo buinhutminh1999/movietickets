@@ -8,7 +8,7 @@ const { Header, Content, Sider } = Layout;
 const menu = [
     { id: 0, nameBtn: 'Danh sách phim', path: '/admin/flim' },
     { id: 1, nameBtn: 'Thêm Flim', path: '/admin/flim/addnew' },
-
+    { id: 2, nameBtn: 'Thêm người dùng', path: '/admin/flim/quanlynguoidung' },
 ]
 
 export const AdminTemplate = ({
@@ -20,7 +20,14 @@ export const AdminTemplate = ({
         token: { colorBgContainer },
 
     } = theme.useToken();
-    const [active, setActive] = useState(0)
+    const [active, setActive] = useState(() => {
+        if (rest.path == '/admin/flim') {
+            return 0
+        } else if (rest.path == '/admin/flim/addnew') {
+            return 1
+        }
+        return 2
+    })
 
     const handleActive = (key) => {
         setActive(key)
@@ -31,7 +38,7 @@ export const AdminTemplate = ({
     if (!usLogin) {
         return <Redirect to={'/'} />
     }
-    // console.log('tab', tab)
+
     return <Route {...rest} exact path={rest.path} render={(propsRoute) => {
         return <>
             <Layout style={{ minHeight: '100vh' }}>
@@ -56,7 +63,7 @@ export const AdminTemplate = ({
                             padding: '0 24px 24px',
                         }}
                     >
-             
+
                         <Content
                             style={{
                                 padding: 24,
@@ -67,9 +74,7 @@ export const AdminTemplate = ({
 
                         >
                             <div>
-
                                 <Component handleActive={handleActive} {...propsRoute} />
-
                             </div>
                         </Content>
                     </Layout>

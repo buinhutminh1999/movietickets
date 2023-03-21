@@ -27,7 +27,6 @@ export default function ThongTinCaNhan() {
         })
         promise
             .then((result) => {
-
                 setInfo({
                     taiKhoan: result.data.content[0].taiKhoan,
                     matKhau: result.data.content[0].matKhau,
