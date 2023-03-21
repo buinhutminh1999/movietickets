@@ -1,8 +1,11 @@
+import { Result } from "antd";
 import axios from "axios"
 import { history } from "../../App";
 import { TOKEN, URL_API } from "../../ulti/setting"
-import { GetHeThongRap, dangNhap, LoginErr, GetDetailMovies, GetRoomTicket, PostTickets, thongTinDatVeReducer, ThongTinDatVeReducer, LoadingReducer, GetMovies, GetInfoFlim, GetCumRapTheoHeThongRap } from "../reducers/movieReducer";
+import { GetHeThongRap, dangNhap, LoginErr, GetDetailMovies, GetRoomTicket, PostTickets, thongTinDatVeReducer, ThongTinDatVeReducer, LoadingReducer, GetMovies, GetInfoFlim, GetCumRapTheoHeThongRap, GetInfo } from "../reducers/movieReducer";
 const getAccessToken = localStorage.getItem('accessToken')
+const usLogin = localStorage.getItem('userMovies')
+
 export const DangKyAction = (props, value) => {
 
     return (dispatch2) => {
@@ -316,3 +319,26 @@ export const taoLichChieu = (lichChieu) => {
     }
 }
 
+export const capNhatThongTinNguoiDung = (thongTin) => {
+    return (dispatch) => {
+        dispatch(LoadingReducer(true))
+        let promise = axios({
+            method: 'PUT',
+            url: `${URL_API}/QuanLyNguoiDung/CapNhatThongTinNguoiDung`,
+            data: thongTin,
+            headers: {
+                TokenCybersoft: TOKEN,
+                Authorization: 'Bearer ' + getAccessToken,
+            }
+        })
+
+        promise.then((result) => {
+            dispatch(LoadingReducer(false))
+            console.log(result)
+        })
+            .catch((err) => {
+                dispatch(LoadingReducer(false))
+                console.log(err)
+            })
+    }
+}

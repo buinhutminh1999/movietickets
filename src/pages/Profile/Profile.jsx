@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { Tabs } from 'antd';
 import ThongTinCaNhan from './ThongTinCaNhan';
+import KetQuaDatVe from '../Checkout/KetQuaDatVe';
 const onChange = (key) => {
     console.log(key);
 };
@@ -13,16 +14,15 @@ export default function Profile() {
         {
             key: '1',
             label: `Thông tin cá nhân`,
-            children: <ThongTinCaNhan/>,
+            children: <ThongTinCaNhan />,
         },
         {
             key: '2',
             label: `Lịch sử đặt vé`,
-            children: `Content of Tab Pane 2`,
+            children: <KetQuaDatVe/>,
         },
     ];
- 
-    console.log(usLogin)
+
     if (usLogin == null) {
         return <Redirect to={'/login'} />
     }

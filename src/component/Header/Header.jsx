@@ -27,7 +27,7 @@ export default function Header(props) {
                 }}>Đăng Ký</button>
             </Space>
             : <Space wrap>
-                <span className='alert alert-success'>{usLogin.taiKhoan}</span>
+                <NavLink className='alert alert-success' to={'/profile'}>{usLogin.taiKhoan}</NavLink>
                 <button className='btn btn-danger' onClick={resetLocal}>Đăng xuất</button>
             </Space>
     }
