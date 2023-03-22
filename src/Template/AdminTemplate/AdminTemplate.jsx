@@ -1,20 +1,23 @@
 import React, { Component, useEffect, useState } from 'react'
 import { UserOutlined } from '@ant-design/icons';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import { Breadcrumb, Layout, Menu, theme, Space } from 'antd';
 import { NavLink, Redirect, Route } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Tabs } from 'antd';
+import { Logout } from '../../redux/reducers/movieReducer';
 const { Header, Content, Sider } = Layout;
 const menu = [
     { id: 0, nameBtn: 'Danh sách phim', path: '/admin/flim' },
     { id: 1, nameBtn: 'Thêm Flim', path: '/admin/flim/addnew' },
-    { id: 2, nameBtn: 'Thêm người dùng', path: '/admin/flim/quanlynguoidung' },
+    { id: 2, nameBtn: 'Quản lý người dùng', path: '/admin/quanlynguoidung' },
 ]
 
 export const AdminTemplate = ({
     comp: Component, // use comp prop
     ...rest
+
 }) => {
+    const dispatch = useDispatch()
     const { usLogin } = useSelector(state => state.movieReducer)
     const {
         token: { colorBgContainer },
@@ -29,6 +32,19 @@ export const AdminTemplate = ({
         return 2
     })
 
+    let resetLocal = () => {
+        localStorage.removeItem('userMovies')
+        localStorage.removeItem('accessToken')
+        dispatch(Logout(null))
+    }
+
+    let checkShowOrHideLogin = () => {
+        return <Space wrap>
+            <NavLink className='alert alert-success' to={'/profile'}>{usLogin.taiKhoan}</NavLink>
+            <button className='btn btn-danger' onClick={resetLocal}>Đăng xuất</button>
+        </Space>
+    }
+
     const handleActive = (key) => {
         setActive(key)
     }
@@ -38,12 +54,12 @@ export const AdminTemplate = ({
     if (!usLogin) {
         return <Redirect to={'/'} />
     }
-
+    console.log(rest)
     return <Route {...rest} exact path={rest.path} render={(propsRoute) => {
         return <>
             <Layout style={{ minHeight: '100vh' }}>
-                <Header className="header">
-                    <div className="logo" />
+                <Header className="header d-flex justify-content-end">
+                    {checkShowOrHideLogin()}
                 </Header>
                 <Layout>
                     <Sider  >

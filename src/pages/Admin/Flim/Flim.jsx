@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
-import { Button, Table } from 'antd';
-import { Input, Space } from 'antd';
+import { Button, Table, Input, Space } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { LayDanhSachPhim, xoaPhim } from '../../../redux/action/movieAction';
 const { Search } = Input;

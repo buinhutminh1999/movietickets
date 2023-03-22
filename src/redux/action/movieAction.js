@@ -2,12 +2,11 @@ import { Result } from "antd";
 import axios from "axios"
 import { history } from "../../App";
 import { TOKEN, URL_API } from "../../ulti/setting"
-import { GetHeThongRap, dangNhap, LoginErr, GetDetailMovies, GetRoomTicket, PostTickets, thongTinDatVeReducer, ThongTinDatVeReducer, LoadingReducer, GetMovies, GetInfoFlim, GetCumRapTheoHeThongRap, GetInfo } from "../reducers/movieReducer";
+import { GetHeThongRap, dangNhap, LoginErr, GetDetailMovies, GetRoomTicket, PostTickets, thongTinDatVeReducer, ThongTinDatVeReducer, LoadingReducer, GetMovies, GetInfoFlim, GetCumRapTheoHeThongRap, GetInfo, GetDanhSachNguoiDung } from "../reducers/movieReducer";
 const getAccessToken = localStorage.getItem('accessToken')
 const usLogin = localStorage.getItem('userMovies')
 
 export const DangKyAction = (props, value) => {
-
     return (dispatch2) => {
         let promise = axios({
             method: 'POST',
@@ -334,6 +333,83 @@ export const capNhatThongTinNguoiDung = (thongTin) => {
 
         promise.then((result) => {
             dispatch(LoadingReducer(false))
+            console.log(result)
+        })
+            .catch((err) => {
+                dispatch(LoadingReducer(false))
+                console.log(err)
+            })
+    }
+}
+
+export const layDanhSachNguoiDung = (taiKhoan = '') => {
+    return (dispatch) => {
+        dispatch(LoadingReducer(true))
+        let promise = axios({
+            method: 'GET',
+            url: taiKhoan !== ''
+                ? `${URL_API}/QuanLyNguoiDung/LayDanhSachNguoiDung?MaNhom=GP01&tuKhoa=${taiKhoan}`
+                : `${URL_API}/QuanLyNguoiDung/LayDanhSachNguoiDung?MaNhom=GP01`,
+            headers: {
+                tokenCybersoft: TOKEN
+            }
+
+        })
+        promise.then((result) => {
+            dispatch(LoadingReducer(false))
+            dispatch(GetDanhSachNguoiDung(result.data.content))
+        })
+            .catch((err) => {
+                dispatch(LoadingReducer(false))
+                console.log(err)
+            })
+    }
+}
+
+export const themNguoiDung = (nguoiDung) => {
+    console.log('nguoidungaction', nguoiDung)
+    return (dispatch) => {
+        dispatch(LoadingReducer(true))
+        let promise = axios({
+            method: 'POST',
+            url: `${URL_API}/QuanLyNguoiDung/ThemNguoiDung`,
+            data: nguoiDung,
+            headers: {
+                TokenCybersoft: TOKEN,
+                Authorization: 'Bearer ' + getAccessToken,
+            }
+        })
+
+        promise.then((result) => {
+            dispatch(LoadingReducer(false))
+            history.push('/admin/quanlynguoidung')
+            dispatch(layDanhSachNguoiDung())
+            console.log(result)
+        })
+            .catch((err) => {
+                dispatch(LoadingReducer(false))
+                console.log(err)
+            })
+    }
+}
+
+export const capNhatThongTinNguoiDungAdmin = (nguoiDung) => {
+    return (dispatch) => {
+        dispatch(LoadingReducer(true))
+        let promise = axios({
+            method: 'POST',
+            url: `${URL_API}/QuanLyNguoiDung/CapNhatThongTinNguoiDung`,
+            data: nguoiDung,
+            headers: {
+                TokenCybersoft: TOKEN,
+                Authorization: 'Bearer ' + getAccessToken,
+            }
+        })
+
+        promise.then((result) => {
+            dispatch(LoadingReducer(false))
+            history.push('/admin/quanlynguoidung')
+            dispatch(layDanhSachNguoiDung())
             console.log(result)
         })
             .catch((err) => {

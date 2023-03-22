@@ -19,7 +19,8 @@ const initialState = {
   thongTinFlim: {},
   heThongRap: [],
   cumRapTheoHeThongRap: [],
-  info: []
+  info: [], 
+  danhSachNguoiDung: []
 }
 
 const movieReducer = createSlice({
@@ -68,10 +69,13 @@ const movieReducer = createSlice({
     },
     GetInfo: (state, action) => {
       state.info = action.payload
-    }
+    },
+    GetDanhSachNguoiDung: (state, action) => { 
+      state.danhSachNguoiDung = action.payload
+     }
   }
 })
 
-export const { dangNhap, Logout, LoginErr, GetMovies, GetDetailMovies, GetRoomTicket, PostTickets, ThongTinDatVeReducer, LoadingReducer, GetInfoFlim, GetHeThongRap, GetCumRapTheoHeThongRap, GetInfo } = movieReducer.actions
+export const { dangNhap, Logout, LoginErr, GetMovies, GetDetailMovies, GetRoomTicket, PostTickets, ThongTinDatVeReducer, LoadingReducer, GetInfoFlim, GetHeThongRap, GetCumRapTheoHeThongRap, GetInfo, GetDanhSachNguoiDung } = movieReducer.actions
 
 export default movieReducer.reducer

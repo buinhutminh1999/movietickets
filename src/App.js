@@ -19,6 +19,9 @@ import Edit from './pages/Admin/Edit/Edit';
 import ShowTime from './pages/Admin/ShowTime/ShowTime';
 import Profile from './pages/Profile/Profile';
 import ThemNguoiDung from './pages/Admin/ThemNguoiDung/ThemNguoiDung';
+import TableNguoiDung from './pages/Admin/TableNguoiDung/TableNguoiDung';
+import CapNhatNguoiDung from './pages/Admin/CapNhatNguoiDung/CapNhatNguoiDung';
+
 // import { Suspense, lazy } from 'react';
 export const history = createBrowserHistory();
 // const CheckoutTemplateLazy = lazy(() => import('./Template/CheckoutTemplate/CheckoutTemplate'));
@@ -32,11 +35,14 @@ function App() {
         <BodyTemplate path="/profile" comp={Profile} />
         <BodyTemplate path="/detail/:id" comp={DetailMovies} />
         <CheckoutTemplate path="/checkout/:id" component={MenuCheckOut} />
-        <AdminTemplate path="/admin/flim/quanlynguoidung" comp={ThemNguoiDung} />  
+        <AdminTemplate path="/admin/quanlynguoidung/capnhatnguoidung/:taiKhoan" comp={CapNhatNguoiDung} />
+        <AdminTemplate path="/admin/quanlynguoidung/themnguoidung" comp={ThemNguoiDung} />
+        <AdminTemplate path="/admin/quanlynguoidung" comp={TableNguoiDung} />
+
         <AdminTemplate path="/admin/flim/addnew" comp={AddFlim} />
         <AdminTemplate path="/admin/flim/edit/:id" comp={Edit} />
         <AdminTemplate path="/admin/flim/showtime/:id/:tenPhim" comp={ShowTime} />
-        
+
         <AdminTemplate path="/admin/flim" comp={Flim} />
         {/* <Suspense fallback={<div>h1 loading.....</div>}>
           <CheckoutTemplateLazy path="/checkout/:id" component={Checkout} />
