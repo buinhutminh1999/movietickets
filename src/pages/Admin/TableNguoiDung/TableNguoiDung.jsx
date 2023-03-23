@@ -114,7 +114,7 @@ export default function TableNguoiDung(props) {
 
 
   const handleClickSearch = (e) => {
-    dispatch((e))
+    dispatch(layDanhSachNguoiDung(e))
   }
   return (
     <div>

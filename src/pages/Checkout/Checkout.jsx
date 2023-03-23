@@ -3,13 +3,11 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { datVe, LayDanhSachPhongVe } from '../../redux/action/movieAction'
 import { style } from './checkout.css'
-import { useReducer } from 'react';
 import _ from 'lodash';
 import { UserOutlined } from '@ant-design/icons';
 
 export default function Checkout({ id, handleSetKey }) {
-  let { usLogin, detailMovies, roomTicket, postTickets } = useSelector((state) => { return state.movieReducer })
-  let [tongTienVe, setTongTienVe] = useState()
+  let { usLogin, roomTicket,  } = useSelector((state) => { return state.movieReducer })
   let [mangGheDaChon, setMangGheDaChon] = useState([])
   const dispatch = useDispatch()
   useEffect(() => {
@@ -50,8 +48,6 @@ export default function Checkout({ id, handleSetKey }) {
       //  {(index + 1) % 16 == 0?  <br/> : ''}
     })
   }
-
-
 
   let total = useMemo(() => {
     console.log('useMemo')

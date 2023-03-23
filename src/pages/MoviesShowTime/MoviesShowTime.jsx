@@ -47,8 +47,6 @@ function MoviesShowTime(props) {
     }, [])
 
 
-
-
     let checkTheoRap = () => {
         return lichChieuTheoRap.map((lichChieu, index) => {
             if (lichChieu.maHeThongRap == rap) {
@@ -63,7 +61,6 @@ function MoviesShowTime(props) {
         })
     }
 
-    console.log('render')
     return (
         <div className='container d-flex' style={{ margin: '100px 0' }}>
             <Col span={12}>
@@ -128,11 +125,7 @@ function MoviesShowTime(props) {
                         }
                     })}
                 </Row>
-
-
             </Col>
-
-
         </div >
 
     )

@@ -1,9 +1,7 @@
 import React, { Component, useEffect, useState } from 'react'
-import { UserOutlined } from '@ant-design/icons';
-import { Breadcrumb, Layout, Menu, theme, Space } from 'antd';
+import {  Layout, theme, Space } from 'antd';
 import { NavLink, Redirect, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Tabs } from 'antd';
 import { Logout } from '../../redux/reducers/movieReducer';
 const { Header, Content, Sider } = Layout;
 const menu = [
@@ -51,10 +49,11 @@ export const AdminTemplate = ({
     useEffect(() => {
         window.scrollTo(0, 0)
     })
-    if (!usLogin) {
+    // || usLogin.maLoaiNguoiDung !== 'QuanTri'
+    if (!usLogin ) {
         return <Redirect to={'/'} />
     }
-    console.log(rest)
+    console.log(usLogin)
     return <Route {...rest} exact path={rest.path} render={(propsRoute) => {
         return <>
             <Layout style={{ minHeight: '100vh' }}>

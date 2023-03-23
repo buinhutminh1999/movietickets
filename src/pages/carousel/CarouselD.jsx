@@ -6,12 +6,6 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-// const contentStyle = {
-//     height: '100vh',
-//     width: '100%',
-//     objectFit: 'cover',
-// };
-
 
 export default function CarouselD() {
     let [getImg, setGetImg] = useState([])
@@ -39,8 +33,6 @@ export default function CarouselD() {
                 slidesPerView={1}
                 navigation
                 pagination={{ clickable: true }}
-                onSwiper={(swiper) => console.log(swiper)}
-                onSlideChange={() => console.log('slide change')}
                 className='mt-3'
             >
                 {getImg?.map((item) => {

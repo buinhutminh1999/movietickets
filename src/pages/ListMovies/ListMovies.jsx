@@ -21,7 +21,6 @@ export default function ListMovies(props) {
     let { listMovies } = useSelector(state => state.movieReducer)
     let dispatch = useDispatch()
     useEffect(() => {
-        console.log('render diddmount')
         let action = LayDanhSachPhim()
         dispatch(action)
     }, [])
@@ -30,7 +29,6 @@ export default function ListMovies(props) {
         let createMovies = new Date(date)
         return createMovies.getFullYear()
     }
-    console.log('listMovies', listMovies)
     return (
         <Swiper
             // install Swiper modules

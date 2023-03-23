@@ -71,10 +71,7 @@ export default function CapNhatNguoiDung() {
         <Form.Item label="Select">
           <Button htmlType='submit'>Cập nhật thông tin người dùng</Button>
         </Form.Item>
-
       </Form>
-
-
     </div>
   )
 }

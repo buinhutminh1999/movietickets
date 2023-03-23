@@ -5,7 +5,7 @@ import { Tabs } from 'antd';
 import ThongTinCaNhan from './ThongTinCaNhan';
 import KetQuaDatVe from '../Checkout/KetQuaDatVe';
 const onChange = (key) => {
-    console.log(key);
+   
 };
 
 export default function Profile() {
@@ -19,7 +19,7 @@ export default function Profile() {
         {
             key: '2',
             label: `Lịch sử đặt vé`,
-            children: <KetQuaDatVe/>,
+            children: <KetQuaDatVe />,
         },
     ];
 
@@ -27,7 +27,7 @@ export default function Profile() {
         return <Redirect to={'/login'} />
     }
     return (
-        <div><Tabs defaultActiveKey="1" items={items} onChange={onChange} />;</div>
+        <div className='container-fluid'><Tabs defaultActiveKey="1" items={items} onChange={onChange} /></div>
 
     )
 

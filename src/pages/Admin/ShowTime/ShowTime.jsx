@@ -27,7 +27,6 @@ let flim = ''
 if (localStorage.getItem('Flim')) {
   flim = JSON.parse(localStorage.getItem('Flim'))
 }
-console.log('flim', flim)
 export default function ShowTime(props) {
 
   const dispatch = useDispatch()
@@ -40,7 +39,6 @@ export default function ShowTime(props) {
       giaVe: 0,
     },
     onSubmit: (e) => {
-      console.log('value', e)
       dispatch(taoLichChieu(e))
     }
   })

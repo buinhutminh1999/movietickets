@@ -1,10 +1,10 @@
 import { Result } from "antd";
 import axios from "axios"
+import { getAPI } from "../../API/GetApi/GetApi";
 import { history } from "../../App";
 import { TOKEN, URL_API } from "../../ulti/setting"
-import { GetHeThongRap, dangNhap, LoginErr, GetDetailMovies, GetRoomTicket, PostTickets, thongTinDatVeReducer, ThongTinDatVeReducer, LoadingReducer, GetMovies, GetInfoFlim, GetCumRapTheoHeThongRap, GetInfo, GetDanhSachNguoiDung } from "../reducers/movieReducer";
+import { GetHeThongRap, dangNhap, LoginErr, GetDetailMovies, GetRoomTicket, PostTickets, ThongTinDatVeReducer, LoadingReducer, GetMovies, GetInfoFlim, GetCumRapTheoHeThongRap, GetInfo, GetDanhSachNguoiDung } from "../reducers/movieReducer";
 const getAccessToken = localStorage.getItem('accessToken')
-const usLogin = localStorage.getItem('userMovies')
 
 export const DangKyAction = (props, value) => {
     return (dispatch2) => {
@@ -56,15 +56,9 @@ export const dangNhapAction = (value) => {
 export const LayDanhSachPhim = (tenPhim = '') => {
     return (dispatch) => {
         dispatch(LoadingReducer(true))
-        let promise = axios({
-            method: 'GET',
-            url: tenPhim.trim() !== ''
-                ? `${URL_API}/QuanLyPhim/LayDanhSachPhim?maNhom=GP01&tenPhim=${tenPhim}`
-                : `${URL_API}/QuanLyPhim/LayDanhSachPhim?maNhom=GP01`,
-            headers: {
-                TokenCybersoft: TOKEN
-            }
-        })
+        let promise = getAPI(tenPhim.trim() !== ''
+            ? `${URL_API}/QuanLyPhim/LayDanhSachPhim?maNhom=GP01&tenPhim=${tenPhim}`
+            : `${URL_API}/QuanLyPhim/LayDanhSachPhim?maNhom=GP01`)
         promise.then((result) => {
 
             dispatch(GetMovies(result.data.content))
@@ -77,13 +71,7 @@ export const LayDanhSachPhim = (tenPhim = '') => {
 export const layThongTinHeThongRap = () => {
     return (dispatch) => {
         dispatch(LoadingReducer(true))
-        let promise = axios({
-            method: 'GET',
-            url: `${URL_API}/QuanLyRap/LayThongTinHeThongRap`,
-            headers: {
-                TokenCybersoft: TOKEN
-            }
-        })
+        let promise = getAPI(`${URL_API}/QuanLyRap/LayThongTinHeThongRap`)
         promise.then((result) => {
             dispatch(GetHeThongRap(result.data.content))
             dispatch(LoadingReducer(false))
@@ -95,13 +83,7 @@ export const layThongTinHeThongRap = () => {
 export const layThongTinCumRapTheoHeThong = (maRap) => {
     return (dispatch) => {
         dispatch(LoadingReducer(true))
-        let promise = axios({
-            method: 'GET',
-            url: `${URL_API}/QuanLyRap/LayThongTinCumRapTheoHeThong?maHeThongRap=${maRap}`,
-            headers: {
-                TokenCybersoft: TOKEN
-            }
-        })
+        let promise = getAPI(`${URL_API}/QuanLyRap/LayThongTinCumRapTheoHeThong?maHeThongRap=${maRap}`)
         promise.then((result) => {
             dispatch(GetCumRapTheoHeThongRap(result.data.content))
             dispatch(LoadingReducer(false))
@@ -112,14 +94,7 @@ export const layThongTinCumRapTheoHeThong = (maRap) => {
 
 export const LayThongTinLichChieuPhim = (id) => {
     return (dispatch2) => {
-        let promise = axios({
-            method: 'GET',
-            url: `${URL_API}/QuanLyRap/LayThongTinLichChieuPhim?MaPhim=${id}`,
-            headers: {
-                TokenCybersoft: TOKEN,
-
-            }
-        })
+        let promise = getAPI(`${URL_API}/QuanLyRap/LayThongTinLichChieuPhim?MaPhim=${id}`)
         promise
             .then(result => {
                 dispatch2(GetDetailMovies(result.data.content))
@@ -136,13 +111,7 @@ export const LayThongTinLichChieuPhim = (id) => {
 export const LayDanhSachPhongVe = (id) => {
     return (dispatch) => {
         dispatch(LoadingReducer(true))
-        let promise = axios({
-            method: 'GET',
-            url: `${URL_API}/QuanLyDatVe/LayDanhSachPhongVe?MaLichChieu=${id}`,
-            headers: {
-                TokenCybersoft: TOKEN
-            }
-        })
+        let promise = getAPI(`${URL_API}/QuanLyDatVe/LayDanhSachPhongVe?MaLichChieu=${id}`)
 
         promise
             .then((result) => {
@@ -227,13 +196,7 @@ export const themPhimUploadHinh = (formData) => {
 export const layThongTinFlim = (id) => {
     return (dispatch) => {
         dispatch(LoadingReducer(true))
-        let promise = axios({
-            method: 'GET',
-            url: `${URL_API}/QuanLyPhim/LayThongTinPhim?MaPhim=${id}`,
-            headers: {
-                TokenCybersoft: TOKEN,
-            }
-        })
+        let promise = getAPI(`${URL_API}/QuanLyPhim/LayThongTinPhim?MaPhim=${id}`)
 
         promise.then((result) => {
             dispatch(GetInfoFlim(result.data.content))
@@ -345,16 +308,9 @@ export const capNhatThongTinNguoiDung = (thongTin) => {
 export const layDanhSachNguoiDung = (taiKhoan = '') => {
     return (dispatch) => {
         dispatch(LoadingReducer(true))
-        let promise = axios({
-            method: 'GET',
-            url: taiKhoan !== ''
-                ? `${URL_API}/QuanLyNguoiDung/LayDanhSachNguoiDung?MaNhom=GP01&tuKhoa=${taiKhoan}`
-                : `${URL_API}/QuanLyNguoiDung/LayDanhSachNguoiDung?MaNhom=GP01`,
-            headers: {
-                tokenCybersoft: TOKEN
-            }
-
-        })
+        let promise = getAPI(taiKhoan !== ''
+            ? `${URL_API}/QuanLyNguoiDung/LayDanhSachNguoiDung?MaNhom=GP01&tuKhoa=${taiKhoan}`
+            : `${URL_API}/QuanLyNguoiDung/LayDanhSachNguoiDung?MaNhom=GP01`)
         promise.then((result) => {
             dispatch(LoadingReducer(false))
             dispatch(GetDanhSachNguoiDung(result.data.content))

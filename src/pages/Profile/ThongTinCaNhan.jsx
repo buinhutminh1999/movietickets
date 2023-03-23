@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
     Button,
     Form,
     Input,
+    Space,
 } from 'antd';
 import { useState } from 'react';
 import axios from 'axios';
@@ -13,10 +14,9 @@ const taiKhoan = JSON.parse(localStorage.getItem('userMovies'))
 
 export default function ThongTinCaNhan() {
     const [componentDisabled, setComponentDisabled] = useState(true)
-    let { usLogin } = useSelector(state => state.movieReducer)
     const [info, setInfo] = useState({})
+    const [btnDisabled, setbtnDisabled] = useState(true)
     const dispatch = useDispatch()
-
     const layThongTinNguoiDung = () => {
         let promise = axios({
             method: 'GET',
@@ -43,16 +43,22 @@ export default function ThongTinCaNhan() {
         layThongTinNguoiDung()
     }, [])
 
+
+
     const handleChange = (e) => {
+        setbtnDisabled(() => { return false })
         setInfo({ ...info, [e.target.name]: e.target.value })
+
     }
+
+
     const handleOnSubmit = () => {
-        console.log(info)
-        dispatch(capNhatThongTinNguoiDung(info))
         setComponentDisabled(true)
+        setbtnDisabled(true)
+        dispatch(capNhatThongTinNguoiDung(info))
         localStorage.setItem('userMovies', JSON.stringify({ ...taiKhoan, email: info.email, hoTen: info.hoTen, soDT: info.soDt }))
     }
-    console.log(info)
+    console.log('btnDisabled', btnDisabled)
     return (
         <div>
             <Form
@@ -67,8 +73,6 @@ export default function ThongTinCaNhan() {
                 style={{
                     maxWidth: 600,
                 }}
-            // onFinish={handleOnSubmit}
-
             >
                 <Form.Item label="Email">
                     <Input value={info.email} name='email' onChange={handleChange} />
@@ -86,13 +90,18 @@ export default function ThongTinCaNhan() {
                     <Input value={info.matKhau} name='matKhau' onChange={handleChange} />
                 </Form.Item>
                 <Form.Item label="Action">
-                    {componentDisabled ? <Button type='button' disabled={componentDisabled ? false : undefined} onClick={() => {
-                        setComponentDisabled(false)
-                    }}>Chỉnh sửa thông tin tài khoản</Button>
-                        : <Button type='submit' onClick={handleOnSubmit}>Cập nhật thông tin tài khoản</Button>}
+                    <Space>
+                        {componentDisabled ? <Button type='primary' disabled={componentDisabled ? false : undefined} onClick={() => {
+                            setComponentDisabled(false)
+                        }}>Chỉnh sửa thông tin tài khoản</Button>
+                            : !btnDisabled ?  <Button type='submit' className='btn-success' onClick={handleOnSubmit}>Cập nhật thông tin tài khoản</Button>
+                            : ''}
+                        {!componentDisabled ? <Button type='primary' onClick={() => {
+                            setComponentDisabled(true)
+                        }}>Hủy bỏ</Button> : ''}
+                    </Space>
                 </Form.Item>
             </Form>
-
 
         </div>
 

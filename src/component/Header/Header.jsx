@@ -31,7 +31,6 @@ export default function Header(props) {
                 <button className='btn btn-danger' onClick={resetLocal}>Đăng xuất</button>
             </Space>
     }
-    console.log('usLogin', usLogin)
     return (
         <header className='header'>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark pdlr-100">
@@ -46,11 +45,7 @@ export default function Header(props) {
                                 isActive ? activeStyle : nonActiveStyle
                             }>Home</NavLink>
                         </li>
-                        <li className="nav-item">
-                            <NavLink to='/about' className={({ isActive }) =>
-                                isActive ? activeStyle : nonActiveStyle
-                            }>About</NavLink>
-                        </li>
+                        
                     </ul>
 
                 </div>
