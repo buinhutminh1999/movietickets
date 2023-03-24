@@ -155,6 +155,7 @@ export const datVe = (thongTinDatVe) => {
 
 export const thongTinDatVe = () => {
     return (dispatch) => {
+        dispatch(LoadingReducer(true))
         let promise = axios({
             method: 'POST',
             url: `${URL_API}/QuanLyNguoiDung/ThongTinTaiKhoan`,
@@ -165,9 +166,11 @@ export const thongTinDatVe = () => {
         })
 
         promise.then((result) => {
+            dispatch(LoadingReducer(false))
             dispatch(ThongTinDatVeReducer(result.data.content))
         })
             .catch((err) => {
+                dispatch(LoadingReducer(false))
                 console.log(err)
             })
     }

@@ -1,20 +1,48 @@
 import React, { Component, useEffect, useState } from 'react'
-import {  Layout, theme, Space } from 'antd';
+import { Layout, theme, Space, Dropdown, message } from 'antd';
 import { NavLink, Redirect, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Logout } from '../../redux/reducers/movieReducer';
+import { UserOutlined, HomeOutlined } from '@ant-design/icons';
+import { history } from '../../App';
 const { Header, Content, Sider } = Layout;
 const menu = [
     { id: 0, nameBtn: 'Danh sách phim', path: '/admin/flim' },
     { id: 1, nameBtn: 'Thêm Flim', path: '/admin/flim/addnew' },
     { id: 2, nameBtn: 'Quản lý người dùng', path: '/admin/quanlynguoidung' },
 ]
+let items = [
+    {
+        label: 'Thông tin cá nhân',
+        key: '0',
+        icon: <UserOutlined />,
+    },
+    {
+        label: 'Đăng xuất',
+        key: '1',
+        icon: '',
+    },
+]
 
 export const AdminTemplate = ({
-    comp: Component, // use comp prop
+    comp: Component,
+    // use comp prop
     ...rest
 
 }) => {
+    const handleMenuClick = (e) => {
+        if (e.key == '0') {
+            history.push('/profile')
+        } else if (e.key == '1') {
+            history.push('/home')
+            message.info('Đăng xuất thành công');
+            resetLocal()
+        }
+    };
+    const menuProps = {
+        items: items,
+        onClick: handleMenuClick,
+    }
     const dispatch = useDispatch()
     const { usLogin } = useSelector(state => state.movieReducer)
     const {
@@ -37,10 +65,12 @@ export const AdminTemplate = ({
     }
 
     let checkShowOrHideLogin = () => {
-        return <Space wrap>
-            <NavLink className='alert alert-success' to={'/profile'}>{usLogin.taiKhoan}</NavLink>
-            <button className='btn btn-danger' onClick={resetLocal}>Đăng xuất</button>
-        </Space>
+        return <Dropdown.Button menu={menuProps} placement="bottom" className='justify-content-end' icon={<UserOutlined />}>
+            <span onClick={() => {
+                history.push('/profile')
+            }}>{usLogin.taiKhoan}</span>
+        </Dropdown.Button >
+
     }
 
     const handleActive = (key) => {
@@ -49,20 +79,27 @@ export const AdminTemplate = ({
     useEffect(() => {
         window.scrollTo(0, 0)
     })
-    // || usLogin.maLoaiNguoiDung !== 'QuanTri'
-    if (!usLogin ) {
+
+    if (!usLogin || usLogin.maLoaiNguoiDung !== 'QuanTri') {
         return <Redirect to={'/'} />
     }
-    console.log(usLogin)
+
     return <Route {...rest} exact path={rest.path} render={(propsRoute) => {
         return <>
             <Layout style={{ minHeight: '100vh' }}>
-                <Header className="header d-flex justify-content-end">
+                <Header className="header d-flex justify-content-end align-items-center">
+                    <span className="navbar-brand text-white" style={{ cursor: 'pointer' }} onClick={() => {
+                        history.push('/home')
+                    }}>Movie Tickets</span>
+
                     {checkShowOrHideLogin()}
                 </Header>
                 <Layout>
                     <Sider  >
                         <div className="logo" />
+                        <span className="navbar-brand text-white" style={{ cursor: 'pointer' }} onClick={() => {
+                            history.push('/home')
+                        }}><HomeOutlined />Trở về trang chủ</span>
                         {menu.map((item) => {
                             let activeBnt = active == item.id ? 'btn-danger' : 'btn-success'
                             return <div className='m-3' key={item.id}>
