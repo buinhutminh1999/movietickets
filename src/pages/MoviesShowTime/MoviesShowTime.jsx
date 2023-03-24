@@ -3,7 +3,7 @@ import React, { useEffect, useState, memo, useMemo, useCallback } from 'react'
 import { Space, Tabs, Button, Card, Col, Row } from 'antd';
 import { TOKEN, URL_API } from '../../ulti/setting';
 import moment from 'moment/moment';
-
+import {style} from './styleMoviesShowTime.css'
 // - Thứ tự thao tác trong 1 ứng dụng:
 // 	+ b1: load ứng dụng lên
 // 	+ b2: khởi tạo state, hàm
@@ -75,12 +75,12 @@ function MoviesShowTime(props) {
                         tabPosition={tabPosition}
                         items={heThongRap?.map((item) => {
                             return {
-                                label: <div className='logo '>
-                                    <div className='logo__item'>
-                                        <img width={30} src={item.logo} alt="" />
+                                label: <div className='logo text-center d-flex flex-column align-items-center'>
+                                    <div className='logo__item' style={{width:'30px'}}>
+                                        <img className='img-fluid' src={item.logo} alt="" />
                                     </div>
                                     <div className='logo__content'>
-                                        <p>{item.maHeThongRap}</p>
+                                        <p className='m-0'>{item.maHeThongRap}</p>
                                     </div>
                                 </div>,
                                 key: item.maHeThongRap,

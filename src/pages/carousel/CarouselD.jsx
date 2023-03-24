@@ -33,14 +33,15 @@ export default function CarouselD() {
                 slidesPerView={1}
                 navigation
                 pagination={{ clickable: true }}
-                className='mt-3'
+                
             >
                 {getImg?.map((item) => {
                     return <SwiperSlide key={item.maBanner}>
-                        <img style={{height:'100vh'}}
-                            className="d-block w-100"
+                        <img 
+                            className="h-100 w-100"
                             src={item.hinhAnh}
                             alt="First slide"
+                            style={{objectFit:'cover'}}
                         />
                     </SwiperSlide>
                 })}

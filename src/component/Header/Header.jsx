@@ -2,13 +2,13 @@ import React, { useMemo } from 'react'
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { Logout } from '../../redux/reducers/movieReducer';
-import {  UserOutlined } from '@ant-design/icons';
-import {  Dropdown, Space, message } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
+import { Dropdown, Space, message } from 'antd';
 
 let items = []
 export default function Header(props) {
     let activeStyle = 'nav-link text-danger'
-    let nonActiveStyle = 'nav-link'
+    let nonActiveStyle = 'nav-link text-dark'
     let { usLogin } = useSelector((state) => { return state.movieReducer })
     let dispatch = useDispatch()
     const kiemTraQuanTriHayKhachHang = () => {
@@ -84,14 +84,14 @@ export default function Header(props) {
     console.log(usLogin)
     return (
         <header className='header'>
-            <nav className="navbar navbar-expand-lg navbar-dark bg-dark pdlr-100">
-                <a className="navbar-brand">Movie Tickets</a>
+            <nav className="navbar navbar-expand-lg  navbar-dark bg-light pdlr-100">
+                <a className="navbar-brand text-dark">Movie Tickets</a>
                 <button className="navbar-toggler" type="button">
                     <span className="navbar-toggler-icon" />
                 </button>
                 <div className="collapse navbar-collapse" >
                     <ul className="navbar-nav mr-auto">
-                        <li className="nav-item">
+                        <li className="nav-item ">
                             <NavLink to='/home' className={({ isActive }) =>
                                 isActive ? activeStyle : nonActiveStyle
                             }>Home</NavLink>

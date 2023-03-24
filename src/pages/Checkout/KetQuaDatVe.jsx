@@ -9,7 +9,6 @@ export default function KetQuaDatVe() {
 
     const renderThongTinDatVe = () => {
         return thongTinVe.thongTinDatVe?.map((item) => {
-            console.log('item',item)
             return <Col span={8} key={item.tenPhim}>
 
                 <Card title={item.tenPhim} bordered={true}>
