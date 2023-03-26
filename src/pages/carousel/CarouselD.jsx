@@ -12,7 +12,7 @@ export default function CarouselD() {
     let getBanner = () => {
         let promise = axios({
             method: 'GET',
-            url: 'http://movieapi.cyberlearn.vn/api/QuanLyPhim/LayDanhSachBanner'
+            url: 'https://movieapi.cyberlearn.vn/api/QuanLyPhim/LayDanhSachBanner'
         })
 
         promise.then((result) => {
