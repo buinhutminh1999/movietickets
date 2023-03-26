@@ -188,7 +188,7 @@ export const themPhimUploadHinh = (formData) => {
         })
 
         promise.then((result) => {
-            dispatch(result.data.content)
+            history.push('/admin/flim')
         })
             .catch((err) => {
                 console.log(err)

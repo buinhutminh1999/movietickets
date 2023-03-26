@@ -24,6 +24,8 @@ export default function CarouselD() {
         getBanner()
     }, [])
 
+
+
     return (
         <section className='carousel'>
             <Swiper
@@ -33,15 +35,15 @@ export default function CarouselD() {
                 slidesPerView={1}
                 navigation
                 pagination={{ clickable: true }}
-                
+
             >
                 {getImg?.map((item) => {
                     return <SwiperSlide key={item.maBanner}>
-                        <img 
+                        <img
                             className="h-100 w-100"
-                            src={item.hinhAnh}
+                            src={`https://${item.hinhAnh.split('//')[1]}`}
                             alt="First slide"
-                            style={{objectFit:'cover'}}
+                            style={{ objectFit: 'cover' }}
                         />
                     </SwiperSlide>
                 })}
