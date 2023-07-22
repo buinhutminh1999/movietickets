@@ -3,7 +3,7 @@ import axios from "axios"
 import { getAPI } from "../../API/GetApi/GetApi";
 import { history } from "../../App";
 import { TOKEN, URL_API } from "../../ulti/setting"
-import { GetHeThongRap, dangNhap, LoginErr, GetDetailMovies, GetRoomTicket, PostTickets, ThongTinDatVeReducer, LoadingReducer, GetMovies, GetInfoFlim, GetCumRapTheoHeThongRap, GetInfo, GetDanhSachNguoiDung } from "../reducers/movieReducer";
+import { GetHeThongRap, dangNhap, LoginErr, GetDetailMovies, GetRoomTicket, PostTickets, ThongTinDatVeReducer, LoadingReducer, GetMovies, GetInfoFlim, GetCumRapTheoHeThongRap, GetInfo, GetDanhSachNguoiDung, testFunc } from "../reducers/movieReducer";
 const getAccessToken = localStorage.getItem('accessToken')
 
 export const DangKyAction = (props, value) => {
@@ -377,3 +377,5 @@ export const capNhatThongTinNguoiDungAdmin = (nguoiDung) => {
             })
     }
 }
+
+

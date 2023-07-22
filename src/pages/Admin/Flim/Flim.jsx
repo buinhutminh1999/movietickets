@@ -45,13 +45,11 @@ export default function Flim(props) {
   const { listMovies } = useSelector(state => state.movieReducer)
   let dispatch = useDispatch()
   useEffect(() => {
-    if (listMovies.length == 0) {
       let action = LayDanhSachPhim()
       dispatch(action)
-    }
+
   }, [])
   const onSearch = (value) => { dispatch(LayDanhSachPhim(value)) };
-  console.log('listMovies', listMovies)
   return (
     <div >
       <h3>Quản lý flim</h3>

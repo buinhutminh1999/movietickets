@@ -1,15 +1,16 @@
-import React, { useEffect } from 'react'
+import React, { memo, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { thongTinDatVe } from '../../redux/action/movieAction'
 import { Card, Col, Row } from 'antd';
 import moment from 'moment';
-export default function KetQuaDatVe() {
+
+function KetQuaDatVe({key}) {
     let { thongTinVe } = useSelector(state => state.movieReducer)
     let dispatch = useDispatch()
 
     const renderThongTinDatVe = () => {
         return thongTinVe.thongTinDatVe?.map((item) => {
-            return <Col span={8} key={item.tenPhim}>
+            return <Col span={8} key={item.maVe}>
 
                 <Card title={item.tenPhim} bordered={true}>
                     <Row >
@@ -36,9 +37,11 @@ export default function KetQuaDatVe() {
         })
     }
     useEffect(() => {
+        console.log('render kqdv')
         let action = thongTinDatVe()
         dispatch(action)
     }, [])
+
     return (
         <div>
             <h3>Kết quả đặt vé</h3>
@@ -48,3 +51,6 @@ export default function KetQuaDatVe() {
         </div>
     )
 }
+
+export default memo(KetQuaDatVe)
+

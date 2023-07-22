@@ -19,8 +19,8 @@ const initialState = {
   thongTinFlim: {},
   heThongRap: [],
   cumRapTheoHeThongRap: [],
-  info: [], 
-  danhSachNguoiDung: []
+  info: [],
+  danhSachNguoiDung: [],
 }
 
 const movieReducer = createSlice({
@@ -70,9 +70,12 @@ const movieReducer = createSlice({
     GetInfo: (state, action) => {
       state.info = action.payload
     },
-    GetDanhSachNguoiDung: (state, action) => { 
+    GetDanhSachNguoiDung: (state, action) => {
       state.danhSachNguoiDung = action.payload
-     }
+    },
+    testFunc: (state, action) => {
+      state.testnd = action.payload
+    }
   }
 })
 

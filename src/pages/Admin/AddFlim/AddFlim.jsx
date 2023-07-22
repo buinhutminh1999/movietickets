@@ -71,6 +71,7 @@ export default function AddFlim(props) {
       dispatch(themPhimUploadHinh(formData))
     }
   })
+  console.log('render flim')
   return (
     <Form
       labelCol={{

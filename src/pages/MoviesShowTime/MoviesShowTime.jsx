@@ -3,7 +3,9 @@ import React, { useEffect, useState, memo, useMemo, useCallback } from 'react'
 import { Space, Tabs, Button, Card, Col, Row } from 'antd';
 import { TOKEN, URL_API } from '../../ulti/setting';
 import moment from 'moment/moment';
-import {style} from './styleMoviesShowTime.css'
+import { style } from './styleMoviesShowTime.css'
+import { useDispatch, useSelector } from 'react-redux';
+import { test } from '../../redux/action/movieAction';
 // - Thứ tự thao tác trong 1 ứng dụng:
 // 	+ b1: load ứng dụng lên
 // 	+ b2: khởi tạo state, hàm
@@ -13,14 +15,13 @@ import {style} from './styleMoviesShowTime.css'
 // 	+ b6: arr có data mới
 // 	+ b7: binding data lên UI
 
-
 function MoviesShowTime(props) {
+    performance.now()
     const [tabPosition, setTabPosition] = useState('left');
     const [heThongRap, setHeThongRap] = useState([])
     const [lichChieuTheoRap, setLichChieuTheoRap] = useState([])
     const [rap, setRap] = useState('')
     const [cumRap, setCumRap] = useState('')
-
     let getListCenima = (url, setValue) => {
         let promise = axios({
             method: 'GET',
@@ -48,15 +49,15 @@ function MoviesShowTime(props) {
 
 
     let checkTheoRap = () => {
-        return lichChieuTheoRap.map((lichChieu, index) => {
-            if (lichChieu.maHeThongRap == rap) {
-                return lichChieu.lstCumRap.map((item) => {
-                    return <Button type={item.tenCumRap == cumRap.tenCumRap ? 'primary' : 'dashed'} key={item.maCumRap} onClick={() => {
+        return lichChieuTheoRap.map(lichChieu => {
+            if (lichChieu.maHeThongRap == rap) {//kiểm tra chỉ hiển thị cụm rạp theo rạp tương ứng
+                return lichChieu.lstCumRap.map(item =>
+                    <Button type={item.tenCumRap == cumRap ? 'primary' : 'dashed'} key={item.maCumRap} onClick={() => {
                         setCumRap(item)
                     }}>
                         <p>{item.tenCumRap}</p>
                     </Button>
-                })
+                )
             }
         })
     }
@@ -76,7 +77,7 @@ function MoviesShowTime(props) {
                         items={heThongRap?.map((item) => {
                             return {
                                 label: <div className='logo text-center d-flex flex-column align-items-center'>
-                                    <div className='logo__item' style={{width:'30px'}}>
+                                    <div className='logo__item' style={{ width: '30px' }}>
                                         <img className='img-fluid' src={item.logo} alt="" />
                                     </div>
                                     <div className='logo__content'>
@@ -88,12 +89,11 @@ function MoviesShowTime(props) {
                             };
                         })}
                         onChange={(e) => {
-                            setRap(e)
-                            setCumRap(() => {
-                                let object = lichChieuTheoRap.find((item) => {
-                                    return item.maHeThongRap == rap
-                                })
-                                return object?.lstCumRap[0]
+                            console.log('e', e)
+                            setRap(e) // khi xét rạp thì khi chuyển rạp hàm checkTheoRap mới kiểm tra được cụm rạp nào mà load theo cụm rạp
+                            setCumRap(() => {//set ten rap dau tien sau khi chuyen rap
+                                let object = lichChieuTheoRap.find(item => item.maHeThongRap == e)
+                                return object?.lstCumRap[0].tenCumRap
                             })
                         }}
                     />

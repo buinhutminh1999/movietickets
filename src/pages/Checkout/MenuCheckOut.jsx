@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { Tabs, Button } from 'antd';
 import Checkout from './Checkout';
 import KetQuaDatVe from './KetQuaDatVe';
@@ -13,9 +13,11 @@ export default function MenuCheckOut(props) {
     }}>
         <span className='d-flex align-content-center'>Hi! {usLogin.taiKhoan}</span>
     </Button>;
-    const handleSetKey = () => {
+
+    const handleSetKey = useCallback(() => {
         setKey(2)
-    }
+    }, [])
+
     const items = [
         {
             key: 0,
@@ -32,10 +34,11 @@ export default function MenuCheckOut(props) {
         {
             key: 2,
             label: `2. Kết quả đặt vé`,
-            children: <KetQuaDatVe />,
+            children: <KetQuaDatVe key={key} />,
         },
 
     ]
+
     return (
         <div className='p-5'>
             <Tabs tabBarExtraContent={operations} defaultActiveKey={1} activeKey={key} items={items} onChange={(key) => {

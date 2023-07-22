@@ -7,7 +7,7 @@ import _ from 'lodash';
 import { UserOutlined } from '@ant-design/icons';
 
 export default function Checkout({ id, handleSetKey }) {
-  let { usLogin, roomTicket,  } = useSelector((state) => { return state.movieReducer })
+  let { usLogin, roomTicket } = useSelector((state) => { return state.movieReducer })
   let [mangGheDaChon, setMangGheDaChon] = useState([])
   const dispatch = useDispatch()
   useEffect(() => {
@@ -50,7 +50,6 @@ export default function Checkout({ id, handleSetKey }) {
   }
 
   let total = useMemo(() => {
-    console.log('useMemo')
     return mangGheDaChon.reduce((total, item) => {
       return total + item.giaVe
     }, 0).toLocaleString()
@@ -65,7 +64,6 @@ export default function Checkout({ id, handleSetKey }) {
     }
   }, [roomTicket])
 
-  // console.log('postTickets',postTickets)
 
   return (
     <div className='container-fluid'>
