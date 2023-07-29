@@ -30,6 +30,4 @@ export default function Profile() {
         <div className='container-fluid'><Tabs defaultActiveKey="1" items={items} onChange={onChange} /></div>
 
     )
-
-
 }

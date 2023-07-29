@@ -43,7 +43,7 @@ export default function ListMovies(props) {
             {_.isArray(listMovies) ? listMovies.map((item) => {
                 if (item.dangChieu) {
                     return <SwiperSlide span={8} className='p-3' key={item.maPhim} onClick={() => {
-                        dispatch(GetMovies(item))
+                        history.push(`/detail/${item.maPhim}`)
                     }}>
                         <Card title={item.tenPhim} bordered={true} className='text-center'>
                             <div className='img__movies m-auto' style={{ height: '260px', width: '185px' }}>

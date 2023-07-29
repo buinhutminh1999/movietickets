@@ -67,7 +67,6 @@ export default function TableNguoiDung(props) {
   }, [])
   const xoaTaiKhoan = (taiKhoan) => {
     dispatch(LoadingReducer(true))
-
     let promise = axios({
       method: 'DELETE',
       url: `${URL_API}/QuanLyNguoiDung/XoaNguoiDung?TaiKhoan=${taiKhoan}`,
@@ -110,8 +109,6 @@ export default function TableNguoiDung(props) {
       }
     })
   }
-
-
 
   const handleClickSearch = (e) => {
     dispatch(layDanhSachNguoiDung(e))

@@ -299,11 +299,9 @@ export const capNhatThongTinNguoiDung = (thongTin) => {
 
         promise.then((result) => {
             dispatch(LoadingReducer(false))
-            console.log(result)
         })
             .catch((err) => {
                 dispatch(LoadingReducer(false))
-                console.log(err)
             })
     }
 }

@@ -34,16 +34,16 @@ export default function DetailMovies(props) {
             <img
               className='img-fluid' alt="" src={detailMovies.hinhAnh} onClick={() => setOpen(true)} />
             <Modal
-              title="Modal 1000px width"
+              title={detailMovies.tenPhim}
               centered
               open={open}
               onOk={() => setOpen(false)}
               onCancel={() => setOpen(false)}
               width={1000}
+              footer={null}
             >
               <iframe width="100%" height="500px" src={`https://www.youtube.com/embed/${detailMovies.trailer?.slice(17)}`}>
               </iframe>
-
             </Modal>
           </div>
           <div className="col-9">

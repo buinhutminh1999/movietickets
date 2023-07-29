@@ -23,12 +23,10 @@ const disabledDateTime = () => ({
   disabledMinutes: () => range(30, 60),
   disabledSeconds: () => [55, 56],
 });
-let flim = ''
-if (localStorage.getItem('Flim')) {
-  flim = JSON.parse(localStorage.getItem('Flim'))
-}
-export default function ShowTime(props) {
 
+export default function ShowTime(props) {
+ 
+  const [flim, setFilm] = useState(JSON.parse(localStorage.getItem('Flim')))
   const dispatch = useDispatch()
   const { heThongRap, cumRapTheoHeThongRap } = useSelector(state => state.movieReducer)
   const formik = useFormik({
@@ -39,10 +37,12 @@ export default function ShowTime(props) {
       giaVe: 0,
     },
     onSubmit: (e) => {
+      console.log('e',e)
       dispatch(taoLichChieu(e))
     }
   })
   useEffect(() => {
+    // setFilm(JSON.parse(localStorage.getItem('Flim'))
     dispatch(layThongTinHeThongRap())
   }, [])
 

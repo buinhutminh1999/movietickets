@@ -81,7 +81,6 @@ export default function Header(props) {
         </Space>
     }
 
-    console.log(usLogin)
     return (
         <header className='header'>
             <nav className="navbar navbar-expand-lg  navbar-dark bg-light pdlr-100">

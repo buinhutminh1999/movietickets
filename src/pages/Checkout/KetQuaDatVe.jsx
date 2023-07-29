@@ -37,7 +37,6 @@ function KetQuaDatVe({key}) {
         })
     }
     useEffect(() => {
-        console.log('render kqdv')
         let action = thongTinDatVe()
         dispatch(action)
     }, [])

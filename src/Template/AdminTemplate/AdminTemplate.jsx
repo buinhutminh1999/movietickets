@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react'
+import React, { Component, useCallback, useEffect, useState } from 'react'
 import { Layout, theme, Space, Dropdown, message } from 'antd';
 import { NavLink, Redirect, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -73,9 +73,8 @@ export const AdminTemplate = ({
 
     }
 
-    const handleActive = (key) => {
-        setActive(key)
-    }
+    const handleActive = useCallback(key => setActive(key), [])
+
     useEffect(() => {
         window.scrollTo(0, 0)
     })

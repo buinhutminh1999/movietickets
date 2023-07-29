@@ -4,8 +4,6 @@ import { Space, Tabs, Button, Card, Col, Row } from 'antd';
 import { TOKEN, URL_API } from '../../ulti/setting';
 import moment from 'moment/moment';
 import { style } from './styleMoviesShowTime.css'
-import { useDispatch, useSelector } from 'react-redux';
-import { test } from '../../redux/action/movieAction';
 // - Thứ tự thao tác trong 1 ứng dụng:
 // 	+ b1: load ứng dụng lên
 // 	+ b2: khởi tạo state, hàm
@@ -52,7 +50,7 @@ function MoviesShowTime(props) {
         return lichChieuTheoRap.map(lichChieu => {
             if (lichChieu.maHeThongRap == rap) {//kiểm tra chỉ hiển thị cụm rạp theo rạp tương ứng
                 return lichChieu.lstCumRap.map(item =>
-                    <Button type={item.tenCumRap == cumRap ? 'primary' : 'dashed'} key={item.maCumRap} onClick={() => {
+                    <Button type={item == cumRap ? 'primary' : 'dashed'} key={item.maCumRap} onClick={() => {
                         setCumRap(item)
                     }}>
                         <p>{item.tenCumRap}</p>
@@ -61,8 +59,9 @@ function MoviesShowTime(props) {
             }
         })
     }
-
+    console.log('cumRap',cumRap)
     return (
+        
         <div className='container d-flex' style={{ margin: '100px 0' }}>
             <Col span={12}>
                 <>
@@ -93,7 +92,8 @@ function MoviesShowTime(props) {
                             setRap(e) // khi xét rạp thì khi chuyển rạp hàm checkTheoRap mới kiểm tra được cụm rạp nào mà load theo cụm rạp
                             setCumRap(() => {//set ten rap dau tien sau khi chuyen rap
                                 let object = lichChieuTheoRap.find(item => item.maHeThongRap == e)
-                                return object?.lstCumRap[0].tenCumRap
+                                console.log('object',object)
+                                return object?.lstCumRap[0]
                             })
                         }}
                     />
@@ -106,6 +106,7 @@ function MoviesShowTime(props) {
                 height: '100vh'
             }}>
                 <Row gutter={[16, 16]}>
+                    
                     {cumRap?.danhSachPhim?.map((item) => {
                         if (item.dangChieu) {
                             return <Col key={item.maPhim}>

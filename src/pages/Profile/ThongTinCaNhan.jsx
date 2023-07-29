@@ -37,7 +37,7 @@ export default function ThongTinCaNhan() {
         })
         promise
             .then((result) => {
-                setInfo({
+                const user = {
                     taiKhoan: result.data.content[0].taiKhoan,
                     matKhau: result.data.content[0].matKhau,
                     email: result.data.content[0].email,
@@ -45,16 +45,9 @@ export default function ThongTinCaNhan() {
                     maNhom: 'GP01',
                     maLoaiNguoiDung: result.data.content[0].maLoaiNguoiDung,
                     hoTen: result.data.content[0].hoTen,
-                })
-                setValue({
-                    taiKhoan: result.data.content[0].taiKhoan,
-                    matKhau: result.data.content[0].matKhau,
-                    email: result.data.content[0].email,
-                    soDt: result.data.content[0].soDT,
-                    maNhom: 'GP01',
-                    maLoaiNguoiDung: result.data.content[0].maLoaiNguoiDung,
-                    hoTen: result.data.content[0].hoTen,
-                })
+                }
+                setInfo(user)
+                setValue(user)
             })
             .catch((err) => { console.log(err) })
     }
