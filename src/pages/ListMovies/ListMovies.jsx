@@ -60,26 +60,25 @@ export default function ListMovies(props) {
   };
 
   return (
-    <p>d</p>
-    // <div className={style.film__container}>
-    //   <div className=" text-center mt-3">
-    //     <h2 className="title__flim text-white">Phim đang chiếu</h2>
-    //   </div>
-    //   <Swiper
-    //     // install Swiper modules
-    //     modules={[Navigation, Pagination, Scrollbar, A11y]}
-    //     pagination={{
-    //         dynamicBullets: true,
-    //       }}
-    //     slidesPerView={4}
+    <div className={style.film__container}>
+      <div className=" text-center mt-3">
+        <h2 className="title__flim text-white">Phim đang chiếu</h2>
+      </div>
+      <Swiper
+        // install Swiper modules
+        modules={[Navigation, Pagination, Scrollbar, A11y]}
+        pagination={{
+            dynamicBullets: true,
+          }}
+        slidesPerView={4}
 
-    //     navigation
-    //     onSwiper={(swiper) => console.log(swiper)}
-    //     onSlideChange={() => console.log("slide change")}
-    //     className={style.flim__list}
-    //   >
-    //     {renderListFlimDangChieu()}
-    //   </Swiper>
-    // </div>
+        navigation
+        onSwiper={(swiper) => console.log(swiper)}
+        onSlideChange={() => console.log("slide change")}
+        className={style.flim__list}
+      >
+        {renderListFlimDangChieu()}
+      </Swiper>
+    </div>
   );
 }

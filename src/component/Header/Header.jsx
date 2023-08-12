@@ -51,7 +51,7 @@ export default function Header(props) {
     const layThongTinNguoiDung = () => {
         let promise = axios({
             method: 'GET',
-            url: `${URL_API}/QuanLyNguoiDung/TimKiemNguoiDung?MaNhom=GP01&tuKhoa=${usLogin.taiKhoan}`,
+            url: `${URL_API}/QuanLyNguoiDung/TimKiemNguoiDung?MaNhom=GP01&tuKhoa=${usLogin?.taiKhoan}`,
             headers: {
                 TokenCybersoft: TOKEN,
             }
@@ -89,7 +89,7 @@ export default function Header(props) {
     }
 
     let checkShowOrHideLogin = () => {
-        return statusLogin.length !== 0? <Dropdown.Button menu={menuProps} placement="bottom" className='justify-content-end' icon={<UserOutlined />}>
+        return statusLogin.length !== 0 ? <Dropdown.Button menu={menuProps} placement="bottom" className='justify-content-end' icon={<UserOutlined />}>
             <span onClick={() => {
                 props.history.push('/profile')
             }}>{usLogin.taiKhoan}</span>

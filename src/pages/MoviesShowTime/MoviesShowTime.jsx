@@ -112,8 +112,7 @@ function MoviesShowTime(props) {
   };
   return (
     <div className="container d-flex" style={{ margin: "100px 0" }}>
-      <p>jyyiuy</p>
-      {/* <HeThongRap
+      <HeThongRap
         tabPosition={tabPosition}
         heThongRap={heThongRap}
         checkTheoRap={checkTheoRap}
@@ -133,7 +132,7 @@ function MoviesShowTime(props) {
         <Row gutter={[16, 16]}>
           {<DanhSachVePhim props={props} data={data}/>}
         </Row>
-      </Col> */}
+      </Col>
     </div>
   );
 }
