@@ -1,9 +1,11 @@
-import axios from 'axios'
-import React, { useEffect, useState, memo, useMemo, useCallback } from 'react'
-import { Space, Tabs, Button, Card, Col, Row } from 'antd';
-import { TOKEN, URL_API } from '../../ulti/setting';
-import moment from 'moment/moment';
-import { style } from './styleMoviesShowTime.css'
+import React, { useEffect, useState, memo, useLayoutEffect } from "react";
+import axios from "axios";
+import { Space, Tabs, Button, Card, Col, Row } from "antd";
+import { TOKEN, URL_API } from "../../ulti/setting";
+import moment from "moment/moment";
+import { style } from "./styleMoviesShowTime.css";
+import HeThongRap from "./HeThongRap/HeThongRap";
+import DanhSachVePhim from "./DanhSachVePhim/DanhSachVePhim";
 // - Thứ tự thao tác trong 1 ứng dụng:
 // 	+ b1: load ứng dụng lên
 // 	+ b2: khởi tạo state, hàm
@@ -12,123 +14,126 @@ import { style } from './styleMoviesShowTime.css'
 // 	+ b5: setState trong hàm call api => render lại ui (lặp lại b2 => nhưng ko khởi tạo các hook, nếu ko có useEffect sẽ lặp vô tận)
 // 	+ b6: arr có data mới
 // 	+ b7: binding data lên UI
-
+const date = moment();
 function MoviesShowTime(props) {
-    performance.now()
-    const [tabPosition, setTabPosition] = useState('left');
-    const [heThongRap, setHeThongRap] = useState([])
-    const [lichChieuTheoRap, setLichChieuTheoRap] = useState([])
-    const [rap, setRap] = useState('')
-    const [cumRap, setCumRap] = useState('')
-    let getListCenima = (url, setValue) => {
-        let promise = axios({
-            method: 'GET',
-            url: `${URL_API}/${url}`,
-            headers: {
-                TokenCybersoft: TOKEN
-            }
-        })
-        promise.then((result) => {
-            if (setValue == setHeThongRap) {
-                setRap(result.data.content[0].maHeThongRap)
-            } else {
-                setCumRap(result.data.content[5].lstCumRap[0])
-            }
+  const [data, setData] = useState([]);
+  performance.now();
+  const [tabPosition, setTabPosition] = useState("left");
+  const [heThongRap, setHeThongRap] = useState([]);
+  const [lichChieuTheoRap, setLichChieuTheoRap] = useState([]);
+  const [rap, setRap] = useState("");
+  const [cumRap, setCumRap] = useState("");
+  let getListCenima = (url, setValue) => {
+    let promise = axios({
+      method: "GET",
+      url: `${URL_API}/${url}`,
+      headers: {
+        TokenCybersoft: TOKEN,
+      },
+    });
+    promise
+      .then((result) => {
+        if (setValue == setHeThongRap) {
+          setRap(result.data.content[0].maHeThongRap);
+        } else {
+          setCumRap(result.data.content[5].lstCumRap[0]);
+        }
 
-            setValue(result.data.content)
-        })
-            .catch((err) => { console.log(err) })
+        setValue(result.data.content);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getListCenima("QuanLyRap/LayThongTinHeThongRap", setHeThongRap);
+    getListCenima(
+      "QuanLyRap/LayThongTinLichChieuHeThongRap?maNhom=GP01",
+      setLichChieuTheoRap
+    );
+  }, []);
+
+  useLayoutEffect(() => {
+    if (cumRap !== "") {
+      const mapList = checkFlimDangChieuVaSapChieu(cumRap);
+      setData(mapList);
     }
+  }, [cumRap]);
 
-    useEffect(() => {
-        getListCenima('QuanLyRap/LayThongTinHeThongRap', setHeThongRap)
-        getListCenima('QuanLyRap/LayThongTinLichChieuHeThongRap?maNhom=GP01', setLichChieuTheoRap)
-    }, [])
+  let checkTheoRap = () => {
+    return lichChieuTheoRap.map((lichChieu) => {
+      if (lichChieu.maHeThongRap == rap) {
+        //kiểm tra chỉ hiển thị cụm rạp theo rạp tương ứng
+        return lichChieu.lstCumRap.map((item) => (
+          <Button
+            type={item === cumRap ? "primary" : "dashed"}
+            key={item.maCumRap}
+            onClick={() => {
+              setCumRap(item);
+            }}
+          >
+            <p>{item.tenCumRap}</p>
+          </Button>
+        ));
+      }
+    });
+  };
 
-
-    let checkTheoRap = () => {
-        return lichChieuTheoRap.map(lichChieu => {
-            if (lichChieu.maHeThongRap == rap) {//kiểm tra chỉ hiển thị cụm rạp theo rạp tương ứng
-                return lichChieu.lstCumRap.map(item =>
-                    <Button type={item == cumRap ? 'primary' : 'dashed'} key={item.maCumRap} onClick={() => {
-                        setCumRap(item)
-                    }}>
-                        <p>{item.tenCumRap}</p>
-                    </Button>
-                )
-            }
-        })
-    }
-    console.log('cumRap',cumRap)
-    return (
-        
-        <div className='container d-flex' style={{ margin: '100px 0' }}>
-            <Col span={12}>
-                <>
-                    <Space
-                        style={{
-                            marginBottom: 24,
-                        }}
-                    >
-                    </Space>
-                    <Tabs
-                        tabPosition={tabPosition}
-                        items={heThongRap?.map((item) => {
-                            return {
-                                label: <div className='logo text-center d-flex flex-column align-items-center'>
-                                    <div className='logo__item' style={{ width: '30px' }}>
-                                        <img className='img-fluid' src={item.logo} alt="" />
-                                    </div>
-                                    <div className='logo__content'>
-                                        <p className='m-0'>{item.maHeThongRap}</p>
-                                    </div>
-                                </div>,
-                                key: item.maHeThongRap,
-                                children: <Space wrap>{checkTheoRap()}</Space>
-                            };
-                        })}
-                        onChange={(e) => {
-                            console.log('e', e)
-                            setRap(e) // khi xét rạp thì khi chuyển rạp hàm checkTheoRap mới kiểm tra được cụm rạp nào mà load theo cụm rạp
-                            setCumRap(() => {//set ten rap dau tien sau khi chuyen rap
-                                let object = lichChieuTheoRap.find(item => item.maHeThongRap == e)
-                                console.log('object',object)
-                                return object?.lstCumRap[0]
-                            })
-                        }}
-                    />
-                </>
-            </Col>
-            <Col span={12} style={{
-                flex: '1',
-                backGround: '#aaa',
-                overflowY: 'scroll',
-                height: '100vh'
-            }}>
-                <Row gutter={[16, 16]}>
-                    
-                    {cumRap?.danhSachPhim?.map((item) => {
-                        if (item.dangChieu) {
-                            return <Col key={item.maPhim}>
-                                <Card hoverable title={item.tenPhim} bordered={true}>
-                                    <Space wrap>
-                                        {item.lstLichChieuTheoPhim.map((lst) => {
-                                            return <Button type="primary" ghost className='col' key={lst.maLichChieu} onClick={() => {
-                                                props.history.push(`/checkout/${lst.maLichChieu}`)
-                                            }}>
-                                                {moment(lst.ngayChieuGioChieu).format('hh:mm A')}
-
-                                            </Button>
-                                        })}
-                                    </Space>
-                                </Card>
-                            </Col>
-                        }
-                    })}
-                </Row>
-            </Col>
-        </div >
-
-    )
+  const checkFlimDangChieuVaSapChieu = (cumRap) => {
+    let a = [];
+    cumRap?.danhSachPhim?.forEach((item) => {
+      item.lstLichChieuTheoPhim.forEach((item2) => {
+        if (
+          moment(item2.ngayChieuGioChieu, "YYYY-MM-DD HH:mm:ss").isAfter(
+            date
+          ) ||
+          moment(item2.ngayChieuGioChieu, "YYYY-MM-DD HH:mm:ss").isSame(
+            date.startOf("day")
+          )
+        ) {
+          a = [
+            ...a,
+            {
+              maPhim: item.maPhim,
+              tenPhim: item.tenPhim,
+              lstLichChieuTheoPhim: [
+                {
+                  maLichChieu: item2.maLichChieu,
+                  ngayChieuGioChieu: item2.ngayChieuGioChieu,
+                },
+              ],
+            },
+          ];
+        }
+      });
+    });
+    return a;
+  };
+  return (
+    <div className="container d-flex" style={{ margin: "100px 0" }}>
+      <HeThongRap
+        tabPosition={tabPosition}
+        heThongRap={heThongRap}
+        checkTheoRap={checkTheoRap}
+        setRap={setRap}
+        setCumRap={setCumRap}
+        lichChieuTheoRap={lichChieuTheoRap}
+      />
+      <Col
+        span={12}
+        style={{
+          flex: "1",
+          backGround: "#aaa",
+          overflowY: "scroll",
+          height: "100vh",
+        }}
+      >
+        <Row gutter={[16, 16]}>
+          {<DanhSachVePhim props={props} data={data}/>}
+        </Row>
+      </Col>
+    </div>
+  );
 }
-export default memo(MoviesShowTime)
+export default memo(MoviesShowTime);

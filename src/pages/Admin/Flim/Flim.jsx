@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Button, Table, Input, Space } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { LayDanhSachPhim, xoaPhim } from '../../../redux/action/movieAction';
+import { LayDanhSachPhim, LayDanhSachPhimAdmin, xoaPhim } from '../../../redux/action/movieAction';
 const { Search } = Input;
 
 
@@ -45,7 +45,7 @@ export default function Flim(props) {
   const { listMovies } = useSelector(state => state.movieReducer)
   let dispatch = useDispatch()
   useEffect(() => {
-      let action = LayDanhSachPhim()
+      let action = LayDanhSachPhimAdmin()
       dispatch(action)
 
   }, [])

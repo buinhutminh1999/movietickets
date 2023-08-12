@@ -1,15 +1,18 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { Logout } from '../../redux/reducers/movieReducer';
 import { UserOutlined } from '@ant-design/icons';
 import { Dropdown, Space, message } from 'antd';
+import axios from 'axios';
+import { TOKEN, URL_API } from '../../ulti/setting';
 
 let items = []
 export default function Header(props) {
     let activeStyle = 'nav-link text-danger'
     let nonActiveStyle = 'nav-link text-dark'
     let { usLogin } = useSelector((state) => { return state.movieReducer })
+    const [statusLogin, setStatusLogin] = useState([])
     let dispatch = useDispatch()
     const kiemTraQuanTriHayKhachHang = () => {
         if (!usLogin) return;
@@ -45,6 +48,25 @@ export default function Header(props) {
             ]
     }
 
+    const layThongTinNguoiDung = () => {
+        let promise = axios({
+            method: 'GET',
+            url: `${URL_API}/QuanLyNguoiDung/TimKiemNguoiDung?MaNhom=GP01&tuKhoa=${usLogin.taiKhoan}`,
+            headers: {
+                TokenCybersoft: TOKEN,
+            }
+        })
+        promise
+            .then(result => {
+               result.data.content.length !== 0 && usLogin !== null ? setStatusLogin(result.data.content) : setStatusLogin([])
+            })
+            .catch((err) => { console.log(err) })
+    }
+    useEffect(() => {
+        layThongTinNguoiDung()
+    }, [])
+
+
     let resetLocal = () => {
         localStorage.removeItem('userMovies')
         localStorage.removeItem('accessToken')
@@ -67,7 +89,7 @@ export default function Header(props) {
     }
 
     let checkShowOrHideLogin = () => {
-        return usLogin !== null ? <Dropdown.Button menu={menuProps} placement="bottom" className='justify-content-end' icon={<UserOutlined />}>
+        return statusLogin.length !== 0? <Dropdown.Button menu={menuProps} placement="bottom" className='justify-content-end' icon={<UserOutlined />}>
             <span onClick={() => {
                 props.history.push('/profile')
             }}>{usLogin.taiKhoan}</span>

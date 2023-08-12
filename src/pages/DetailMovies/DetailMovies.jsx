@@ -17,6 +17,8 @@ export default function DetailMovies(props) {
     dispatch(action)
   }, [])
 
+  console.log('detail',detailMovies)
+
   const [tabPosition, setTabPosition] = useState('left');
   return (
     <div className='container-fluid'>

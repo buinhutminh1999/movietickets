@@ -25,7 +25,6 @@ const disabledDateTime = () => ({
 });
 
 export default function ShowTime(props) {
- 
   const [flim, setFilm] = useState(JSON.parse(localStorage.getItem('Flim')))
   const dispatch = useDispatch()
   const { heThongRap, cumRapTheoHeThongRap } = useSelector(state => state.movieReducer)
@@ -58,9 +57,13 @@ export default function ShowTime(props) {
   const onChangeDate = (e) => {
     console.log(e)
     formik.setFieldValue('ngayChieuGioChieu', dayjs(e).format('DD/MM/YYYY HH:mm:ss'))
+    console.log(
+      dayjs(e).format('DD/MM/YYYY HH:mm:ss')
+    )
   }
 
   const onChangeCumRap = (e) => {
+    console.log('e',e)
     formik.setFieldValue('maRap', e)
   }
   return (
