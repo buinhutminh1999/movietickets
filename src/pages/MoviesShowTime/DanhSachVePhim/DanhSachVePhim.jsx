@@ -1,10 +1,58 @@
-import { Col, Button, Card, Space } from "antd";
+import { Button } from "antd";
 import moment from "moment";
 import React, { memo } from "react";
+function DanhSachVePhim({
+  data,
+  props,
+  dateFlim,
+  dateListFlimForDay,
+  handleSetDate,
+}) {
+  let day = moment(dateListFlimForDay, "DD-MM-YYYY").format("DD");
+  let monthAndYear = moment(dateListFlimForDay, "DD-MM-YYYY").format("MM-YYYY");
 
-function DanhSachVePhim({ data, props }) {
+  console.log("day", monthAndYear);
   return (
     <div>
+      <div className="grid grid-cols-6 text-center py-2 px-2 gap-2">
+        {dateFlim.map((d) => {
+          return (
+            <div
+              key={Math.random()}
+              onClick={() => {
+                handleSetDate(`${d.date}-${monthAndYear}`);
+              }}
+            >
+              <div
+                className={
+                  day === d.date
+                    ? "grid grid-row-2 border rounded cursor-pointer"
+                    : "grid grid-row-2 border rounded cursor-pointer"
+                }
+              >
+                <span
+                  className={
+                    day === d.date
+                      ? "bg-pink-600 text-white text-lg font-semibold mb-0 py-1"
+                      : "bg-gray-100 text-black text-lg font-semibold mb-0 py-1"
+                  }
+                >
+                  {d.date}
+                </span>
+                <span
+                  className={
+                    day === d.date
+                      ? "text-pink-600 bg-transparent mb-0 py-1"
+                      : "text-gray-400 bg-transparent mb-0 py-1"
+                  }
+                >
+                  {d.day}
+                </span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
       {data?.length === 0 ? (
         <div className="flex justify-center align-items-center h-screen flex-col">
           <p className="mb-0">'Úi, Suất chiếu không tìm thấy.'</p>
@@ -27,15 +75,13 @@ function DanhSachVePhim({ data, props }) {
               >
                 <img src={item.hinhAnh} className="w-100 h-100" />
               </div>
-              <div
-                hoverable
-                title={item.tenPhim}
-                bordered={true}
-                className="col-span-9"
-              >
-                {item.lstLichChieuTheoPhim.map((lst) => {
+              <div title={item.tenPhim} className="col-span-9">
+                {item.lstLichChieuTheoPhim.map((lst, index) => {
                   return (
-                    <div className="grid grid-rows-3 gap-2 px-4">
+                    <div
+                      className="grid grid-rows-3 gap-2 px-4"
+                      key={Math.random()}
+                    >
                       <div className="movies__showtimes__item">
                         <p>{item.tenPhim}</p>
                       </div>
@@ -44,7 +90,6 @@ function DanhSachVePhim({ data, props }) {
                           <Button
                             type="primary"
                             ghost
-                            key={lst.maLichChieu}
                             onClick={() => {
                               props.history.push(
                                 `/checkout/${lst.maLichChieu}`
@@ -54,9 +99,6 @@ function DanhSachVePhim({ data, props }) {
                             {moment(lst.ngayChieuGioChieu).format("hh:mm A")}
                           </Button>
                         </div>
-                      </div>
-                      <div className="movies__showtimes__item">
-                      <p className="alert alert-success">{moment(lst.ngayChieuGioChieu).format("DD/MM/YYYY")}</p>
                       </div>
                     </div>
                   );

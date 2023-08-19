@@ -2,9 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* .button{
-    color: rgb(38 38 38/var(1))
-} */
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
 
 :where(.css-10ed4xt).ant-tabs>.ant-tabs-nav .ant-tabs-nav-list,
 :where(.css-10ed4xt).ant-tabs>div>.ant-tabs-nav .ant-tabs-nav-list {

@@ -1,9 +1,9 @@
-import React, { useEffect, useState, memo, useMemo, useCallback } from "react";
+import React, { useEffect, useState, memo, useCallback } from "react";
 import axios from "axios";
-import { Button, Col, Row } from "antd";
+import { Col } from "antd";
 import { TOKEN, URL_API } from "../../ulti/setting";
-import moment from "moment/moment";
-import style from "./style.module.css";
+import moment from "moment";
+import "moment/locale/vi";
 import HeThongRap from "./HeThongRap/HeThongRap";
 import DanhSachVePhim from "./DanhSachVePhim/DanhSachVePhim";
 // - Thứ tự thao tác trong 1 ứng dụng:
@@ -14,14 +14,31 @@ import DanhSachVePhim from "./DanhSachVePhim/DanhSachVePhim";
 // 	+ b5: setState trong hàm call api => render lại ui (lặp lại b2 => nhưng ko khởi tạo các hook, nếu ko có useEffect sẽ lặp vô tận)
 // 	+ b6: arr có data mới
 // 	+ b7: binding data lên UI
-const date = moment();
+let dateFlim = [];
+for (let i = 0; i < 6; i++) {
+  dateFlim.push({
+    id: i,
+    date: moment().add(i, "days").format("DD"),
+    day:
+      i === 0
+        ? "Hôm nay"
+        : moment().add(i, "days").format("dddd")[0].toUpperCase() +
+          moment().add(i, "days").format("dddd").substring(1),
+  });
+}
 function MoviesShowTime(props) {
   const [tabPosition, setTabPosition] = useState("top");
   const [heThongRap, setHeThongRap] = useState([]);
   const [lichChieuTheoRap, setLichChieuTheoRap] = useState([]);
   const [rap, setRap] = useState("");
   const [cumRap, setCumRap] = useState("");
-
+  const [data, setData] = useState([]);
+  const [dateListFlimForDay, setDateListFlimForDay] = useState(
+    moment().format("DD-MM-YYYY")
+  );
+  const handleSetDate = useCallback((dateFlim) => {
+    setDateListFlimForDay(dateFlim);
+  }, []);
   const chuyenRap = (result) => {
     let newArray = [];
     if (rap == "") {
@@ -88,18 +105,15 @@ function MoviesShowTime(props) {
   const handleButtonClick = useCallback((item) => {
     setCumRap(item);
   }, []);
-  const checkFlimDangChieuVaSapChieu = (cumRap) => {
+  const checkFlimDangChieuVaSapChieu = () => {
     let a = [];
     cumRap?.danhSachPhim?.forEach((item) => {
       item.lstLichChieuTheoPhim.forEach((item2) => {
         if (
-          moment(item2.ngayChieuGioChieu, "YYYY-MM-DD HH:mm:ss").isAfter(
-            date
-          ) ||
-          moment(item2.ngayChieuGioChieu, "YYYY-MM-DD HH:mm:ss").isSame(
-            date.startOf("day")
-          )
+          dateListFlimForDay ===
+          moment(item2.ngayChieuGioChieu).format("DD-MM-YYYY")
         ) {
+          console.log("trueaksdhkashd");
           a = [
             ...a,
             {
@@ -117,14 +131,13 @@ function MoviesShowTime(props) {
         }
       });
     });
-    return a;
+    setData(a);
   };
-  const data = useMemo(() => {
+  useEffect(() => {
     if (cumRap !== "") {
-      const mapList = checkFlimDangChieuVaSapChieu(cumRap);
-      return mapList;
+      checkFlimDangChieuVaSapChieu(cumRap);
     }
-  }, [cumRap]);
+  }, [cumRap, dateListFlimForDay]);
   let checkTheoRap = () => {
     return lichChieuTheoRap.map((lichChieu) => {
       return lichChieu.lstCumRap.map((item) => (
@@ -143,7 +156,7 @@ function MoviesShowTime(props) {
           <div className="col-span-1">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-4 w-4 text-gray-400 mr-0"
+              className="h-4 w-4 text-gray-400 mr-0"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -159,41 +172,46 @@ function MoviesShowTime(props) {
         </div>
       ));
     });
-
     // return buttons.flat().filter(Boolean); // Lọc và loại bỏ giá trị undefined chỉ khi chắn chắc giá trị if kiểm tra đúng
   };
-
+  // console.log("dateListFlimForDay", dateListFlimForDay);
   return (
     <div className="py-8">
-      <p className="text-pink-600 font-bold text-center lg:text-3xl mb-5">Đặt vé ngay</p>
+      <p className="text-pink-600 font-bold text-center lg:text-3xl mb-5">
+        Đặt vé ngay
+      </p>
       <div
-      id="booking-ticket"
-      className="flex justify-center mx-auto rounded shadow-lg shadow-indigo-500/40"
-      style={{
-        border: "0px solid #e5e5e5",
-        maxWidth: "1152px",
-        maxHeight: "833px",
-        background: "white",
-      }}
-    >
-      
-      <Col span={11}>
-        <HeThongRap
-          tabPosition={tabPosition}
-          heThongRap={heThongRap}
-          checkTheoRap={checkTheoRap}
-          setRap={setRap}
-          setCumRap={setCumRap}
-          lichChieuTheoRap={lichChieuTheoRap}
-        />
-      </Col>
-      <Col
-        span={13}
-       className="overflow-y-auto"
+        id="booking-ticket"
+        className="flex justify-center mx-auto rounded shadow-lg shadow-indigo-500/40"
+        style={{
+          border: "0px solid #e5e5e5",
+          maxWidth: "1152px",
+          maxHeight: "833px",
+          background: "white",
+        }}
       >
-        {<DanhSachVePhim props={props} data={data} />}
-      </Col>
-    </div>
+        <Col span={11}>
+          <HeThongRap
+            tabPosition={tabPosition}
+            heThongRap={heThongRap}
+            checkTheoRap={checkTheoRap}
+            setRap={setRap}
+            setCumRap={setCumRap}
+            lichChieuTheoRap={lichChieuTheoRap}
+          />
+        </Col>
+        <Col span={13} className="overflow-y-auto">
+          {
+            <DanhSachVePhim
+              props={props}
+              data={data}
+              dateFlim={dateFlim}
+              dateListFlimForDay={dateListFlimForDay}
+              handleSetDate={handleSetDate}
+            />
+          }
+        </Col>
+      </div>
     </div>
   );
 }
