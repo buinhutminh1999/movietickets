@@ -1,4 +1,3 @@
-import { Result } from "antd";
 import axios from "axios";
 import { getAPI } from "../../API/GetApi/GetApi";
 import { history } from "../../App";

@@ -13,7 +13,7 @@ import { CheckoutTemplate } from './Template/CheckoutTemplate/CheckoutTemplate';
 import MenuCheckOut from './pages/Checkout/MenuCheckOut';
 import Loading from './component/Loading/Loading';
 import { AdminTemplate } from './Template/AdminTemplate/AdminTemplate';
-import Flim from './pages/Admin/Flim/Flim';
+import  Flim from './pages/Admin/Flim/Flim';
 import AddFlim from './pages/Admin/AddFlim/AddFlim';
 import Edit from './pages/Admin/Edit/Edit';
 import ShowTime from './pages/Admin/ShowTime/ShowTime';

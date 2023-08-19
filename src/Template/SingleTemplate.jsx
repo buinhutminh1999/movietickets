@@ -1,4 +1,3 @@
-import { Component } from "react"
 import { Route } from "react-router-dom"
 
 export const SingleTemplate = (props) => {

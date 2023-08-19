@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* .button{
+    color: rgb(38 38 38/var(1))
+} */
+
+:where(.css-10ed4xt).ant-tabs>.ant-tabs-nav .ant-tabs-nav-list,
+:where(.css-10ed4xt).ant-tabs>div>.ant-tabs-nav .ant-tabs-nav-list {
+    align-items: center;
+}
+
+.text-md {
+    font-size: .9375rem;
+}
