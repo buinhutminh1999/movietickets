@@ -24,9 +24,13 @@ for (let i = 0; i < 6; i++) {
         ? "Hôm nay"
         : moment().add(i, "days").format("dddd")[0].toUpperCase() +
           moment().add(i, "days").format("dddd").substring(1),
+    month: moment().format("MM"),
+    years: moment().format("YYYY"),
+    dayMonthYears: moment().add(i, "days").format("DD-MM-YYYY"),
   });
 }
-function MoviesShowTime(props) {
+console.log("dateFlim", dateFlim);
+export default function MoviesShowTime(props) {
   const [tabPosition, setTabPosition] = useState("top");
   const [heThongRap, setHeThongRap] = useState([]);
   const [lichChieuTheoRap, setLichChieuTheoRap] = useState([]);
@@ -113,7 +117,6 @@ function MoviesShowTime(props) {
           dateListFlimForDay ===
           moment(item2.ngayChieuGioChieu).format("DD-MM-YYYY")
         ) {
-          console.log("trueaksdhkashd");
           a = [
             ...a,
             {
@@ -215,4 +218,3 @@ function MoviesShowTime(props) {
     </div>
   );
 }
-export default memo(MoviesShowTime);

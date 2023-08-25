@@ -9,9 +9,6 @@ function DanhSachVePhim({
   handleSetDate,
 }) {
   let day = moment(dateListFlimForDay, "DD-MM-YYYY").format("DD");
-  let monthAndYear = moment(dateListFlimForDay, "DD-MM-YYYY").format("MM-YYYY");
-
-  console.log("day", monthAndYear);
   return (
     <div>
       <div className="grid grid-cols-6 text-center py-2 px-2 gap-2">
@@ -20,7 +17,7 @@ function DanhSachVePhim({
             <div
               key={Math.random()}
               onClick={() => {
-                handleSetDate(`${d.date}-${monthAndYear}`);
+                handleSetDate(d.dayMonthYears);
               }}
             >
               <div

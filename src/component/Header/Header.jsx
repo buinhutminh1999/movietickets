@@ -1,170 +1,146 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Logout } from "../../redux/reducers/movieReducer";
 import { UserOutlined } from "@ant-design/icons";
-import { Dropdown, Space, message } from "antd";
+import { Dropdown } from "antd";
 import axios from "axios";
 import { TOKEN, URL_API } from "../../ulti/setting";
+import ButtonPrimary from "../Button/ButtonPrimary/ButtonPrimary";
 
-let items = [];
-export default function Header(props) {
-  let activeStyle = "nav-link text-danger";
-  let nonActiveStyle = "nav-link text-dark";
-  let { usLogin } = useSelector((state) => {
-    return state.movieReducer;
-  });
-  const [statusLogin, setStatusLogin] = useState([]);
+export default function Header({ history }) {
   let dispatch = useDispatch();
-  const kiemTraQuanTriHayKhachHang = () => {
-    if (!usLogin) return;
-    return usLogin.maLoaiNguoiDung == "QuanTri"
-      ? (items = [
-          {
-            label: "Thông tin cá nhân",
-            key: "0",
-            icon: <UserOutlined />,
-          },
-          {
-            label: "Trang quản trị",
-            key: "1",
-            icon: <UserOutlined />,
-          },
-          {
-            label: "Đăng xuất",
-            key: "2",
-            icon: "",
-          },
-        ])
-      : (items = [
-          {
-            label: "Thông tin cá nhân",
-            key: "0",
-            icon: <UserOutlined />,
-          },
-          {
-            label: "Đăng xuất",
-            key: "2",
-            icon: "",
-          },
-        ]);
-  };
-
-  const kiemTraNguoiDungCoTonTaiHaykhong = () => {
-    let promise = axios({
-      method: "GET",
-      url: `${URL_API}/QuanLyNguoiDung/TimKiemNguoiDung?MaNhom=GP01&tuKhoa=${usLogin?.taiKhoan}`,
-      headers: {
-        TokenCybersoft: TOKEN,
-      },
-    });
-    promise
-      .then((result) => {
-        result.data.content.length !== 0 && usLogin !== null
-          ? setStatusLogin(result.data.content)
-          : setStatusLogin([]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-  useEffect(() => {
-    kiemTraNguoiDungCoTonTaiHaykhong();
-  }, []);
-
+  let { usLogin } = useSelector((state) => state.movieReducer);
   let resetLocal = () => {
     localStorage.removeItem("userMovies");
     localStorage.removeItem("accessToken");
     dispatch(Logout(null));
   };
   const handleMenuClick = (e) => {
-    if (e.key == "0") {
-      console.log(e.key);
-      props.history.push("/profile");
-    } else if (e.key == "2") {
-      message.info("Đăng xuất thành công");
-      resetLocal();
+    if (e.key === "1") {
+      history.push("/profile");
+    } else if (e.key === "2") {
+      history.push("/admin/flim");
     } else {
-      props.history.push("/admin/flim");
+      resetLocal();
     }
   };
+
+  useEffect(() => {
+    if (usLogin) {
+      const kiemTraNguoiDungCoTonTaiHaykhong = () => {
+        let promise = axios({
+          method: "GET",
+          url: `${URL_API}/QuanLyNguoiDung/TimKiemNguoiDung?MaNhom=GP01&tuKhoa=${usLogin?.taiKhoan}`,
+          headers: {
+            TokenCybersoft: TOKEN,
+          },
+        });
+        promise
+          .then((result) => {
+            if (result.data.content.length === 0) {
+              resetLocal();
+            }
+          })
+          .catch((err) => {});
+      };
+      kiemTraNguoiDungCoTonTaiHaykhong();
+    }
+  }, []);
+
+  let items =
+    usLogin?.maLoaiNguoiDung === "QuanTri"
+      ? [
+          {
+            label: "Thông tin cá nhân",
+            key: "1",
+            icon: <UserOutlined />,
+          },
+          {
+            label: "Quản trị",
+            key: "2",
+            icon: <UserOutlined />,
+          },
+          {
+            label: "Đăng xuất",
+            key: "3",
+            icon: <UserOutlined />,
+          },
+        ]
+      : [
+          {
+            label: "Thông tin cá nhân",
+            key: "1",
+            icon: <UserOutlined />,
+          },
+          {
+            label: "Đăng xuất",
+            key: "3",
+            icon: <UserOutlined />,
+          },
+        ];
+
   const menuProps = {
-    items: kiemTraQuanTriHayKhachHang(),
+    items,
     onClick: handleMenuClick,
   };
-
-  let checkShowOrHideLogin = () => {
-    return statusLogin.length !== 0 ? (
-      <Dropdown.Button
-        menu={menuProps}
-        placement="bottom"
-        className="justify-content-end"
-        icon={<UserOutlined />}
-      >
-        <span
-          onClick={() => {
-            props.history.push("/profile");
-          }}
-        >
-          {usLogin.taiKhoan}
-        </span>
-      </Dropdown.Button>
-    ) : (
-      <Space wrap>
-        <button
-          className="btn btn-info"
-          onClick={() => {
-            props.history.push("/login");
-          }}
-        >
-          Đăng nhập
-        </button>
-        <button
-          className="btn btn-secondary"
-          onClick={() => {
-            props.history.push("/register");
-          }}
-        >
-          Đăng Ký
-        </button>
-      </Space>
-    );
-  };
-
   return (
-    <header className="header">
-      <nav className="navbar navbar-expand-lg  navbar-dark bg-light pdlr-100">
-        <div className="flex align-items-center cursor-pointer">
-          <a className="mr-2 text-decoration-none font-bold" onClick={() => props.history.push('/')}>Movie Tickets</a>
-          <div className="flex align-items-center">
+    <header className="header bg-white/95 boder-b border-gray-200 shadow-sm">
+      <div className="cursor-pointer flex justify-content-between items-center mx-auto max-w-6xl lg:px-8 h-16">
+        <div className="flex items-center gap-2">
+          <div onClick={() => history.push("/")}>
+            <img
+              className="logo"
+              src="https://media.istockphoto.com/id/615096356/photo/beautiful-pink-circle-light-with-lens-flare-on-particles-background.jpg?s=170667a&w=0&k=20&c=WTm7BgnNsrAd5nsCV4Py6Ld9LfPtlDKiILX3lvEpPTs="
+              alt=""
+            />
+          </div>
+          <div className="d-flex font-semibold text-movies hover:opacity-80">
             <img
               alt=""
               src="https://homepage.momocdn.net/fileuploads/svg/momo-file-221117104714.svg"
             ></img>
-            <a className="hover:text-pink-700 text-decoration-none text-md" href="#booking-ticket">Đặt vé 
-            <br />
-            xem phim</a>
+            <a
+              className="hover:text-pink-700 text-decoration-none text-sm text-movies"
+              href="#booking-ticket"
+            >
+              Đặt vé
+              <br />
+              xem phim
+            </a>
           </div>
         </div>
-        <button className="navbar-toggler" type="button">
-          <span className="navbar-toggler-icon" />
-        </button>
-        <div className="collapse navbar-collapse">
-          <ul className="navbar-nav mr-auto">
-            <li className="nav-item ">
-              <NavLink
-                to="/home"
-                className={({ isActive }) =>
-                  isActive ? activeStyle : nonActiveStyle
-                }
-              >
-                Home
-              </NavLink>
-            </li>
-          </ul>
+        <div>
+          <div className="grid grid-cols-3 gap-2 font-bold text-gray-600">
+            <span className="hover:text-gray-900">Lịch chiếu</span>
+            <span className="hover:text-gray-900">Rạp chiếu</span>
+            <span className="hover:text-gray-900">Phim chiếu</span>
+          </div>
         </div>
-        {checkShowOrHideLogin()}
-      </nav>
+        {!usLogin ? (
+          <div className="grid grid-cols-2 gap-2">
+            <ButtonPrimary
+              history={history}
+              url={"/login"}
+              content={"Đăng nhập"}
+            />
+            <ButtonPrimary
+              history={history}
+              url={"/register"}
+              content={"Đăng ký"}
+            />
+          </div>
+        ) : (
+          <div>
+            <Dropdown.Button
+              menu={menuProps}
+              placement="bottom"
+              icon={<UserOutlined />}
+            >
+              {usLogin?.taiKhoan}
+            </Dropdown.Button>
+          </div>
+        )}
+      </div>
     </header>
   );
 }

@@ -17,7 +17,6 @@ import {
   GetDanhSachNguoiDung,
 } from "../reducers/movieReducer";
 const getAccessToken = localStorage.getItem("accessToken");
-
 export const DangKyAction = (props, value) => {
   return (dispatch2) => {
     let promise = axios({
@@ -324,6 +323,8 @@ export const taoLichChieu = (lichChieu) => {
       });
   };
 };
+
+
 
 export const capNhatThongTinNguoiDung = (thongTin) => {
   return (dispatch) => {

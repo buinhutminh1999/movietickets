@@ -1,7 +1,5 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Rate, Card,Row } from "antd";
-import { TOKEN, URL_API } from "../../ulti/setting";
+import React, { useEffect } from "react";
+import { Rate, Card } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -61,21 +59,20 @@ export default function ListMovies(props) {
 
   return (
     <div className={style.film__container}>
-      <div className=" text-center mt-3">
+      <div className="text-center">
         <h2 className="title__flim text-white">Phim đang chiếu</h2>
       </div>
       <Swiper
         // install Swiper modules
         modules={[Navigation, Pagination, Scrollbar, A11y]}
         pagination={{
-            dynamicBullets: true,
-          }}
+          dynamicBullets: true,
+        }}
         slidesPerView={4}
-
         navigation
         onSwiper={(swiper) => console.log(swiper)}
         onSlideChange={() => console.log("slide change")}
-        className={style.flim__list}
+        className="px-5 max-w-6xl md:px-10 w-full m-auto"
       >
         {renderListFlimDangChieu()}
       </Swiper>
