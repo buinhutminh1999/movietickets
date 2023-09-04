@@ -5,7 +5,7 @@ import { UserOutlined } from "@ant-design/icons";
 import { Dropdown } from "antd";
 import axios from "axios";
 import { TOKEN, URL_API } from "../../ulti/setting";
-import ButtonPrimary from "../Button/ButtonPrimary/ButtonPrimary";
+import ButtonPrimary from "../../component/Button/ButtonPrimary/ButtonPrimary";
 
 export default function Header({ history }) {
   let dispatch = useDispatch();

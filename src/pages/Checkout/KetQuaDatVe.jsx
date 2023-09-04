@@ -1,55 +1,61 @@
-import React, { memo, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { thongTinDatVe } from '../../redux/action/movieAction'
-import { Card, Col, Row } from 'antd';
-import moment from 'moment';
+import React, { memo, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { thongTinDatVe } from "../../redux/action/movieAction";
+import { Card } from "antd";
+import moment from "moment";
 
-function KetQuaDatVe({key}) {
-    let { thongTinVe } = useSelector(state => state.movieReducer)
-    let dispatch = useDispatch()
+function KetQuaDatVe() {
+  let { thongTinVe } = useSelector((state) => state.movieReducer);
+  let dispatch = useDispatch();
+  const renderThongTinDatVe = () => {
+    return thongTinVe.thongTinDatVe?.map((item) => {
+      return (
+        <Card key={item.maVe} title={item.tenPhim} bordered={true}>
+          <div className="grid grid-cols-2">
+            <div>Ngày đặt</div>
+            <div>{moment(item.ngayDat).format("DD/MM/YYYY")}</div>
+          </div>
+          <div className="grid grid-cols-2">
+            <div>RẠP {item.danhSachGhe[0].tenRap}</div>
+            <div>{item.danhSachGhe[0].tenHeThongRap}</div>
+          </div>
+          <div className="grid grid-cols-2">
+            <div>GHẾ</div>
+            <div className="grid grid-cols-3">
+              {item.danhSachGhe.map((item2, i) => {
+                return (
+                  <span key={i}>
+                    {item.danhSachGhe.length - 1 === i
+                      ? item2.maGhe
+                      : `${item2.maGhe},`}
+                  </span>
+                );
+              })}
+            </div>
+          </div>
+          <div className="grid grid-cols-2">
+            <div>Tạm tính</div>
+            <div>
+              {(item.giaVe * (item.danhSachGhe.length + 1)).toLocaleString()}
+            </div>
+          </div>
+        </Card>
+      );
+    });
+  };
+  useEffect(() => {
+    let action = thongTinDatVe();
+    dispatch(action);
+  }, []);
 
-    const renderThongTinDatVe = () => {
-        return thongTinVe.thongTinDatVe?.map((item) => {
-            return <Col span={8} key={item.maVe}>
-
-                <Card title={item.tenPhim} bordered={true}>
-                    <Row >
-                        <Col span={12}>Ngày đặt</Col>
-                        <Col span={12}>{moment(item.ngayDat).format('DD/MM/YYYY')}</Col>
-                    </Row>
-                    <Row >
-                        <Col span={12}>RẠP {item.danhSachGhe[0].tenRap}</Col>
-                        <Col span={12}>{item.danhSachGhe[0].tenHeThongRap}</Col>
-                    </Row>
-                    <Row >
-                        <Col span={12}>GHẾ</Col>
-                        <Col span={12}> {item.danhSachGhe.map((item2, i) => {
-                            // console.log('item2', item2)
-                            return <span key={i}>{item2.maGhe} {item.danhSachGhe.length == i + 1 ? null : ','} </span>
-                        })}</Col>
-                    </Row>
-                    <Row >
-                        <Col span={12}>Tạm tính</Col>
-                        <Col span={12}>{(item.giaVe * (item.danhSachGhe.length + 1)).toLocaleString()}</Col>
-                    </Row>
-                </Card>
-            </Col>
-        })
-    }
-    useEffect(() => {
-        let action = thongTinDatVe()
-        dispatch(action)
-    }, [])
-
-    return (
-        <div>
-            <h3>Kết quả đặt vé</h3>
-            <Row gutter={16}>
-                {renderThongTinDatVe()}
-            </Row>
-        </div>
-    )
+  return (
+    <div>
+      <h3>Kết quả đặt vé</h3>
+      <div className="grid sm:grid grid-cols-1 lg:grid-cols-3 w-full gap-2">
+        {renderThongTinDatVe()}
+      </div>
+    </div>
+  );
 }
 
-export default memo(KetQuaDatVe)
-
+export default memo(KetQuaDatVe);

@@ -1,91 +1,85 @@
-import React, { useEffect, useState } from 'react'
-import { Button, Table, Input, Space } from 'antd';
-import axios from 'axios';
-import { TOKEN, URL_API } from '../../../ulti/setting';
-import { AudioOutlined } from '@ant-design/icons';
-import { useDispatch, useSelector } from 'react-redux';
-import { layDanhSachNguoiDung } from '../../../redux/action/movieAction';
-import { LoadingReducer } from '../../../redux/reducers/movieReducer';
-const getAccessToken = localStorage.getItem('accessToken')
+import React, { useEffect } from "react";
+import { Button, Table, Input } from "antd";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+
+import axios from "axios";
+import { TOKEN, URL_API } from "../../../ulti/setting";
+import { useDispatch, useSelector } from "react-redux";
+import { layDanhSachNguoiDung } from "../../../redux/action/movieAction";
+import { LoadingReducer } from "../../../redux/reducers/movieReducer";
+const getAccessToken = localStorage.getItem("accessToken");
 
 const { Search } = Input;
 
-const suffix = (
-  <AudioOutlined
-    style={{
-      fontSize: 16,
-      color: '#1890ff',
-    }}
-  />
-);
 const columns = [
   {
-    title: 'STT',
-    dataIndex: 'stt',
+    title: "STT",
+    dataIndex: "stt",
     // specify the condition of filtering result
     // here is that finding the name started with `value`
 
     sorter: (a, b) => a.stt - b.stt,
-    sortDirections: ['descend', 'ascend'],//có 2 loại sort
-    defaultSortOrder: 'descend'
+    sortDirections: ["descend", "ascend"], //có 2 loại sort
+    defaultSortOrder: "descend",
   },
   {
-    title: 'Tài khoản',
-    dataIndex: 'taiKhoan',
-    defaultSortOrder: 'descend',
+    title: "Tài khoản",
+    dataIndex: "taiKhoan",
+    defaultSortOrder: "descend",
     sorter: (a, b) => a.taiKhoan.length - b.taiKhoan.length,
   },
   {
-    title: 'Họ tên',
-    dataIndex: 'hoTen',
-    defaultSortOrder: 'descend',
+    title: "Họ tên",
+    dataIndex: "hoTen",
+    defaultSortOrder: "descend",
     sorter: (a, b) => a.hoTen.length - b.hoTen.length,
   },
   {
-    title: 'Email',
-    dataIndex: 'email',
-    defaultSortOrder: 'descend',
+    title: "Email",
+    dataIndex: "email",
+    defaultSortOrder: "descend",
     sorter: (a, b) => a.email.length - b.email.length,
   },
   {
-    title: 'Số điện thoại',
-    dataIndex: 'sdt',
-    defaultSortOrder: 'descend',
+    title: "Số điện thoại",
+    dataIndex: "sdt",
+    defaultSortOrder: "descend",
     sorter: (a, b) => a.sdt - b.sdt,
   },
   {
-    title: 'Hành động',
-    dataIndex: 'hanhDong',
+    title: "Hành động",
+    dataIndex: "hanhDong",
   },
 ];
 export default function TableNguoiDung(props) {
-  const { danhSachNguoiDung } = useSelector(state => state.movieReducer)
-  const dispatch = useDispatch()
+  const { danhSachNguoiDung } = useSelector((state) => state.movieReducer);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(layDanhSachNguoiDung())
-  }, [])
+    dispatch(layDanhSachNguoiDung());
+  }, []);
   const xoaTaiKhoan = (taiKhoan) => {
-    dispatch(LoadingReducer(true))
+    dispatch(LoadingReducer(true));
     let promise = axios({
-      method: 'DELETE',
+      method: "DELETE",
       url: `${URL_API}/QuanLyNguoiDung/XoaNguoiDung?TaiKhoan=${taiKhoan}`,
       headers: {
         TokenCybersoft: TOKEN,
-        Authorization: 'Bearer ' + getAccessToken,
-      }
-    })
+        Authorization: "Bearer " + getAccessToken,
+      },
+    });
 
-    promise.then((result) => {
-      dispatch(LoadingReducer(false))
-      dispatch(layDanhSachNguoiDung())
-      console.log(result)
-    })
-      .catch((err) => {
-        dispatch(LoadingReducer(false))
-        console.log(err)
+    promise
+      .then((result) => {
+        dispatch(LoadingReducer(false));
+        dispatch(layDanhSachNguoiDung());
+        console.log(result);
       })
-  }
+      .catch((err) => {
+        dispatch(LoadingReducer(false));
+        console.log(err);
+      });
+  };
   const renderDanhSachNguoiDung = () => {
     return danhSachNguoiDung.map((item, index) => {
       return {
@@ -96,28 +90,39 @@ export default function TableNguoiDung(props) {
         email: item.email,
         sdt: item.soDT,
 
-        hanhDong: <Space >
-          <Button className='btn-success mr-2' onClick={() => {
-            localStorage.setItem('CapNhatND', JSON.stringify(item))
-            props.history.push(`/admin/quanlynguoidung/capnhatnguoidung/${item.taiKhoan}`)
-          }}>Edit</Button>
-          <Button className='btn-danger' onClick={() => {
-            xoaTaiKhoan(item.taiKhoan)
-          }}>Delete</Button>
-
-        </Space>
-      }
-    })
-  }
+        hanhDong: (
+          <div className="grid grid-cols-2">
+            <EditOutlined
+              onClick={() => {
+                localStorage.setItem("CapNhatND", JSON.stringify(item));
+                props.history.push(
+                  `/admin/quanlynguoidung/capnhatnguoidung/${item.taiKhoan}`
+                );
+              }}
+            />
+            <DeleteOutlined
+              onClick={() => {
+                xoaTaiKhoan(item.taiKhoan);
+              }}
+            />
+          </div>
+        ),
+      };
+    });
+  };
 
   const handleClickSearch = (e) => {
-    dispatch(layDanhSachNguoiDung(e))
-  }
+    dispatch(layDanhSachNguoiDung(e));
+  };
   return (
     <div>
-      <Button onClick={() => {
-        props.history.push(`/admin/quanlynguoidung/themnguoidung`)
-      }}>Thêm người dùng</Button>
+      <Button
+        onClick={() => {
+          props.history.push(`/admin/quanlynguoidung/themnguoidung`);
+        }}
+      >
+        Thêm người dùng
+      </Button>
       <Search
         placeholder="input search text"
         allowClear
@@ -127,5 +132,5 @@ export default function TableNguoiDung(props) {
       />
       <Table columns={columns} dataSource={renderDanhSachNguoiDung()} />
     </div>
-  )
+  );
 }

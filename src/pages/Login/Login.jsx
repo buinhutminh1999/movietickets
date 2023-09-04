@@ -89,16 +89,22 @@ export default function Login(props, value) {
         <div className="grid grid-rows-1 items-center text-center mt-2">
           <p>Thử với tài khoản có sẵn</p>
           <div className="grid grid-cols-2 gap-2">
-            <button className="button-primary" onClick={() => {
-              onFinish({taiKhoan: 'alphameta',
-              matKhau: 'alphametaaa',})
-            }}>
+            <button
+              className="button-primary"
+              onClick={() => {
+                onFinish({ taiKhoan: "alphameta", matKhau: "alphametaaa" });
+              }}
+            >
               Khách hàng
             </button>
-            <button className="button-primary" onClick={() => { 
-              onFinish({taiKhoan: 'admin0002',
-                matKhau: 'Ha@20238',})
-            }}>Admin</button>
+            <button
+              className="button-primary"
+              onClick={() => {
+                onFinish({ taiKhoan: "admin0002", matKhau: "Ha@20238" });
+              }}
+            >
+              Admin
+            </button>
           </div>
         </div>
       </Form>

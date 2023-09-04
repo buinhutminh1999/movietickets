@@ -29,7 +29,6 @@ for (let i = 0; i < 6; i++) {
     dayMonthYears: moment().add(i, "days").format("DD-MM-YYYY"),
   });
 }
-console.log("dateFlim", dateFlim);
 export default function MoviesShowTime(props) {
   const [tabPosition, setTabPosition] = useState("top");
   const [heThongRap, setHeThongRap] = useState([]);
@@ -45,7 +44,7 @@ export default function MoviesShowTime(props) {
   }, []);
   const chuyenRap = (result) => {
     let newArray = [];
-    if (rap == "") {
+    if (rap === "") {
       newArray = result[1].data.content.filter(
         (item) => item.maHeThongRap === result[0].data.content[0].maHeThongRap
       );
@@ -110,15 +109,15 @@ export default function MoviesShowTime(props) {
     setCumRap(item);
   }, []);
   const checkFlimDangChieuVaSapChieu = () => {
-    let a = [];
+    let listFlim = [];
     cumRap?.danhSachPhim?.forEach((item) => {
       item.lstLichChieuTheoPhim.forEach((item2) => {
         if (
           dateListFlimForDay ===
           moment(item2.ngayChieuGioChieu).format("DD-MM-YYYY")
         ) {
-          a = [
-            ...a,
+          listFlim = [
+            ...listFlim,
             {
               hinhAnh: item.hinhAnh,
               maPhim: item.maPhim,
@@ -134,14 +133,14 @@ export default function MoviesShowTime(props) {
         }
       });
     });
-    setData(a);
+    setData(listFlim);
   };
   useEffect(() => {
     if (cumRap !== "") {
       checkFlimDangChieuVaSapChieu(cumRap);
     }
   }, [cumRap, dateListFlimForDay]);
-  let checkTheoRap = () => {
+  let checkTheoRap = useCallback(() => {
     return lichChieuTheoRap.map((lichChieu) => {
       return lichChieu.lstCumRap.map((item) => (
         <div
@@ -176,7 +175,7 @@ export default function MoviesShowTime(props) {
       ));
     });
     // return buttons.flat().filter(Boolean); // Lọc và loại bỏ giá trị undefined chỉ khi chắn chắc giá trị if kiểm tra đúng
-  };
+  }, [cumRap]);
   // console.log("dateListFlimForDay", dateListFlimForDay);
   return (
     <div className="py-8">
@@ -204,15 +203,13 @@ export default function MoviesShowTime(props) {
           />
         </Col>
         <Col span={13} className="overflow-y-auto">
-          {
-            <DanhSachVePhim
-              props={props}
-              data={data}
-              dateFlim={dateFlim}
-              dateListFlimForDay={dateListFlimForDay}
-              handleSetDate={handleSetDate}
-            />
-          }
+          <DanhSachVePhim
+            props={props}
+            data={data}
+            dateFlim={dateFlim}
+            dateListFlimForDay={dateListFlimForDay}
+            handleSetDate={handleSetDate}
+          />
         </Col>
       </div>
     </div>
