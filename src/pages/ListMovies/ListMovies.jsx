@@ -3,7 +3,6 @@ import { Rate, Card } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -11,7 +10,6 @@ import "swiper/css/scrollbar";
 import { history } from "../../App";
 import { LayDanhSachPhim } from "../../redux/action/movieAction";
 import _ from "lodash";
-import style from "./style.module.css";
 
 export default function ListMovies(props) {
   let { listMovies } = useSelector((state) => state.movieReducer);
@@ -31,22 +29,20 @@ export default function ListMovies(props) {
                 onClick={() => {
                   history.push(`/detail/${item.maPhim}`);
                 }}
+                className="cursor-pointer"
               >
-                <Card bordered={false} className="bg-transparent text-white">
-                  <div
-                    className="img__movies text-center"
-                    style={{ height: "300px" }}
-                  >
-                    <img
+                <Card bordered={false} className="bg-transparent text-white shadow-lg">
+                   <div className="rounded-lg lg:h-56 md: h-35 overflow-hidden">
+                   <img
                       alt="example"
-                      className="h-100 w-100"
+                      className="h-full w-full object-cover"
                       src={item.hinhAnh}
                     />
+                   </div>
+                  <div className="mt-2 text-center">
+                    <p className="text-lg font-bold">{item.tenPhim}</p>
                   </div>
-                  <div className={style.flim__title}>
-                    <p className="m-0">{item.tenPhim}</p>
-                  </div>
-                  <div className="">
+                  <div className="mt-2">
                     <Rate value={item.danhGia / 2} disabled />
                   </div>
                 </Card>
@@ -58,20 +54,17 @@ export default function ListMovies(props) {
   };
 
   return (
-    <div className={style.film__container}>
-      <div className="text-center">
-        <h2 className="title__flim text-white">Phim đang chiếu</h2>
+    <div className="py-10 bg-gradient-to-r from-gray-700 via-gray-900 to-black">
+      <div className="text-center mb-5">
+        <h2 className="text-3xl font-semibold text-white">Phim đang chiếu</h2>
       </div>
       <Swiper
-        // install Swiper modules
         modules={[Navigation, Pagination, Scrollbar, A11y]}
         pagination={{
           dynamicBullets: true,
         }}
         slidesPerView={4}
         navigation
-        onSwiper={(swiper) => console.log(swiper)}
-        onSlideChange={() => console.log("slide change")}
         className="px-5 max-w-6xl md:px-10 w-full m-auto"
       >
         {renderListFlimDangChieu()}

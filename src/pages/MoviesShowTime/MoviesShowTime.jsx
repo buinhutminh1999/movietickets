@@ -180,13 +180,13 @@ function MoviesShowTime(props,ref) {
     // return buttons.flat().filter(Boolean); // Lọc và loại bỏ giá trị undefined chỉ khi chắn chắc giá trị if kiểm tra đúng
   }, [cumRap]);
   return (
-    <div className="py-8" ref={ref} id='targetComponent'>
+    <div className="py-8"  id='targetComponent'>
       <p className="text-pink-600 font-bold text-center lg:text-3xl mb-5">
         Đặt vé ngay
       </p>
       <div
         id="booking-ticket"
-        className="flex justify-center mx-auto rounded shadow-lg shadow-indigo-500/40"
+        className="flex justify-center mx-auto rounded shadow-lg shadow-indigo-500/40 max-w-6xl max-h-[833px]"
         style={{
           border: "0px solid #e5e5e5",
           maxWidth: "1152px",
@@ -218,4 +218,4 @@ function MoviesShowTime(props,ref) {
   );
 }
 
-export default forwardRef(MoviesShowTime)
+export default (MoviesShowTime)

@@ -1,13 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Logout } from "../../redux/reducers/movieReducer";
+import {
+  Logout,
+} from "../../redux/reducers/movieReducer";
 import { UserOutlined } from "@ant-design/icons";
 import { Dropdown } from "antd";
 import axios from "axios";
 import { TOKEN, URL_API } from "../../ulti/setting";
 import ButtonPrimary from "../../component/Button/ButtonPrimary/ButtonPrimary";
 
-export default function Header({history}) {
+export default function Header(props, {b}) {
+  const history = props.history
   let dispatch = useDispatch();
 
   let { usLogin } = useSelector((state) => state.movieReducer);
@@ -47,6 +50,7 @@ export default function Header({history}) {
       kiemTraNguoiDungCoTonTaiHaykhong();
     }
   }, []);
+
   let items =
     usLogin?.maLoaiNguoiDung === "QuanTri"
       ? [
@@ -111,12 +115,12 @@ export default function Header({history}) {
         </div>
         <div>
           <div className="grid grid-cols-3 gap-2 font-bold text-gray-600">
-            <span className="hover:text-gray-900">Lịch chiếu</span>
+            <button onClick={''}>Lịch chiếu</button>
             <span className="hover:text-gray-900">Rạp chiếu</span>
             <span className="hover:text-gray-900">Phim chiếu</span>
           </div>
         </div>
-        {usLogin == null ? (
+        {!usLogin ? (
           <div className="grid grid-cols-2 gap-2">
             <ButtonPrimary
               history={history}

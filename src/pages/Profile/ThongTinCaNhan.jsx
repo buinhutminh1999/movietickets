@@ -24,7 +24,7 @@ export default function ThongTinCaNhan() {
   const layThongTinNguoiDung = () => {
     let promise = axios({
       method: "GET",
-      url: `${URL_API}/QuanLyNguoiDung/TimKiemNguoiDung?MaNhom=GP01&tuKhoa=${taiKhoan.taiKhoan}`,
+      url: `${URL_API}/QuanLyNguoiDung/TimKiemNguoiDung?MaNhom=GP01&tuKhoa=${taiKhoan?.taiKhoan}`,
       headers: {
         TokenCybersoft: TOKEN,
       },

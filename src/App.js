@@ -5,7 +5,7 @@ import { CustomerTemplate } from './Template/CustomerTemplate'
 import 'antd/dist/reset.css';
 import { createBrowserHistory } from "history";
 import Login from './pages/Login/Login';
-import {  WithAuthTemplate } from './Template/WithAuthTemplate';
+import {  WithAuthTemplate } from './Template/WithAuthTemplate/WithAuthTemplate';
 import Register from './pages/register/Register';
 import DetailMovies from './pages/DetailMovies/DetailMovies';
 import { BodyTemplate } from './Template/BodyTemplate';

@@ -18,7 +18,7 @@ export default function DetailMovies(props) {
     dispatch(action);
   }, []);
 
-  const [tabPosition, setTabPosition] = useState("left");
+  const [tabPosition] = useState("left");
   return (
     <div className="container-fluid detailflim p-5">
       <CustomCard

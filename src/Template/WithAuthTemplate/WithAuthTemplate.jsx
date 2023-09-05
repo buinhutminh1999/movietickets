@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { Redirect, Route } from "react-router-dom";
-
+import {style} from './style.css'
 export const WithAuthTemplate = (props) => {
   const {usLogin} = useSelector((state) => state.movieReducer);
   console.log('usLogin',usLogin)

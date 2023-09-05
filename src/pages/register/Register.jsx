@@ -1,9 +1,9 @@
 import { useFormik } from 'formik';
 import React, { useEffect, useState } from 'react'
-import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { DangKyAction, } from '../../redux/action/movieAction';
+import {style} from './style.css'
 export default function Register() {
     let dispatch = useDispatch()
     let [btn, setBtn] = useState('')
@@ -59,8 +59,8 @@ export default function Register() {
 
 
     return (
-        <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-            <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Đăng ký</p>
+        <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1 content-register">
+            <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4 title-register">Đăng ký</p>
             <form className="mx-1 mx-md-4" onSubmit={formik.handleSubmit}>
                 {regisErr !== '' ? <div className='alert alert-danger'>{regisErr}</div> : null}
                 <div className="d-flex flex-row align-items-center mb-4">

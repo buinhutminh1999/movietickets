@@ -1,15 +1,13 @@
 import React from "react";
 import { Checkbox, Form, Input } from "antd";
-import {
-  dangNhapAction,
-  layDanhSachNguoiDung,
-} from "../../redux/action/movieAction";
+import { dangNhapAction } from "../../redux/action/movieAction";
 import { useDispatch, useSelector } from "react-redux";
 import ButtonPrimary from "../../component/Button/ButtonPrimary/ButtonPrimary";
-import { LoadingReducer } from "../../redux/reducers/movieReducer";
+import { LoadingReducer, LoginErr } from "../../redux/reducers/movieReducer";
 import { getAPI } from "../../API/GetApi/GetApi";
 import { URL_API } from "../../ulti/setting";
-
+import { useEffect } from "react";
+import {style} from './style.css'
 export default function Login(props) {
   let dispatch = useDispatch();
   let { loginErr } = useSelector((state) => state.movieReducer);
@@ -21,6 +19,10 @@ export default function Login(props) {
     });
     dispatch(action);
   };
+  useEffect(() => {
+    //tự động xóa message khi quay lại trang
+    dispatch(LoginErr(null));
+  }, []);
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
@@ -43,7 +45,7 @@ export default function Login(props) {
       });
   };
   return (
-    <div>
+    <div className="form-antd">
       <Form
         name="basic"
         labelCol={{
