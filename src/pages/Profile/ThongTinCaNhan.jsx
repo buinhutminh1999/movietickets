@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Form, Input, Space } from "antd";
 import { useState } from "react";
 import axios from "axios";
 import { TOKEN, URL_API } from "../../ulti/setting";
 import { capNhatThongTinNguoiDung } from "../../redux/action/movieAction";
-const taiKhoan = JSON.parse(localStorage.getItem("userMovies"));
 
 export default function ThongTinCaNhan() {
+  const {usLogin} = useSelector((state) => state.movieReducer)
   const [componentDisabled, setComponentDisabled] = useState(true); 
   const [info, setInfo] = useState({});
   const [value, setValue] = useState({
@@ -21,33 +21,34 @@ export default function ThongTinCaNhan() {
   });
   const [btnDisabled, setbtnDisabled] = useState(true);
   const dispatch = useDispatch();
-  const layThongTinNguoiDung = () => {
-    let promise = axios({
-      method: "GET",
-      url: `${URL_API}/QuanLyNguoiDung/TimKiemNguoiDung?MaNhom=GP01&tuKhoa=${taiKhoan?.taiKhoan}`,
-      headers: {
-        TokenCybersoft: TOKEN,
-      },
-    });
-    promise
-      .then((result) => {
-        const user = {
-          taiKhoan: result.data.content[0]?.taiKhoan,
-          matKhau: result.data.content[0]?.matKhau,
-          email: result.data.content[0]?.email,
-          soDt: result.data.content[0]?.soDT,
-          maNhom: "GP01",
-          maLoaiNguoiDung: result.data.content[0]?.maLoaiNguoiDung,
-          hoTen: result.data.content[0]?.hoTen,
-        };
-        setInfo(user);
-        setValue(user);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+ 
   useEffect(() => {
+    const layThongTinNguoiDung = () => {
+      let promise = axios({
+        method: "GET",
+        url: `${URL_API}/QuanLyNguoiDung/TimKiemNguoiDung?MaNhom=GP01&tuKhoa=${usLogin?.taiKhoan}`,
+        headers: {
+          TokenCybersoft: TOKEN,
+        },
+      });
+      promise
+        .then((result) => {
+          const user = {
+            taiKhoan: result.data.content[0]?.taiKhoan,
+            matKhau: result.data.content[0]?.matKhau,
+            email: result.data.content[0]?.email,
+            soDt: result.data.content[0]?.soDT,
+            maNhom: "GP01",
+            maLoaiNguoiDung: result.data.content[0]?.maLoaiNguoiDung,
+            hoTen: result.data.content[0]?.hoTen,
+          };
+          setInfo(user);
+          setValue(user);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
     layThongTinNguoiDung();
   }, []);
 
@@ -66,13 +67,14 @@ export default function ThongTinCaNhan() {
     localStorage.setItem(
       "userMovies",
       JSON.stringify({
-        ...taiKhoan,
+        ...usLogin,
         email: info.email,
         hoTen: info.hoTen,
         soDT: info.soDt,
       })
     );
   };
+  console.log('đasajhdahsdgjdhasgjhdgs')
   return (
     <div>
       <Form
