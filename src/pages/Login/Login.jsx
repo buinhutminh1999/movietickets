@@ -4,7 +4,7 @@ import { dangNhapAction } from "../../redux/action/movieAction";
 import { useDispatch, useSelector } from "react-redux";
 import ButtonPrimary from "../../component/Button/ButtonPrimary/ButtonPrimary";
 
-export default function Login(props, value) {
+export default function Login(props) {
   let dispatch = useDispatch();
   let { loginErr } = useSelector((state) => state.movieReducer);
 

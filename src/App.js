@@ -5,7 +5,7 @@ import { CustomerTemplate } from './Template/CustomerTemplate'
 import 'antd/dist/reset.css';
 import { createBrowserHistory } from "history";
 import Login from './pages/Login/Login';
-import { SingleTemplate } from './Template/SingleTemplate';
+import {  WithAuthTemplate } from './Template/WithAuthTemplate';
 import Register from './pages/register/Register';
 import DetailMovies from './pages/DetailMovies/DetailMovies';
 import { BodyTemplate } from './Template/BodyTemplate';
@@ -30,8 +30,8 @@ function App() {
     <Router history={history} >
       <Loading />
       <Switch>
-        <SingleTemplate path="/login" component={Login} />
-        <SingleTemplate path="/register" component={Register} />
+        <WithAuthTemplate path="/login" component={Login} />
+        <WithAuthTemplate path="/register" component={Register} />
         <BodyTemplate path="/profile" comp={Profile} />
         <BodyTemplate path="/detail/:id" comp={DetailMovies} />
         <CheckoutTemplate path="/checkout/:id" component={MenuCheckOut} />

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, memo, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { Col } from "antd";
 import { TOKEN, URL_API } from "../../ulti/setting";
@@ -6,6 +6,8 @@ import moment from "moment";
 import "moment/locale/vi";
 import HeThongRap from "./HeThongRap/HeThongRap";
 import DanhSachVePhim from "./DanhSachVePhim/DanhSachVePhim";
+import { forwardRef } from 'react';
+
 // - Thứ tự thao tác trong 1 ứng dụng:
 // 	+ b1: load ứng dụng lên
 // 	+ b2: khởi tạo state, hàm
@@ -29,7 +31,7 @@ for (let i = 0; i < 6; i++) {
     dayMonthYears: moment().add(i, "days").format("DD-MM-YYYY"),
   });
 }
-export default function MoviesShowTime(props) {
+function MoviesShowTime(props,ref) {
   const [tabPosition, setTabPosition] = useState("top");
   const [heThongRap, setHeThongRap] = useState([]);
   const [lichChieuTheoRap, setLichChieuTheoRap] = useState([]);
@@ -39,6 +41,7 @@ export default function MoviesShowTime(props) {
   const [dateListFlimForDay, setDateListFlimForDay] = useState(
     moment().format("DD-MM-YYYY")
   );
+
   const handleSetDate = useCallback((dateFlim) => {
     setDateListFlimForDay(dateFlim);
   }, []);
@@ -176,9 +179,9 @@ export default function MoviesShowTime(props) {
     });
     // return buttons.flat().filter(Boolean); // Lọc và loại bỏ giá trị undefined chỉ khi chắn chắc giá trị if kiểm tra đúng
   }, [cumRap]);
-  // console.log("dateListFlimForDay", dateListFlimForDay);
+  console.log('props',ref)
   return (
-    <div className="py-8">
+    <div className="py-8" ref={ref} id='targetComponent'>
       <p className="text-pink-600 font-bold text-center lg:text-3xl mb-5">
         Đặt vé ngay
       </p>
@@ -215,3 +218,5 @@ export default function MoviesShowTime(props) {
     </div>
   );
 }
+
+export default forwardRef(MoviesShowTime)

@@ -21,6 +21,7 @@ const initialState = {
   cumRapTheoHeThongRap: [],
   info: [],
   danhSachNguoiDung: [],
+  scrollToRef: null
 }
 
 const movieReducer = createSlice({
@@ -32,6 +33,7 @@ const movieReducer = createSlice({
     },
     dangNhap: (state, actions) => {
       state.usLogin = actions.payload
+      localStorage.setItem("userMovies", JSON.stringify(state.usLogin));
       localStorage.setItem('accessToken', state.usLogin.accessToken)
     },
     Logout: (state, actions) => {
@@ -73,12 +75,12 @@ const movieReducer = createSlice({
     GetDanhSachNguoiDung: (state, action) => {
       state.danhSachNguoiDung = action.payload
     },
-    testFunc: (state, action) => {
-      state.testnd = action.payload
+    scrollMoviesShowTimes: (state, action) => {
+      state.scrollToRef = action.payload
     }
   }
 })
 
-export const { dangNhap, Logout, LoginErr, GetMovies, GetDetailMovies, GetRoomTicket, PostTickets, ThongTinDatVeReducer, LoadingReducer, GetInfoFlim, GetHeThongRap, GetCumRapTheoHeThongRap, GetInfo, GetDanhSachNguoiDung } = movieReducer.actions
+export const { dangNhap, Logout, LoginErr, GetMovies, GetDetailMovies, GetRoomTicket, PostTickets, ThongTinDatVeReducer, LoadingReducer, GetInfoFlim, GetHeThongRap, GetCumRapTheoHeThongRap, GetInfo, GetDanhSachNguoiDung,scrollMoviesShowTimes  } = movieReducer.actions
 
 export default movieReducer.reducer

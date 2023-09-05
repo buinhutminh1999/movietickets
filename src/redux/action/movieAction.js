@@ -50,10 +50,18 @@ export const dangNhapAction = (value) => {
     });
     promise
       .then((result) => {
-        history.goBack();
-        localStorage.setItem("userMovies", JSON.stringify(result.data.content));
-        const action = dangNhap(result.data.content);
-        dispatch2(action);
+        console.log("ressult", result);
+        if (result.data.content !== "GP01") {
+          dispatch2(
+            LoginErr(
+              `Tài khoản hiện tài ở mã nhóm ${result.data.content.maNhom}, mã nhóm ở dự án này là GP01, vui lòng liên hệ admin để được tư vấn.`
+            )
+          );
+        } else {
+          history.goBack();
+          const action = dangNhap(result.data.content);
+          dispatch2(action);
+        }
       })
       .catch((err) => {
         console.log("err", err);
@@ -79,7 +87,7 @@ export const LayDanhSachPhim = (tenPhim = "") => {
         console.log(err);
       });
   };
-}
+};
 
 export const LayDanhSachPhimAdmin = () => {
   return (dispatch) => {
@@ -323,8 +331,6 @@ export const taoLichChieu = (lichChieu) => {
       });
   };
 };
-
-
 
 export const capNhatThongTinNguoiDung = (thongTin) => {
   return (dispatch) => {

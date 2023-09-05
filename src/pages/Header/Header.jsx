@@ -7,8 +7,9 @@ import axios from "axios";
 import { TOKEN, URL_API } from "../../ulti/setting";
 import ButtonPrimary from "../../component/Button/ButtonPrimary/ButtonPrimary";
 
-export default function Header({ history }) {
+export default function Header(props) {
   let dispatch = useDispatch();
+
   let { usLogin } = useSelector((state) => state.movieReducer);
   let resetLocal = () => {
     localStorage.removeItem("userMovies");
@@ -17,9 +18,9 @@ export default function Header({ history }) {
   };
   const handleMenuClick = (e) => {
     if (e.key === "1") {
-      history.push("/profile");
+      props.history.push("/profile");
     } else if (e.key === "2") {
-      history.push("/admin/flim");
+      props.history.push("/admin/flim");
     } else {
       resetLocal();
     }
@@ -46,7 +47,7 @@ export default function Header({ history }) {
       kiemTraNguoiDungCoTonTaiHaykhong();
     }
   }, []);
-
+console.log('usLogin',usLogin)
   let items =
     usLogin?.maLoaiNguoiDung === "QuanTri"
       ? [
@@ -87,7 +88,7 @@ export default function Header({ history }) {
     <header className="header bg-white/95 boder-b border-gray-200 shadow-sm">
       <div className="cursor-pointer flex justify-content-between items-center mx-auto max-w-6xl lg:px-8 h-16">
         <div className="flex items-center gap-2">
-          <div onClick={() => history.push("/")}>
+          <div onClick={() => props.history.push("/")}>
             <img
               className="logo"
               src="https://media.istockphoto.com/id/615096356/photo/beautiful-pink-circle-light-with-lens-flare-on-particles-background.jpg?s=170667a&w=0&k=20&c=WTm7BgnNsrAd5nsCV4Py6Ld9LfPtlDKiILX3lvEpPTs="
@@ -111,20 +112,20 @@ export default function Header({ history }) {
         </div>
         <div>
           <div className="grid grid-cols-3 gap-2 font-bold text-gray-600">
-            <span className="hover:text-gray-900">Lịch chiếu</span>
+            <button onClick={""}>Lịch chiếu</button>
             <span className="hover:text-gray-900">Rạp chiếu</span>
             <span className="hover:text-gray-900">Phim chiếu</span>
           </div>
         </div>
-        {!usLogin ? (
+        {usLogin == null ? (
           <div className="grid grid-cols-2 gap-2">
             <ButtonPrimary
-              history={history}
+              history={props.history}
               url={"/login"}
               content={"Đăng nhập"}
             />
             <ButtonPrimary
-              history={history}
+              history={props.history}
               url={"/register"}
               content={"Đăng ký"}
             />
