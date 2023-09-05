@@ -179,7 +179,6 @@ function MoviesShowTime(props,ref) {
     });
     // return buttons.flat().filter(Boolean); // Lọc và loại bỏ giá trị undefined chỉ khi chắn chắc giá trị if kiểm tra đúng
   }, [cumRap]);
-  console.log('props',ref)
   return (
     <div className="py-8" ref={ref} id='targetComponent'>
       <p className="text-pink-600 font-bold text-center lg:text-3xl mb-5">

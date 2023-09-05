@@ -7,7 +7,7 @@ import axios from "axios";
 import { TOKEN, URL_API } from "../../ulti/setting";
 import ButtonPrimary from "../../component/Button/ButtonPrimary/ButtonPrimary";
 
-export default function Header(props) {
+export default function Header({history}) {
   let dispatch = useDispatch();
 
   let { usLogin } = useSelector((state) => state.movieReducer);
@@ -18,9 +18,9 @@ export default function Header(props) {
   };
   const handleMenuClick = (e) => {
     if (e.key === "1") {
-      props.history.push("/profile");
+      history.push("/profile");
     } else if (e.key === "2") {
-      props.history.push("/admin/flim");
+      history.push("/admin/flim");
     } else {
       resetLocal();
     }
@@ -47,7 +47,6 @@ export default function Header(props) {
       kiemTraNguoiDungCoTonTaiHaykhong();
     }
   }, []);
-console.log('usLogin',usLogin)
   let items =
     usLogin?.maLoaiNguoiDung === "QuanTri"
       ? [
@@ -88,7 +87,7 @@ console.log('usLogin',usLogin)
     <header className="header bg-white/95 boder-b border-gray-200 shadow-sm">
       <div className="cursor-pointer flex justify-content-between items-center mx-auto max-w-6xl lg:px-8 h-16">
         <div className="flex items-center gap-2">
-          <div onClick={() => props.history.push("/")}>
+          <div onClick={() => history.push("/")}>
             <img
               className="logo"
               src="https://media.istockphoto.com/id/615096356/photo/beautiful-pink-circle-light-with-lens-flare-on-particles-background.jpg?s=170667a&w=0&k=20&c=WTm7BgnNsrAd5nsCV4Py6Ld9LfPtlDKiILX3lvEpPTs="
@@ -112,7 +111,7 @@ console.log('usLogin',usLogin)
         </div>
         <div>
           <div className="grid grid-cols-3 gap-2 font-bold text-gray-600">
-            <button onClick={""}>Lịch chiếu</button>
+            <span className="hover:text-gray-900">Lịch chiếu</span>
             <span className="hover:text-gray-900">Rạp chiếu</span>
             <span className="hover:text-gray-900">Phim chiếu</span>
           </div>
@@ -120,12 +119,12 @@ console.log('usLogin',usLogin)
         {usLogin == null ? (
           <div className="grid grid-cols-2 gap-2">
             <ButtonPrimary
-              history={props.history}
+              history={history}
               url={"/login"}
               content={"Đăng nhập"}
             />
             <ButtonPrimary
-              history={props.history}
+              history={history}
               url={"/register"}
               content={"Đăng ký"}
             />

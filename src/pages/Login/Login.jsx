@@ -1,8 +1,14 @@
 import React from "react";
 import { Checkbox, Form, Input } from "antd";
-import { dangNhapAction } from "../../redux/action/movieAction";
+import {
+  dangNhapAction,
+  layDanhSachNguoiDung,
+} from "../../redux/action/movieAction";
 import { useDispatch, useSelector } from "react-redux";
 import ButtonPrimary from "../../component/Button/ButtonPrimary/ButtonPrimary";
+import { LoadingReducer } from "../../redux/reducers/movieReducer";
+import { getAPI } from "../../API/GetApi/GetApi";
+import { URL_API } from "../../ulti/setting";
 
 export default function Login(props) {
   let dispatch = useDispatch();
@@ -17,6 +23,24 @@ export default function Login(props) {
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
+  };
+  const dangNhapTaiKhoanNhanh = (maND) => {
+    dispatch(LoadingReducer(true));
+    let promise = getAPI(
+      `${URL_API}/QuanLyNguoiDung/LayDanhSachNguoiDung?MaNhom=GP01`
+    );
+    promise
+      .then((result) => {
+        let obj = result.data.content.find(
+          (item) => item.maLoaiNguoiDung === maND
+        );
+        onFinish({ taiKhoan: obj.taiKhoan, matKhau: obj.matKhau });
+        dispatch(LoadingReducer(false));
+      })
+      .catch((err) => {
+        dispatch(LoadingReducer(false));
+        console.log(err);
+      });
   };
   return (
     <div>
@@ -92,7 +116,7 @@ export default function Login(props) {
             <button
               className="button-primary"
               onClick={() => {
-                onFinish({ taiKhoan: "alphameta", matKhau: "alphametaaa" });
+                dangNhapTaiKhoanNhanh("KhachHang");
               }}
             >
               Khách hàng
@@ -100,7 +124,7 @@ export default function Login(props) {
             <button
               className="button-primary"
               onClick={() => {
-                onFinish({ taiKhoan: "admin0002", matKhau: "Ha@20238" });
+                dangNhapTaiKhoanNhanh("QuanTri");
               }}
             >
               Admin
