@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Logout,
@@ -9,8 +9,7 @@ import axios from "axios";
 import { TOKEN, URL_API } from "../../ulti/setting";
 import ButtonPrimary from "../../component/Button/ButtonPrimary/ButtonPrimary";
 
-export default function Header(props, {b}) {
-  const history = props.history
+export default function Header({history}) {
   let dispatch = useDispatch();
 
   let { usLogin } = useSelector((state) => state.movieReducer);
@@ -115,7 +114,7 @@ export default function Header(props, {b}) {
         </div>
         <div>
           <div className="grid grid-cols-3 gap-2 font-bold text-gray-600">
-            <button onClick={''}>Lịch chiếu</button>
+            <span className="hover:text-gray-900">Lịch chiếu</span>
             <span className="hover:text-gray-900">Rạp chiếu</span>
             <span className="hover:text-gray-900">Phim chiếu</span>
           </div>

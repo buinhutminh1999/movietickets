@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { Route } from "react-router-dom";
 import Footer from "../component/Footer/Footer";
 import Header from "../pages/Header/Header";
@@ -7,7 +7,6 @@ export const BodyTemplate = ({
   comp: Component, // use comp prop
   ...rest
 }) => {
-  const componentRef = useRef(null); // tạo ref
 
 
   useEffect(() => {
@@ -22,7 +21,7 @@ export const BodyTemplate = ({
         return (
           <>
             <Header {...propsRoute} />
-            <Component {...propsRoute} ref={componentRef} />
+            <Component {...propsRoute} />
             <Footer />
           </>
         );

@@ -32,13 +32,13 @@ export default function ThongTinCaNhan() {
     promise
       .then((result) => {
         const user = {
-          taiKhoan: result.data.content[0].taiKhoan,
-          matKhau: result.data.content[0].matKhau,
-          email: result.data.content[0].email,
-          soDt: result.data.content[0].soDT,
+          taiKhoan: result.data.content[0]?.taiKhoan,
+          matKhau: result.data.content[0]?.matKhau,
+          email: result.data.content[0]?.email,
+          soDt: result.data.content[0]?.soDT,
           maNhom: "GP01",
-          maLoaiNguoiDung: result.data.content[0].maLoaiNguoiDung,
-          hoTen: result.data.content[0].hoTen,
+          maLoaiNguoiDung: result.data.content[0]?.maLoaiNguoiDung,
+          hoTen: result.data.content[0]?.hoTen,
         };
         setInfo(user);
         setValue(user);
