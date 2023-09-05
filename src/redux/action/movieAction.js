@@ -51,10 +51,10 @@ export const dangNhapAction = (value) => {
     promise
       .then((result) => {
         console.log("ressult", result);
-        if (result.data.content !== "GP01") {
+        if (result.data.content.maNhom !== "GP01") {
           dispatch2(
             LoginErr(
-              `Tài khoản hiện tài ở mã nhóm ${result.data.content.maNhom}, mã nhóm ở dự án này là GP01, vui lòng liên hệ admin để được tư vấn.`
+              `Tài khoản hiện tại ở mã nhóm ${result.data.content.maNhom}, mã nhóm ở dự án này là GP01, vui lòng liên hệ admin để được tư vấn.`
             )
           );
         } else {
